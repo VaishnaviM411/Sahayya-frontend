@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:sahayya/loginScreen.dart';
+import 'package:sahayya/registerScreen.dart';
 import 'startscreen.dart';
+import 'registerScreen.dart';
 
 void main() {
   runApp(MyApp());
@@ -18,6 +21,8 @@ class MyApp extends StatelessWidget {
       initialRoute: '/start',
       routes: {
         '/start': (context) => StartScreen(),
+        '/login': (context) => LoginScreen(),
+        '/register': (context) => Register(),
       },
       debugShowCheckedModeBanner: false,
     );
