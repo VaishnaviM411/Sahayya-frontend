@@ -1,5 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+
+final storage = new FlutterSecureStorage();
 
 class StartScreen extends StatefulWidget {
   const StartScreen({Key? key}) : super(key: key);
@@ -8,7 +11,39 @@ class StartScreen extends StatefulWidget {
   _StartScreenState createState() => _StartScreenState();
 }
 
+
 class _StartScreenState extends State<StartScreen> {
+
+
+  String? token='', username='', type='';
+
+  void getStorageValues() async {
+    token = await storage.read(key: 'token');
+    username = await storage.read(key: 'username');
+    type = await storage.read(key: 'type');
+
+    if(username != null){
+      if(username!.length > 0){
+        if(type == 'NGO'){
+          Navigator.pushReplacementNamed(context, '/ngoDashboard');
+        }
+        else if(type=='Individual'){
+          Navigator.pushReplacementNamed(context, '/indvDonor');
+        }
+        else if(type=='Company'){
+          Navigator.pushReplacementNamed(context, '/compDonor');
+        }
+      }
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getStorageValues();
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -21,11 +56,11 @@ class _StartScreenState extends State<StartScreen> {
               Text('SAHAYYA',style: TextStyle(
                 fontFamily: 'Lobster',
                 color: Colors.white,
-                fontSize: 80.0,
+                fontSize: 60.0,
                 letterSpacing: 5.5,
               ),),
               CircleAvatar(
-                radius: 200.0,
+                radius: 180.0,
                 backgroundColor: Colors.transparent,
                 backgroundImage: AssetImage('images/giftbox.png'),
               ),

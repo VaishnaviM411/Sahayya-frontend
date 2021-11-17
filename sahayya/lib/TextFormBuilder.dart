@@ -35,6 +35,7 @@ class _TextFormBuilderState extends State<TextFormBuilder> {
                   textCapitalization: TextCapitalization.sentences,
                   style: TextStyle(
                     fontSize: 15.0,
+                    color: Colors.white,
                   ),
                   key: widget.key,
                   textInputAction: widget.textInputAction,

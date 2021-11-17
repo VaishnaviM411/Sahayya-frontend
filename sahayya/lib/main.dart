@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:sahayya/companyDonor.dart';
+import 'package:sahayya/individualDonor.dart';
 import 'package:sahayya/loginScreen.dart';
+import 'package:sahayya/ngoDashboard.dart';
 import 'package:sahayya/registerScreen.dart';
 import 'startscreen.dart';
 import 'registerScreen.dart';
@@ -23,9 +26,12 @@ class MyApp extends StatelessWidget {
         '/start': (context) => StartScreen(),
         '/login': (context) => LoginScreen(),
         '/register': (context) => Register(),
+        '/ngoDashboard': (context) => NGODashboard(),
+        '/indvDonor' : (context) => IndividualDonor(),
+        '/compDonor' : (context)=> CompanyDonor(),
+
       },
       debugShowCheckedModeBanner: false,
     );
   }
 }
-
