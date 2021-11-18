@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:sahayya/allBrains/loginBrain.dart';
-import 'package:sahayya/ngoDashboard.dart';
+import 'package:sahayya/NGO/ngoDashboard.dart';
 
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 

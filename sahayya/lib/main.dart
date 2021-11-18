@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:sahayya/companyDonor.dart';
-import 'package:sahayya/individualDonor.dart';
+import 'package:sahayya/Company/companyDonor.dart';
+import 'package:sahayya/Individual/individualDonor.dart';
 import 'package:sahayya/loginScreen.dart';
-import 'package:sahayya/ngoDashboard.dart';
+import 'package:sahayya/NGO/ngoDashboard.dart';
 import 'package:sahayya/registerScreen.dart';
 import 'startscreen.dart';
 import 'registerScreen.dart';
