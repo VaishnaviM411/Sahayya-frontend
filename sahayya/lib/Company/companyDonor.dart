@@ -17,10 +17,9 @@ class CompanyDonor extends StatefulWidget {
   _CompanyDonorState createState() => _CompanyDonorState();
 }
 
-class _CompanyDonorState extends State<CompanyDonor>{
-
+class _CompanyDonorState extends State<CompanyDonor> {
   Map<String, dynamic> entityData = {};
-  String? token='', username='', type='';
+  String? token = '', username = '', type = '';
 
   void getStorageValues() async {
     token = await storage.read(key: 'token');
@@ -29,34 +28,35 @@ class _CompanyDonorState extends State<CompanyDonor>{
   }
 
   void getUserData(username, token) async {
+    token = await storage.read(key: 'token');
+    username = await storage.read(key: 'username');
+    type = await storage.read(key: 'type');
 
-    String theURL = 'https://asia-south1-sahayya-9c930.cloudfunctions.net/api/profile/'+username;
-    final response = await http.get(Uri.parse(theURL), headers: {
-      HttpHeaders.authorizationHeader: token
-    });
+    String theURL =
+        'https://asia-south1-sahayya-9c930.cloudfunctions.net/api/profile/' +
+            username;
+    final response = await http.get(Uri.parse(theURL),
+        headers: {HttpHeaders.authorizationHeader: token});
 
-    if(response.statusCode == 200){
+    if (response.statusCode == 200) {
+      print(response.statusCode);
       Map<String, dynamic> resp = jsonDecode(response.body);
       setState(() {
         entityData = resp;
       });
+      return;
     }
-    else {
-      await storage.write(key: 'username', value: null);
-      await storage.write(key: 'token', value: null);
-      await storage.write(key: 'type', value: null);
-      Navigator.pushReplacementNamed(context, '/start');
-    }
+    await storage.write(key: 'username', value: null);
+    await storage.write(key: 'token', value: null);
+    await storage.write(key: 'type', value: null);
+    Navigator.pushReplacementNamed(context, '/start');
+    return;
   }
+
+  @override
   int _selectedIndex = 0;
   static const TextStyle optionStyle =
-  TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
-  static const List<Widget> _widgetOptions = <Widget>[
-               DonationRequests(),
-               NearbyNGOs(),
-               SelfDonations(),
-               Profile(),
-  ];
+      TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
 
   void _onItemTapped(int index) {
     setState(() {
@@ -68,10 +68,23 @@ class _CompanyDonorState extends State<CompanyDonor>{
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('BottomNavigationBar Sample'),
+        title: Text(
+          'SAHAYYA',
+          style: TextStyle(
+            fontFamily: 'Lobster',
+            color: Colors.white,
+            fontSize: 30.0,
+            letterSpacing: 1,
+          ),
+        ),
       ),
       body: Center(
-        child: _widgetOptions.elementAt(_selectedIndex),
+        child: <Widget>[
+          NearbyNGOs(entityData: entityData),
+          DonationRequests(entityData: entityData),
+          SelfDonations(entityData: entityData),
+          Profile(entityData: entityData),
+        ].elementAt(_selectedIndex),
       ),
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: Color(0xFF3E5A81),

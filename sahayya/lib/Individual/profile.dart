@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 
 class Profile extends StatefulWidget {
-  const Profile({Key? key}) : super(key: key);
-
   @override
   _ProfileState createState() => _ProfileState();
+  final Map<String, dynamic> entityData;
+
+  const Profile({required this.entityData});
 }
 
 class _ProfileState extends State<Profile> {
