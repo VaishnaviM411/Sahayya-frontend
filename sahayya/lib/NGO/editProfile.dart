@@ -33,6 +33,7 @@ class _EditNGOProfileState extends State<EditNGOProfile> {
       state = '',
       address = '',
       description = '',
+      password = '',
       imageURL = 'https://firebasestorage.googleapis.com/v0/b/bizrep-b0184.appspot.com/o/profile_picture.png?alt=media&token=f23c3431-328e-47d6-8e0c-a1dfabbf13bf';
 
   double latitude = 0.0, longitude = 0.0;
@@ -453,6 +454,39 @@ class _EditNGOProfileState extends State<EditNGOProfile> {
                       },
                     ),
                     SizedBox(height: 40,),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(20, 5, 0, 5),
+                      child: Text('Password', style: TextStyle(
+                          fontSize: 17,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold
+                      ),),
+                    ),
+                    TextField(
+                      style: TextStyle(
+                        fontSize: 15.0,
+                        color: Colors.white,
+                      ),
+                      enabled: true,
+                      decoration: InputDecoration(
+                        hintText: 'Enter New Password',
+                        filled: true,
+                        fillColor: Color(0xFF3E5A81),
+                        hintStyle: TextStyle(
+                          color: Colors.white,
+                        ),
+                        border: border(context),
+                        enabledBorder: border(context),
+                        focusedBorder: focusBorder(context),
+                      ),
+                      textInputAction: TextInputAction.next,
+                      onChanged: (val) {
+                        setState(() {
+                          password = val;
+                        });
+                      },
+                    ),
+                    SizedBox(height: 40,),
                     Container(
                       height: 45.0,
                       width: double.infinity,
@@ -538,6 +572,17 @@ class _EditNGOProfileState extends State<EditNGOProfile> {
                                 .showSnackBar(snackBar);
                             return;
                           }
+
+                        if (password.length == 0) {
+                          final snackBar = SnackBar(
+                            content: Text('Please enter Password '),
+                          );
+                          ScaffoldMessenger.of(context)
+                              .showSnackBar(snackBar);
+                          return;
+                        }
+
+
                           if (state.length == 0) {
                             final snackBar = SnackBar(
                               content: Text('Please enter a state'),
@@ -580,6 +625,7 @@ class _EditNGOProfileState extends State<EditNGOProfile> {
                             "address": address,
                             "sectors": selectedSectors,
                             "description": description,
+                            "password": password
                           };
 
                           print(theData);

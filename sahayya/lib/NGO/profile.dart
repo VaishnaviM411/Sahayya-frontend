@@ -12,9 +12,28 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 final storage = new FlutterSecureStorage();
 
 class Profile extends StatefulWidget {
-  final Map<String, dynamic> entityData;
+  Map<String, dynamic> entityData = {
+    "isVerified": false,
+    "name": "",
+    "email": "",
+    "address": "",
+    "regNo": "",
+    "state": "",
+    "sectors": [
+      ""
+    ],
+    "coOrdinates": {
+      "longitude": 73.81396316384317,
+      "latitude": 18.63063063063063
+    },
+    "city": "",
+    "picture": "",
+    "description": "",
+    "username": "",
+    "type": ""
+  };
 
-  const Profile({required this.entityData});
+  Profile({required this.entityData});
 
   @override
   _ProfileState createState() => _ProfileState();
