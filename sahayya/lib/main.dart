@@ -7,6 +7,8 @@ import 'package:sahayya/registerScreen.dart';
 import 'startscreen.dart';
 import 'registerScreen.dart';
 import 'NGO/editProfile.dart';
+import 'Company/editProfile.dart';
+import 'Individual/editProfile.dart';
 
 void main() {
   runApp(MyApp());
@@ -19,7 +21,6 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-
         primaryColor: Color(0xFF3E5A81),
       ),
       initialRoute: '/start',
@@ -28,10 +29,11 @@ class MyApp extends StatelessWidget {
         '/login': (context) => LoginScreen(),
         '/register': (context) => Register(),
         '/ngoDashboard': (context) => NGODashboard(),
-        '/indvDonor' : (context) => IndividualDonor(),
-        '/compDonor' : (context)=> CompanyDonor(),
-        '/editNGOProfile' : (context) => EditNGOProfile()
-
+        '/indvDonor': (context) => IndividualDonor(),
+        '/compDonor': (context) => CompanyDonor(),
+        '/editNGOProfile': (context) => EditNGOProfile(),
+        '/editCompanyProfile': (context) => EditCompanyProfile(),
+        '/editIndividualProfile': (context) => EditIndividualProfile()
       },
       debugShowCheckedModeBanner: false,
     );

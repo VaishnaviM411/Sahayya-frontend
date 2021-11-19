@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http_parser/http_parser.dart';
-import 'TextFormBuilder.dart';
 import 'loginScreen.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart';
@@ -42,7 +41,8 @@ class _RegisterState extends State<Register> {
       location = '',
       bio = '',
       contactNo = '',
-      imageURL = 'https://firebasestorage.googleapis.com/v0/b/bizrep-b0184.appspot.com/o/profile_picture.png?alt=media&token=f23c3431-328e-47d6-8e0c-a1dfabbf13bf';
+      imageURL =
+          'https://firebasestorage.googleapis.com/v0/b/bizrep-b0184.appspot.com/o/profile_picture.png?alt=media&token=f23c3431-328e-47d6-8e0c-a1dfabbf13bf';
 
   double latitude = 0.0, longitude = 0.0;
 
@@ -102,7 +102,6 @@ class _RegisterState extends State<Register> {
 
   @override
   Widget build(BuildContext context) {
-
     Future<void> uploadPic(BuildContext context) async {
       if (_image == null) {
         setState(() {
@@ -115,7 +114,7 @@ class _RegisterState extends State<Register> {
         request.files
             .add(await http.MultipartFile.fromPath('file', _image!.path));
         request.send().then((result) async {
-          http.Response.fromStream(result).then((response)async {
+          http.Response.fromStream(result).then((response) async {
             var body = json.decode(response.body);
             print(body['link']);
             setState(() {
@@ -131,11 +130,11 @@ class _RegisterState extends State<Register> {
 
     Future getImage() async {
       PickedFile? image =
-      await ImagePicker().getImage(source: ImageSource.gallery);
+          await ImagePicker().getImage(source: ImageSource.gallery);
       setState(() {
         _image = File(image!.path);
       });
-      setState(() async{
+      setState(() async {
         await uploadPic(context);
       });
     }
@@ -147,7 +146,8 @@ class _RegisterState extends State<Register> {
       setState(() {
         allTheSectors.add(value);
         selectedSectors.remove(value);
-        selectedSectorInstances.remove(SectorInstance(value, deleteSectorInstance));
+        selectedSectorInstances
+            .remove(SectorInstance(value, deleteSectorInstance));
         myTrigger = 25;
       });
       print(allTheSectors);
@@ -179,7 +179,7 @@ class _RegisterState extends State<Register> {
               Column(
                 children: [
                   GestureDetector(
-                    onTap: () async{
+                    onTap: () async {
                       getImage();
                     },
                     child: CircleAvatar(
@@ -255,6 +255,7 @@ class _RegisterState extends State<Register> {
                       color: Colors.white,
                     ),
                     enabled: true,
+                    obscureText: !_passwordVisible,
                     decoration: InputDecoration(
                       filled: true,
                       fillColor: Color(0xFF3E5A81),
@@ -294,6 +295,7 @@ class _RegisterState extends State<Register> {
                       color: Colors.white,
                     ),
                     enabled: true,
+                    obscureText: !_passwordVisible,
                     decoration: InputDecoration(
                       suffixIcon: IconButton(
                         icon: Icon(
@@ -813,7 +815,6 @@ class _RegisterState extends State<Register> {
                         : false,
                     child: ElevatedButton(
                       onPressed: () async {
-
                         if (username.length == 0) {
                           final snackBar = SnackBar(
                             content: Text('Please enter a username'),
@@ -855,11 +856,9 @@ class _RegisterState extends State<Register> {
                           return;
                         }
                         if (_chosenValueRole == 'NGO') {
-
                           setState(() {
                             type = 'NGO';
                           });
-
 
                           if (name.length == 0) {
                             final snackBar = SnackBar(
@@ -946,7 +945,7 @@ class _RegisterState extends State<Register> {
                           print(response.statusCode);
                           print(response.body);
 
-                          if(response.statusCode == 403){
+                          if (response.statusCode == 403) {
                             final snackBar = SnackBar(
                               content: Text('Username already exists. '),
                             );
@@ -955,31 +954,33 @@ class _RegisterState extends State<Register> {
                             return;
                           }
 
-                          if(response.statusCode == 201){
+                          if (response.statusCode == 201) {
                             final snackBar = SnackBar(
                               content: Text('NGO signed up successfully. '),
                             );
                             ScaffoldMessenger.of(context)
                                 .showSnackBar(snackBar);
 
-                            Map<String, dynamic> resp = json.decode(response.body);
+                            Map<String, dynamic> resp =
+                                json.decode(response.body);
 
-                            await storage.write(key: 'username', value: username);
-                            await storage.write(key: 'token', value: resp['token']);
+                            await storage.write(
+                                key: 'username', value: username);
+                            await storage.write(
+                                key: 'token', value: resp['token']);
                             await storage.write(key: 'type', value: type);
                             //route to ngoDashboard
-                            Navigator.pushReplacementNamed(context, '/ngoDashboard');
+                            Navigator.pushReplacementNamed(
+                                context, '/ngoDashboard');
                             return;
                           }
                           final snackBar = SnackBar(
-                            content: Text('Some error occurred. Please try later '),
+                            content:
+                                Text('Some error occurred. Please try later '),
                           );
-                          ScaffoldMessenger.of(context)
-                              .showSnackBar(snackBar);
+                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
                           return;
-
                         } else if (_chosenValueRole == 'Individual Donor') {
-
                           setState(() {
                             type = 'Individual';
                           });
@@ -1045,14 +1046,14 @@ class _RegisterState extends State<Register> {
                                   'https://asia-south1-sahayya-9c930.cloudfunctions.net/api/donor-individual-signup'),
                               headers: <String, String>{
                                 'Content-Type':
-                                'application/json; charset=UTF-8',
+                                    'application/json; charset=UTF-8',
                               },
                               body: json.encode(theData));
 
                           print(response.statusCode);
                           print(response.body);
 
-                          if(response.statusCode == 403){
+                          if (response.statusCode == 403) {
                             final snackBar = SnackBar(
                               content: Text('Username already exists. '),
                             );
@@ -1061,31 +1062,35 @@ class _RegisterState extends State<Register> {
                             return;
                           }
 
-                          if(response.statusCode == 201){
+                          if (response.statusCode == 201) {
                             final snackBar = SnackBar(
-                              content: Text('Individual Donor signed up successfully. '),
+                              content: Text(
+                                  'Individual Donor signed up successfully. '),
                             );
                             ScaffoldMessenger.of(context)
                                 .showSnackBar(snackBar);
 
-                            Map<String, dynamic> resp = json.decode(response.body);
+                            Map<String, dynamic> resp =
+                                json.decode(response.body);
 
-                            await storage.write(key: 'username', value: username);
-                            await storage.write(key: 'token', value: resp['token']);
+                            await storage.write(
+                                key: 'username', value: username);
+                            await storage.write(
+                                key: 'token', value: resp['token']);
                             await storage.write(key: 'type', value: type);
 
-                            Navigator.pushReplacementNamed(context, '/indvDonor');
+                            Navigator.pushReplacementNamed(
+                                context, '/indvDonor');
 
                             return;
                           }
                           final snackBar = SnackBar(
-                            content: Text('Some error occurred. Please try later '),
+                            content:
+                                Text('Some error occurred. Please try later '),
                           );
-                          ScaffoldMessenger.of(context)
-                              .showSnackBar(snackBar);
+                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
                           return;
                         } else if (_chosenValueRole == 'Company Donor') {
-
                           setState(() {
                             type = 'Company';
                           });
@@ -1156,11 +1161,11 @@ class _RegisterState extends State<Register> {
                                   'https://asia-south1-sahayya-9c930.cloudfunctions.net/api/donor-company-signup'),
                               headers: <String, String>{
                                 'Content-Type':
-                                'application/json; charset=UTF-8',
+                                    'application/json; charset=UTF-8',
                               },
                               body: json.encode(theData));
 
-                          if(response.statusCode == 403){
+                          if (response.statusCode == 403) {
                             final snackBar = SnackBar(
                               content: Text('Username already exists. '),
                             );
@@ -1169,39 +1174,46 @@ class _RegisterState extends State<Register> {
                             return;
                           }
 
-                          if(response.statusCode == 201){
+                          if (response.statusCode == 201) {
                             final snackBar = SnackBar(
-                              content: Text('Company Donor signed up successfully. '),
+                              content: Text(
+                                  'Company Donor signed up successfully. '),
                             );
                             ScaffoldMessenger.of(context)
                                 .showSnackBar(snackBar);
 
-                            Map<String, dynamic> resp = json.decode(response.body);
+                            Map<String, dynamic> resp =
+                                json.decode(response.body);
 
-                            await storage.write(key: 'username', value: username);
-                            await storage.write(key: 'token', value: resp['token']);
+                            await storage.write(
+                                key: 'username', value: username);
+                            await storage.write(
+                                key: 'token', value: resp['token']);
                             await storage.write(key: 'type', value: type);
 
-                            Navigator.pushReplacementNamed(context, '/compDonor');
+                            Navigator.pushReplacementNamed(
+                                context, '/compDonor');
                             return;
                           }
                           final snackBar = SnackBar(
-                            content: Text('Some error occurred. Please try later '),
+                            content:
+                                Text('Some error occurred. Please try later '),
                           );
-                          ScaffoldMessenger.of(context)
-                              .showSnackBar(snackBar);
+                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
                           return;
                         }
                       },
                       style: ButtonStyle(
-                          backgroundColor:
-                              MaterialStateProperty.all(Colors.transparent),
-                          shape:
-                              MaterialStateProperty.all<RoundedRectangleBorder>(
-                                  RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(18.0),
-                                      side: BorderSide(
-                                          color: Colors.white, width: 2.0)),),),
+                        backgroundColor:
+                            MaterialStateProperty.all(Colors.transparent),
+                        shape:
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(18.0),
+                              side:
+                                  BorderSide(color: Colors.white, width: 2.0)),
+                        ),
+                      ),
                       child: Container(
                         child: Padding(
                           padding: const EdgeInsets.all(14.0),

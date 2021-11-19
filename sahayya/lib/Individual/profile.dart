@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:math';
 import 'package:path_provider/path_provider.dart';
 import 'package:http/http.dart' as http;
+import 'package:sahayya/Individual/editProfile.dart';
 import 'dart:io';
 import 'dart:convert';
 import 'package:sahayya/NGO/components/textNonEdit.dart';
@@ -10,20 +11,31 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 final storage = new FlutterSecureStorage();
 
-
 class Profile extends StatefulWidget {
+  Map<String, dynamic> entityData = {
+    "fName": "",
+    "lName": "",
+    "email": "",
+    "location": "",
+    "coOrdinates": {
+      "longitude": 73.81396316384317,
+      "latitude": 18.63063063063063
+    },
+    "picture": "",
+    "bio": "",
+    "username": "",
+    "type": ""
+  };
+
+  Profile({required this.entityData});
   @override
   _ProfileState createState() => _ProfileState();
-  final Map<String, dynamic> entityData;
-
-  const Profile({required this.entityData});
 }
 
 class _ProfileState extends State<Profile> {
   File? _image;
   double latitude = 0.0, longitude = 0.0;
-  String? token='', username='', type='';
-
+  String? token = '', username = '', type = '';
 
   Future<File> urlToFile(String imageUrl) async {
     var rng = new Random();
@@ -42,6 +54,7 @@ class _ProfileState extends State<Profile> {
       _image = tempo;
     });
   }
+
   void getStorageValues() async {
     token = await storage.read(key: 'token');
     username = await storage.read(key: 'username');
@@ -69,11 +82,11 @@ class _ProfileState extends State<Profile> {
     getStorageValues();
   }
 
-  String listToString(List<dynamic> lst){
+  String listToString(List<dynamic> lst) {
     String val = '';
-    for(var i=0; i<lst.length; i++){
+    for (var i = 0; i < lst.length; i++) {
       val += lst[i];
-      if(i != lst.length-1){
+      if (i != lst.length - 1) {
         val += ', ';
       }
     }
@@ -92,23 +105,28 @@ class _ProfileState extends State<Profile> {
             child: Column(
               children: [
                 Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       ElevatedButton(
                         style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all(Colors.white),
+                          backgroundColor:
+                              MaterialStateProperty.all(Colors.white),
                           shape: MaterialStateProperty.all(CircleBorder()),
                         ),
-                        child: Icon(Icons.my_location, color: Color(0xFF3E5A81),),
-
+                        child: Icon(
+                          Icons.my_location,
+                          color: Color(0xFF3E5A81),
+                        ),
                         onPressed: () async {
                           Map<String, dynamic> theData = {
                             "coOrdinates": {
                               "latitude": latitude,
                               "longitude": longitude
-                            }};
+                            }
+                          };
 
                           JsonEncoder encoder = JsonEncoder();
                           final dynamic object = encoder.convert(theData);
@@ -117,40 +135,49 @@ class _ProfileState extends State<Profile> {
                                   'https://asia-south1-sahayya-9c930.cloudfunctions.net/api/profile/$username'),
                               headers: <String, String>{
                                 'Content-Type':
-                                'application/json; charset=UTF-8',
+                                    'application/json; charset=UTF-8',
                                 HttpHeaders.authorizationHeader: token!,
                               },
                               body: object);
 
-                          if(response.statusCode == 200){
+                          if (response.statusCode == 200) {
                             final snackBar = SnackBar(
                               content: Text('Profile Updated Successfully'),
                             );
-                            ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                            Navigator.pushReplacementNamed(context, '/individualDonor');
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(snackBar);
+                            Navigator.pushReplacementNamed(
+                                context, '/individualDonor');
                             return;
-                          }
-                          else{
+                          } else {
                             final snackBar = SnackBar(
                               content: Text('Some error occurred.'),
                             );
-                            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(snackBar);
                             return;
                           }
                         },
                       ),
                       Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 5),
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 0, horizontal: 5),
                         child: ElevatedButton(
                           style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all(Colors.white),
-                              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                              backgroundColor:
+                                  MaterialStateProperty.all(Colors.white),
+                              shape: MaterialStateProperty.all<
+                                      RoundedRectangleBorder>(
                                   RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(18.0),
-                                      side: BorderSide(color: Color(0xFFFFFFFF), width: 2.0)))),
-                          child: Text('Edit', style: TextStyle(color: Color(0xFF3E5A81))),
+                                      side: BorderSide(
+                                          color: Color(0xFFFFFFFF),
+                                          width: 2.0)))),
+                          child: Text('Edit',
+                              style: TextStyle(color: Color(0xFF3E5A81))),
                           onPressed: () {
-                            Navigator.pushNamed(context, '/editNGOProfile');
+                            Navigator.pushNamed(
+                                context, '/editIndividualProfile');
                           },
                         ),
                       ),
@@ -168,14 +195,14 @@ class _ProfileState extends State<Profile> {
                       child: ClipOval(
                         child: (_image != null)
                             ? Image.file(
-                          _image!,
-                          width: 140,
-                          height: 140,
-                          fit: BoxFit.cover,
-                        )
+                                _image!,
+                                width: 140,
+                                height: 140,
+                                fit: BoxFit.cover,
+                              )
                             : Container(
-                          color: Colors.white,
-                        ),
+                                color: Colors.white,
+                              ),
                       ),
                     ),
                   ],
@@ -183,19 +210,24 @@ class _ProfileState extends State<Profile> {
                 SizedBox(
                   height: 20,
                 ),
-                TextNonEdit(label: 'Username', text: '${widget.entityData['username']}'),
+                TextNonEdit(
+                    label: 'Username',
+                    text: '${widget.entityData['username']}'),
                 SizedBox(
                   height: 20,
                 ),
-                TextNonEdit(label: 'First Name', text: '${widget.entityData['fName']}'),
+                TextNonEdit(
+                    label: 'First Name', text: '${widget.entityData['fName']}'),
                 SizedBox(
                   height: 20,
                 ),
-                TextNonEdit(label: 'Last Name', text: '${widget.entityData['lName']}'),
+                TextNonEdit(
+                    label: 'Last Name', text: '${widget.entityData['lName']}'),
                 SizedBox(
                   height: 20,
                 ),
-                TextNonEdit(label: 'Email', text: '${widget.entityData['email']}'),
+                TextNonEdit(
+                    label: 'Email', text: '${widget.entityData['email']}'),
                 SizedBox(
                   height: 20,
                 ),
@@ -203,25 +235,35 @@ class _ProfileState extends State<Profile> {
                 SizedBox(
                   height: 20,
                 ),
-                TextNonEdit(label: 'Location', text: '${widget.entityData['location']}'),
+                TextNonEdit(
+                    label: 'Location',
+                    text: '${widget.entityData['location']}'),
                 SizedBox(
-                  height:25,
+                  height: 25,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 5),
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 0, horizontal: 5),
                       child: ElevatedButton(
                         style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all(Colors.white),
-                            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                            backgroundColor:
+                                MaterialStateProperty.all(Colors.white),
+                            shape: MaterialStateProperty.all<
+                                    RoundedRectangleBorder>(
                                 RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(18.0),
-                                    side: BorderSide(color: Color(0xFFFFFFFF), width: 2.0)))),
+                                    side: BorderSide(
+                                        color: Color(0xFFFFFFFF),
+                                        width: 2.0)))),
                         child: Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
-                          child: Text('Logout', style: TextStyle(color: Color(0xFF3E5A81), fontSize: 20)),
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 5, horizontal: 15),
+                          child: Text('Logout',
+                              style: TextStyle(
+                                  color: Color(0xFF3E5A81), fontSize: 20)),
                         ),
                         onPressed: () async {
                           await storage.write(key: 'username', value: null);
