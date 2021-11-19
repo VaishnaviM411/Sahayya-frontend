@@ -1,5 +1,10 @@
+import 'dart:io';
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:http/http.dart' as http;
 
+final storage = new FlutterSecureStorage();
 class GiveOutCard extends StatefulWidget {
 
   Map<dynamic, dynamic> instance = {};
@@ -11,6 +16,21 @@ class GiveOutCard extends StatefulWidget {
 
 class _GiveOutCardState extends State<GiveOutCard> {
 
+
+  String? TOKEN='', USERNAME='', TYPE='';
+
+  void getUserData() async {
+    TOKEN = await storage.read(key: 'token');
+    USERNAME = await storage.read(key: 'username');
+    TYPE = await storage.read(key: 'type');
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getUserData();
+  }
+
   @override
   Widget build(BuildContext context) {
 
@@ -21,8 +41,6 @@ class _GiveOutCardState extends State<GiveOutCard> {
         availableMaterial.add(MaterialInstance(val: widget.instance['available-material'][i]));
       }
     });
-
-
 
 
     print(widget.instance);
@@ -100,8 +118,33 @@ class _GiveOutCardState extends State<GiveOutCard> {
               width: 2,
             ),),
       ),
-      onTap: (){
-        print("Hello");
+      onTap: ()async{
+
+        Map<dynamic, dynamic> userDetails = {};
+
+        String theURL = 'https://asia-south1-sahayya-9c930.cloudfunctions.net/api/profile/'+widget.instance['username'];
+        final response = await http.get(Uri.parse(theURL), headers: {
+          HttpHeaders.authorizationHeader: TOKEN!
+        });
+
+        if(response.statusCode == 200){
+          print(response.statusCode);
+          Map<String, dynamic> resp = jsonDecode(response.body);
+          setState(() {
+            userDetails = resp;
+          });
+          Navigator.pushNamed(context, '/giveOutDetails', arguments: {
+            "data": widget.instance,
+            "userData": userDetails
+          });
+          return;
+        }
+        final snackBar = SnackBar(
+          content: Text('Some error occurred. Try again later.'),
+        );
+        ScaffoldMessenger.of(context)
+            .showSnackBar(snackBar);
+        return;
       },
     );
   }

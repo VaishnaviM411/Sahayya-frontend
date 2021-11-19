@@ -9,6 +9,7 @@ import 'registerScreen.dart';
 import 'NGO/editProfile.dart';
 import 'Company/editProfile.dart';
 import 'Individual/editProfile.dart';
+import 'NGO/giveOutDetails.dart';
 
 void main() {
   runApp(MyApp());
@@ -33,7 +34,8 @@ class MyApp extends StatelessWidget {
         '/compDonor': (context) => CompanyDonor(),
         '/editNGOProfile': (context) => EditNGOProfile(),
         '/editCompanyProfile': (context) => EditCompanyProfile(),
-        '/editIndividualProfile': (context) => EditIndividualProfile()
+        '/editIndividualProfile': (context) => EditIndividualProfile(),
+        '/giveOutDetails': (context) => GiveOutDetails()
       },
       debugShowCheckedModeBanner: false,
     );
