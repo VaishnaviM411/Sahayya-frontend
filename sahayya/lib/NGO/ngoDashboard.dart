@@ -113,7 +113,7 @@ class _NGODashboardState extends State<NGODashboard> {
           ),
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor: Color(0xFFEBBA5B),
+        selectedItemColor: Color(0xFFFFFFFF),
         onTap: _onItemTapped,
         showSelectedLabels: true,
         showUnselectedLabels: false,
