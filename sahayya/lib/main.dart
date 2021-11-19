@@ -6,6 +6,7 @@ import 'package:sahayya/NGO/ngoDashboard.dart';
 import 'package:sahayya/registerScreen.dart';
 import 'startscreen.dart';
 import 'registerScreen.dart';
+import 'NGO/editProfile.dart';
 
 void main() {
   runApp(MyApp());
@@ -29,6 +30,7 @@ class MyApp extends StatelessWidget {
         '/ngoDashboard': (context) => NGODashboard(),
         '/indvDonor' : (context) => IndividualDonor(),
         '/compDonor' : (context)=> CompanyDonor(),
+        '/editNGOProfile' : (context) => EditNGOProfile()
 
       },
       debugShowCheckedModeBanner: false,

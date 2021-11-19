@@ -23,8 +23,6 @@ class Register extends StatefulWidget {
   _RegisterState createState() => _RegisterState();
 }
 
-int myTrigger = 3;
-
 class _RegisterState extends State<Register> {
   final _formKey = GlobalKey<FormState>();
   String? _chosenValueRole;
@@ -142,17 +140,19 @@ class _RegisterState extends State<Register> {
       });
     }
 
+    int myTrigger = 3;
+
     void deleteSectorInstance(String value) {
       print(value);
-      // setState(() {
-      //   allTheSectors.add(value);
-      //   selectedSectors.remove(value);
-      //   selectedSectorInstances.remove(SectorInstance(value, deleteSectorInstance));
-      //   myTrigger = 25;
-      // });
-      // print(allTheSectors);
-      // print(selectedSectors);
-      // print("Hey Angel");
+      setState(() {
+        allTheSectors.add(value);
+        selectedSectors.remove(value);
+        selectedSectorInstances.remove(SectorInstance(value, deleteSectorInstance));
+        myTrigger = 25;
+      });
+      print(allTheSectors);
+      print(selectedSectors);
+      print("Hey Angel");
     }
 
     return Scaffold(
