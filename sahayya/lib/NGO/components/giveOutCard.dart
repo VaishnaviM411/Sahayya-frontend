@@ -43,7 +43,7 @@ class _GiveOutCardState extends State<GiveOutCard> {
     });
 
 
-    print(widget.instance);
+    //print(widget.instance);
     return GestureDetector(
       child: Container(
         margin: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
@@ -121,23 +121,41 @@ class _GiveOutCardState extends State<GiveOutCard> {
       onTap: ()async{
 
         Map<dynamic, dynamic> userDetails = {};
+        Map<dynamic, dynamic> forum = {};
 
         String theURL = 'https://asia-south1-sahayya-9c930.cloudfunctions.net/api/profile/'+widget.instance['username'];
         final response = await http.get(Uri.parse(theURL), headers: {
           HttpHeaders.authorizationHeader: TOKEN!
         });
 
-        if(response.statusCode == 200){
+        if(response.statusCode == 200) {
           print(response.statusCode);
           Map<String, dynamic> resp = jsonDecode(response.body);
           setState(() {
             userDetails = resp;
           });
-          Navigator.pushNamed(context, '/giveOutDetails', arguments: {
-            "data": widget.instance,
-            "userData": userDetails
+
+          print(widget.instance['id']);
+
+          String theURL2 = 'https://asia-south1-sahayya-9c930.cloudfunctions.net/api/forum/' + widget.instance['id'].toString();
+          final response2 = await http.get(Uri.parse(theURL2), headers: {
+            HttpHeaders.authorizationHeader: TOKEN!
           });
-          return;
+
+          if (response2.statusCode == 200) {
+            print(response.statusCode);
+            Map<String, dynamic> resp2 = jsonDecode(response2.body);
+            setState(() {
+              forum = resp2;
+            });
+
+            Navigator.pushNamed(context, '/giveOutDetails', arguments: {
+              "data": widget.instance,
+              "userData": userDetails,
+              "forum": forum
+            });
+            return;
+          }
         }
         final snackBar = SnackBar(
           content: Text('Some error occurred. Try again later.'),

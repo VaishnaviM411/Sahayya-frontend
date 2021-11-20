@@ -38,6 +38,7 @@ class _DonationsState extends State<Donations> {
     });
 
     if(response.statusCode == 200){
+      print(response.body);
       print(response.statusCode);
       Map<dynamic, dynamic> resp = jsonDecode(response.body);
 
@@ -65,13 +66,11 @@ class _DonationsState extends State<Donations> {
     return;
   }
 
-
   @override
   void initState() {
     super.initState();
     getUserData();
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -96,7 +95,7 @@ class _DonationsState extends State<Donations> {
               ),
             Column(
               children: allInstancesCard,
-            )
+            ),
           ],
         ),
       ),
