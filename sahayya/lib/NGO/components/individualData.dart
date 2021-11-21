@@ -47,8 +47,6 @@ class _IndividualDataState extends State<IndividualData> {
 
     Map<dynamic, dynamic> data = widget.data;
 
-
-
     return Container(
       decoration: BoxDecoration(
         color: Colors.transparent,

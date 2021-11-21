@@ -1,17 +1,13 @@
 import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:http_parser/http_parser.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:path/path.dart';
 import 'package:http/http.dart' as http;
 import 'package:geolocator/geolocator.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:math';
 import 'dart:async';
 import 'dart:io';
-import '../utils/sectors.dart';
-import '../sectorInstance.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 final storage = new FlutterSecureStorage();

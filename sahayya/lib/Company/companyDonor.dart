@@ -90,7 +90,7 @@ class _CompanyDonorState extends State<CompanyDonor> {
       ),
       body: Center(
         child: <Widget>[
-          NearbyNGOs(entityData: entityData),
+          NearbyNGOs(),
           DonationRequests(entityData: entityData),
           SelfDonations(entityData: entityData),
           Profile(entityData: entityData),

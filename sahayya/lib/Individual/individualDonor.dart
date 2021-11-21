@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:sahayya/Company/donationRequests.dart';
-import 'package:sahayya/Company/nearbyNGOs.dart';
+import 'nearbyNGOs.dart';
 import 'profile.dart';
 import 'selfdonations.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -86,7 +86,7 @@ class _IndividualDonorState extends State<IndividualDonor> {
       ),
       body: Center(
         child: <Widget>[
-          NearbyNGOs(entityData: entityData),
+          NearbyNGOs(),
           DonationRequests(entityData: entityData),
           SelfDonations(entityData: entityData),
           Profile(entityData: entityData),
