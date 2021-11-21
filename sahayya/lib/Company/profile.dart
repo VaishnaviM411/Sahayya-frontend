@@ -13,20 +13,23 @@ final storage = new FlutterSecureStorage();
 
 class Profile extends StatefulWidget {
   Map<String, dynamic> entityData = {
-    "isVerified": false,
-    "name": "",
-    "email": "",
-    "address": "",
-    "contactNo": "",
-    "sectors": [""],
-    "coOrdinates": {
+    "isVerified": false, //
+    "name": "", //
+    "email": "", //
+    "address": "", //
+    "sectors": [ //
+      ""
+    ],
+    "coOrdinates": { //
       "longitude": 73.81396316384317,
       "latitude": 18.63063063063063
     },
-    "picture": "",
-    "description": "",
-    "username": "",
-    "type": ""
+    "picture": "", //
+    "description": "", //
+    "username": "", //
+    "type": "", //
+    "donorType": "", //
+    "contactNo": "" //
   };
 
   Profile({required this.entityData});
@@ -36,9 +39,10 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
+
   File? _image;
   double latitude = 0.0, longitude = 0.0;
-  String? token = '', username = '', type = '';
+  String? token='', username='', type='';
 
   Future<File> urlToFile(String imageUrl) async {
     var rng = new Random();
@@ -77,6 +81,7 @@ class _ProfileState extends State<Profile> {
     }
   }
 
+
   @override
   void initState() {
     super.initState();
@@ -85,29 +90,30 @@ class _ProfileState extends State<Profile> {
     getStorageValues();
   }
 
-  String listToString(List<dynamic> lst) {
+  String listToString(List<dynamic> lst){
     String val = '';
-    for (var i = 0; i < lst.length; i++) {
+    for(var i=0; i<lst.length; i++){
       val += lst[i];
-      if (i != lst.length - 1) {
+      if(i != lst.length-1){
         val += ', ';
       }
     }
     return val;
   }
 
-  Widget verifiedRegNo(Map<String, dynamic> entityData) {
-    if (entityData['isVerified']) {
-      return (TextNonEdit(
-          label: 'Address', text: '${widget.entityData['address']}'));
+  Widget verifiedRegNo(Map<String, dynamic> entityData){
+    if(entityData['isVerified']){
+      return (
+          TextNonEdit(label: 'State', text: '${widget.entityData['state']}')
+      );
     }
-    return SizedBox(
-      height: 0,
-    );
+    return SizedBox(height: 0,);
   }
 
   @override
   Widget build(BuildContext context) {
+
+
     return Container(
       color: Color(0xFF3E5A81),
       child: Padding(
@@ -118,28 +124,22 @@ class _ProfileState extends State<Profile> {
             child: Column(
               children: [
                 Padding(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                  padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       ElevatedButton(
                         style: ButtonStyle(
-                          backgroundColor:
-                              MaterialStateProperty.all(Colors.white),
+                          backgroundColor: MaterialStateProperty.all(Colors.white),
                           shape: MaterialStateProperty.all(CircleBorder()),
-                        ),
-                        child: Icon(
-                          Icons.my_location,
-                          color: Color(0xFF3E5A81),
-                        ),
+                          ),
+                        child: Icon(Icons.my_location, color: Color(0xFF3E5A81),),
                         onPressed: () async {
                           Map<String, dynamic> theData = {
                             "coOrdinates": {
                               "latitude": latitude,
                               "longitude": longitude
-                            }
-                          };
+                            }};
 
                           JsonEncoder encoder = JsonEncoder();
                           final dynamic object = encoder.convert(theData);
@@ -148,46 +148,38 @@ class _ProfileState extends State<Profile> {
                                   'https://asia-south1-sahayya-9c930.cloudfunctions.net/api/profile/$username'),
                               headers: <String, String>{
                                 'Content-Type':
-                                    'application/json; charset=UTF-8',
+                                'application/json; charset=UTF-8',
                                 HttpHeaders.authorizationHeader: token!,
                               },
                               body: object);
 
-                          if (response.statusCode == 200) {
+                          if(response.statusCode == 200){
                             final snackBar = SnackBar(
                               content: Text('Profile Updated Successfully'),
                             );
-                            ScaffoldMessenger.of(context)
-                                .showSnackBar(snackBar);
-                            Navigator.pushReplacementNamed(
-                                context, '/companyDonor');
+                            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                            Navigator.pushReplacementNamed(context, '/compDonor');
                             return;
-                          } else {
+                          }
+                          else{
                             final snackBar = SnackBar(
                               content: Text('Some error occurred.'),
                             );
-                            ScaffoldMessenger.of(context)
-                                .showSnackBar(snackBar);
+                            ScaffoldMessenger.of(context).showSnackBar(snackBar);
                             return;
                           }
                         },
                       ),
                       Padding(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 0, horizontal: 5),
+                        padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 5),
                         child: ElevatedButton(
                           style: ButtonStyle(
-                              backgroundColor:
-                                  MaterialStateProperty.all(Colors.white),
-                              shape: MaterialStateProperty.all<
-                                      RoundedRectangleBorder>(
+                              backgroundColor: MaterialStateProperty.all(Colors.white),
+                              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                                   RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(18.0),
-                                      side: BorderSide(
-                                          color: Color(0xFFFFFFFF),
-                                          width: 2.0)))),
-                          child: Text('Edit',
-                              style: TextStyle(color: Color(0xFF3E5A81))),
+                                      side: BorderSide(color: Color(0xFFFFFFFF), width: 2.0)))),
+                          child: Text('Edit', style: TextStyle(color: Color(0xFF3E5A81))),
                           onPressed: () {
                             Navigator.pushNamed(context, '/editCompanyProfile');
                           },
@@ -207,14 +199,14 @@ class _ProfileState extends State<Profile> {
                       child: ClipOval(
                         child: (_image != null)
                             ? Image.file(
-                                _image!,
-                                width: 140,
-                                height: 140,
-                                fit: BoxFit.cover,
-                              )
+                          _image!,
+                          width: 140,
+                          height: 140,
+                          fit: BoxFit.cover,
+                        )
                             : Container(
-                                color: Colors.white,
-                              ),
+                          color: Colors.white,
+                        ),
                       ),
                     ),
                   ],
@@ -222,42 +214,35 @@ class _ProfileState extends State<Profile> {
                 SizedBox(
                   height: 20,
                 ),
-                TextNonEdit(
-                    label: 'Username',
-                    text: '${widget.entityData['username']}'),
+                TextNonEdit(label: 'Username', text: '${widget.entityData['username']}'),
                 SizedBox(
                   height: 20,
                 ),
-                TextNonEdit(
-                    label: 'Name', text: '${widget.entityData['name']}'),
+                TextNonEdit(label: 'Name', text: '${widget.entityData['name']}'),
                 SizedBox(
                   height: 20,
                 ),
-                TextNonEdit(
-                    label: 'Email', text: '${widget.entityData['email']}'),
+                TextNonEdit(label: 'Email', text: '${widget.entityData['email']}'),
                 SizedBox(
                   height: 20,
                 ),
-                TextNonEdit(
-                    label: 'Description',
-                    text: '${widget.entityData['description']}'),
+                TextNonEdit(label: 'Description', text: '${widget.entityData['description']}'),
                 SizedBox(
                   height: 20,
                 ),
-                TextNonEdit(
-                    label: 'Address', text: '${widget.entityData['address']}'),
+                TextNonEdit(label: 'Address', text: '${widget.entityData['address']}'),
                 SizedBox(
                   height: 20,
                 ),
-                // TextNonEdit(
-                //     label: 'Sectors',
-                //     text: '${listToString(widget.entityData['sectors'])}'),
+                TextNonEdit(label: 'Contact No', text: '${widget.entityData['contactNo']}'),
                 SizedBox(
                   height: 20,
                 ),
-                // TextNonEdit(
-                //     label: 'Verified?',
-                //     text: '${widget.entityData['isVerified'] ? 'Yes' : 'No'}'),
+                TextNonEdit(label: 'Sectors', text: '${listToString(widget.entityData['sectors'])}'),
+                SizedBox(
+                  height: 20,
+                ),
+                TextNonEdit(label: 'Verified?', text: '${widget.entityData['isVerified'] ? 'Yes' : 'No'}'),
                 SizedBox(
                   height: 20,
                 ),
@@ -269,25 +254,17 @@ class _ProfileState extends State<Profile> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Padding(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 0, horizontal: 5),
+                      padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 5),
                       child: ElevatedButton(
                         style: ButtonStyle(
-                            backgroundColor:
-                                MaterialStateProperty.all(Colors.white),
-                            shape: MaterialStateProperty.all<
-                                    RoundedRectangleBorder>(
+                            backgroundColor: MaterialStateProperty.all(Colors.white),
+                            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                                 RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(18.0),
-                                    side: BorderSide(
-                                        color: Color(0xFFFFFFFF),
-                                        width: 2.0)))),
+                                    side: BorderSide(color: Color(0xFFFFFFFF), width: 2.0)))),
                         child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 5, horizontal: 15),
-                          child: Text('Logout',
-                              style: TextStyle(
-                                  color: Color(0xFF3E5A81), fontSize: 20)),
+                          padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
+                          child: Text('Logout', style: TextStyle(color: Color(0xFF3E5A81), fontSize: 20)),
                         ),
                         onPressed: () async {
                           await storage.write(key: 'username', value: null);

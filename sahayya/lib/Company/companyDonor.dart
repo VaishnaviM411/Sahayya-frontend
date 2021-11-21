@@ -1,12 +1,14 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:sahayya/Company/selfdonations.dart';
+import 'package:sahayya/Company/profile.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+
 import 'donationRequests.dart';
 import 'nearbyNGOs.dart';
-import 'profile.dart';
-import 'selfdonations.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 final storage = new FlutterSecureStorage();
 
@@ -18,8 +20,9 @@ class CompanyDonor extends StatefulWidget {
 }
 
 class _CompanyDonorState extends State<CompanyDonor> {
+
   Map<String, dynamic> entityData = {};
-  String? token = '', username = '', type = '';
+  String? token='', username='', type='';
 
   void getStorageValues() async {
     token = await storage.read(key: 'token');
@@ -28,17 +31,17 @@ class _CompanyDonorState extends State<CompanyDonor> {
   }
 
   void getUserData(username, token) async {
+
     token = await storage.read(key: 'token');
     username = await storage.read(key: 'username');
     type = await storage.read(key: 'type');
 
-    String theURL =
-        'https://asia-south1-sahayya-9c930.cloudfunctions.net/api/profile/' +
-            username;
-    final response = await http.get(Uri.parse(theURL),
-        headers: {HttpHeaders.authorizationHeader: token});
+    String theURL = 'https://asia-south1-sahayya-9c930.cloudfunctions.net/api/profile/'+username;
+    final response = await http.get(Uri.parse(theURL), headers: {
+      HttpHeaders.authorizationHeader: token
+    });
 
-    if (response.statusCode == 200) {
+    if(response.statusCode == 200){
       print(response.statusCode);
       Map<String, dynamic> resp = jsonDecode(response.body);
       setState(() {
@@ -54,15 +57,22 @@ class _CompanyDonorState extends State<CompanyDonor> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    // getStorageValues();
+    getUserData(username, token);
+  }
+
   int _selectedIndex = 0;
   static const TextStyle optionStyle =
-      TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
+  TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
 
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
     });
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -111,7 +121,7 @@ class _CompanyDonorState extends State<CompanyDonor> {
           ),
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor: Color(0xFFEBBA5B),
+        selectedItemColor: Color(0xFFFFFFFF),
         onTap: _onItemTapped,
         showSelectedLabels: true,
         showUnselectedLabels: false,
