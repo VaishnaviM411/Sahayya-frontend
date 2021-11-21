@@ -4,6 +4,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:sahayya/NGO/components/companyData.dart';
 import 'package:sahayya/NGO/components/forum.dart';
 import 'package:sahayya/NGO/components/individualData.dart';
+import 'package:http/http.dart' as http;
 
 final storage = new FlutterSecureStorage();
 
@@ -18,13 +19,16 @@ class GiveOutDetails extends StatefulWidget {
 
 class _GiveOutDetailsState extends State<GiveOutDetails> {
 
-
+  bool isLoading = true;
   String? TOKEN='', USERNAME='', TYPE='';
 
   void getUserData() async {
     TOKEN = await storage.read(key: 'token');
     USERNAME = await storage.read(key: 'username');
     TYPE = await storage.read(key: 'type');
+    setState(() {
+      isLoading = false;
+    });
   }
 
   @override
@@ -39,7 +43,7 @@ class _GiveOutDetailsState extends State<GiveOutDetails> {
     int randomSetStateVariable =0;
     void triggerUpdate(){
       setState(() {
-         randomSetStateVariable = 2;
+        randomSetStateVariable = 2;
       });
     }
 
@@ -76,7 +80,13 @@ class _GiveOutDetailsState extends State<GiveOutDetails> {
 
 
 
-    return Scaffold(
+    return isLoading ? Container(
+      height: double.infinity,
+      color: Color(0xFF3E5A81),
+      child: SpinKitRotatingCircle(
+      color: Colors.white,
+      size: 50.0,
+    ),) : Scaffold(
       body: Container(
         color: Color(0xFF3E5A81),
         height: double.infinity,
@@ -181,7 +191,28 @@ class _GiveOutDetailsState extends State<GiveOutDetails> {
               SizedBox(
                 height: 20,
               ),
-              Forum(userData: userData, forum: forum, theUsername: USERNAME!, token: TOKEN!,)
+              Forum(userData: userData, forum: forum, theUsername: USERNAME!, token: TOKEN!, id: data['id'], triggerUpdate: triggerUpdate),
+              SizedBox(
+                height: 20,
+              ),
+              (userData['username'] == USERNAME!) ? (
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 5),
+                    child: ElevatedButton(
+                      style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all(Colors.white),
+                          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                              RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(18.0),
+                                  side: BorderSide(color: Color(0xFFFFFFFF), width: 2.0)))),
+                      child: Text('Delete', style: TextStyle(color: Color(0xFF3E5A81))),
+                      onPressed: () async {
+
+                        Navigator.pushNamed(context, '/ngoDashboard');
+                      },
+                    ),
+                  )
+              ) : (SizedBox(height: 0,)),
             ],
           ),
         ),

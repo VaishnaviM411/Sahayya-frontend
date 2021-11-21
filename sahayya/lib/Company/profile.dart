@@ -249,15 +249,15 @@ class _ProfileState extends State<Profile> {
                 SizedBox(
                   height: 20,
                 ),
-                TextNonEdit(
-                    label: 'Sectors',
-                    text: '${listToString(widget.entityData['sectors'])}'),
+                // TextNonEdit(
+                //     label: 'Sectors',
+                //     text: '${listToString(widget.entityData['sectors'])}'),
                 SizedBox(
                   height: 20,
                 ),
-                TextNonEdit(
-                    label: 'Verified?',
-                    text: '${widget.entityData['isVerified'] ? 'Yes' : 'No'}'),
+                // TextNonEdit(
+                //     label: 'Verified?',
+                //     text: '${widget.entityData['isVerified'] ? 'Yes' : 'No'}'),
                 SizedBox(
                   height: 20,
                 ),

@@ -54,6 +54,14 @@ class _CompanyDataState extends State<CompanyData> {
       }
     });
 
+    String statusOfCompany = '(Unverified)';
+
+    setState(() {
+      if(data['isVerified']){
+        statusOfCompany = '(Verified)';
+      }
+    });
+
     return Container(
       decoration: BoxDecoration(
         color: Colors.transparent,
@@ -99,6 +107,20 @@ class _CompanyDataState extends State<CompanyData> {
               ),
             ],
           ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 5),
+                child: Text(statusOfCompany, style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w500,
+                    fontSize: 20
+                ),),
+              ),
+            ],
+          ),
+          SizedBox(height: 10,),
           Column(
             children: availableMaterial,
           ),
