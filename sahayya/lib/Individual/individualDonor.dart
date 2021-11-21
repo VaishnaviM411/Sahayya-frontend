@@ -96,8 +96,8 @@ class _IndividualDonorState extends State<IndividualDonor> {
         backgroundColor: Color(0xFF3E5A81),
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Applications',
+            icon: Icon(Icons.location_city),
+            label: 'NGOs',
             backgroundColor: Color(0xFF3E5A81),
           ),
           BottomNavigationBarItem(
@@ -117,7 +117,7 @@ class _IndividualDonorState extends State<IndividualDonor> {
           ),
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor: Color(0xFFEBBA5B),
+        selectedItemColor: Color(0xFFFFFFFF),
         onTap: _onItemTapped,
         showSelectedLabels: true,
         showUnselectedLabels: false,

@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 import 'dart:math';
 import 'package:path_provider/path_provider.dart';
 import 'package:http/http.dart' as http;
-import 'package:sahayya/NGO/editProfile.dart';
 import 'dart:io';
 import 'dart:convert';
-import 'package:sahayya/NGO/components/textNonEdit.dart';
+import 'package:sahayya/Individual/components/textNonEdit.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
@@ -13,24 +12,20 @@ final storage = new FlutterSecureStorage();
 
 class Profile extends StatefulWidget {
   Map<String, dynamic> entityData = {
-    "isVerified": false,
-    "name": "",
-    "email": "",
-    "address": "",
-    "regNo": "",
-    "state": "",
-    "sectors": [
-      ""
-    ],
+    "location": "",
+    "lName": "",
+    "fName": "",
+    "type": "Donor",
+    "picture": "https://firebasestorage.googleapis.com/v0/b/bizrep-b0184.appspot.com/o/profile_picture.png?alt=media&token=f23c3431-328e-47d6-8e0c-a1dfabbf13bf",
     "coOrdinates": {
       "longitude": 73.81396316384317,
       "latitude": 18.63063063063063
     },
-    "city": "",
-    "picture": "",
-    "description": "",
+    "bio": "",
+    "donorType": "Individual",
     "username": "",
-    "type": ""
+    "isVerified": false,
+    "email": ""
   };
 
   Profile({required this.entityData});
@@ -118,6 +113,7 @@ class _ProfileState extends State<Profile> {
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 12),
         child: Container(
+          height: double.infinity,
           color: Color.fromRGBO(255, 255, 255, 0.03),
           child: SingleChildScrollView(
             child: Column(
@@ -157,7 +153,7 @@ class _ProfileState extends State<Profile> {
                               content: Text('Profile Updated Successfully'),
                             );
                             ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                            Navigator.pushReplacementNamed(context, '/ngoDashboard');
+                            Navigator.pushReplacementNamed(context, '/indvDonor');
                             return;
                           }
                           else{
@@ -180,7 +176,7 @@ class _ProfileState extends State<Profile> {
                                       side: BorderSide(color: Color(0xFFFFFFFF), width: 2.0)))),
                           child: Text('Edit', style: TextStyle(color: Color(0xFF3E5A81))),
                           onPressed: () {
-                            Navigator.pushNamed(context, '/editNGOProfile');
+                            Navigator.pushNamed(context, '/editIndividualProfile');
                           },
                         ),
                       ),
@@ -217,7 +213,7 @@ class _ProfileState extends State<Profile> {
                 SizedBox(
                   height: 20,
                 ),
-                TextNonEdit(label: 'Name', text: '${widget.entityData['name']}'),
+                TextNonEdit(label: 'Name', text: '${widget.entityData['fName']} ${widget.entityData['lName']}'),
                 SizedBox(
                   height: 20,
                 ),
@@ -225,34 +221,15 @@ class _ProfileState extends State<Profile> {
                 SizedBox(
                   height: 20,
                 ),
-                TextNonEdit(label: 'Description', text: '${widget.entityData['description']}'),
+                TextNonEdit(label: 'Bio', text: '${widget.entityData['bio']}'),
                 SizedBox(
                   height: 20,
                 ),
-                TextNonEdit(label: 'Address', text: '${widget.entityData['address']}'),
+                TextNonEdit(label: 'Location', text: '${widget.entityData['location']}'),
                 SizedBox(
                   height: 20,
                 ),
-                TextNonEdit(label: 'City', text: '${widget.entityData['city']}'),
-                SizedBox(
-                  height: 20,
-                ),
-                TextNonEdit(label: 'State', text: '${widget.entityData['state']}'),
-                SizedBox(
-                  height: 20,
-                ),
-                TextNonEdit(label: 'Sectors', text: '${listToString(widget.entityData['sectors'])}'),
-                SizedBox(
-                  height: 20,
-                ),
-                TextNonEdit(label: 'Verified?', text: '${widget.entityData['isVerified'] ? 'Yes' : 'No'}'),
-                SizedBox(
-                  height: 20,
-                ),
-                verifiedRegNo(widget.entityData),
-                SizedBox(
-                  height: 25,
-                ),
+
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [

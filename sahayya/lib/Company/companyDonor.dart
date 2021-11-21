@@ -100,8 +100,8 @@ class _CompanyDonorState extends State<CompanyDonor> {
         backgroundColor: Color(0xFF3E5A81),
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Applications',
+            icon: Icon(Icons.location_city),
+            label: 'NGOs',
             backgroundColor: Color(0xFF3E5A81),
           ),
           BottomNavigationBarItem(

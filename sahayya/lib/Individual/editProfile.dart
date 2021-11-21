@@ -28,25 +28,16 @@ class _EditIndividualProfileState extends State<EditIndividualProfile> {
 
   String username = '',
       email = '',
-      name = '',
-      city = '',
-      state = '',
-      address = '',
-      description = '',
+      fName = '',
+      lName = '',
+      location = '',
+      bio = '',
       password = '',
       imageURL = 'https://firebasestorage.googleapis.com/v0/b/bizrep-b0184.appspot.com/o/profile_picture.png?alt=media&token=f23c3431-328e-47d6-8e0c-a1dfabbf13bf';
 
   double latitude = 0.0, longitude = 0.0;
 
   String type = '';
-
-  List<String> selectedSectors = [];
-
-  List<String> allTheSectors = ngoSectors;
-
-  List<SectorInstance> selectedSectorInstances = [];
-
-  String? _chosenSector;
 
   void getCurrentLocation() async {
     try {
@@ -134,12 +125,11 @@ class _EditIndividualProfileState extends State<EditIndividualProfile> {
       Map<String, dynamic> resp = jsonDecode(response.body);
       setState(() {
         entityData = resp;
-        name = resp['name'];
+        fName = resp['fName'];
+        lName = resp['lName'];
         email = resp['email'];
-        description = resp['description'];
-        address = resp['address'];
-        city = resp['city'];
-        state = resp['state'];
+        bio = resp['bio'];
+        location = resp['location'];
         profilePic = resp['picture'];
         setImage();
       });
@@ -258,7 +248,7 @@ class _EditIndividualProfileState extends State<EditIndividualProfile> {
                     SizedBox(height: 40.0),
                     Padding(
                       padding: const EdgeInsets.fromLTRB(20, 5, 0, 5),
-                      child: Text('Name', style: TextStyle(
+                      child: Text('First Name', style: TextStyle(
                         fontSize: 17,
                         color: Colors.white,
                         fontWeight: FontWeight.bold
@@ -279,12 +269,45 @@ class _EditIndividualProfileState extends State<EditIndividualProfile> {
                         border: border(context),
                         enabledBorder: border(context),
                         focusedBorder: focusBorder(context),
-                        hintText: '$name',
+                        hintText: '$fName',
                       ),
                       textInputAction: TextInputAction.next,
                       onChanged: (val) {
                         setState(() {
-                          name = val;
+                          fName = val;
+                        });
+                      },
+                    ),
+                    SizedBox(height: 40.0),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(20, 5, 0, 5),
+                      child: Text('Last Name', style: TextStyle(
+                          fontSize: 17,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold
+                      ),),
+                    ),
+                    TextField(
+                      style: TextStyle(
+                        fontSize: 15.0,
+                        color: Colors.white,
+                      ),
+                      enabled: true,
+                      decoration: InputDecoration(
+                        filled: true,
+                        fillColor: Color(0xFF3E5A81),
+                        hintStyle: TextStyle(
+                          color: Colors.white,
+                        ),
+                        border: border(context),
+                        enabledBorder: border(context),
+                        focusedBorder: focusBorder(context),
+                        hintText: '$lName',
+                      ),
+                      textInputAction: TextInputAction.next,
+                      onChanged: (val) {
+                        setState(() {
+                          lName = val;
                         });
                       },
                     ),
@@ -324,7 +347,7 @@ class _EditIndividualProfileState extends State<EditIndividualProfile> {
                     SizedBox(height: 40.0),
                     Padding(
                       padding: const EdgeInsets.fromLTRB(20, 5, 0, 5),
-                      child: Text('Description', style: TextStyle(
+                      child: Text('Bio', style: TextStyle(
                           fontSize: 17,
                           color: Colors.white,
                           fontWeight: FontWeight.bold
@@ -333,7 +356,7 @@ class _EditIndividualProfileState extends State<EditIndividualProfile> {
                     TextField(
                       onChanged: (val) {
                         setState(() {
-                          description = val;
+                          bio = val;
                         });
                       },
                       style: TextStyle(
@@ -343,7 +366,7 @@ class _EditIndividualProfileState extends State<EditIndividualProfile> {
                       maxLines: 4,
                       keyboardType: TextInputType.multiline,
                       decoration: InputDecoration(
-                        hintText: "$description",
+                        hintText: "$bio",
                         filled: true,
                         fillColor: Color(0xFF3E5A81),
                         hintStyle: TextStyle(
@@ -354,10 +377,10 @@ class _EditIndividualProfileState extends State<EditIndividualProfile> {
                         focusedBorder: focusBorder(context),
                       ),
                     ),
-                    SizedBox(height: 40,),
+                    SizedBox(height: 40.0),
                     Padding(
                       padding: const EdgeInsets.fromLTRB(20, 5, 0, 5),
-                      child: Text('Address', style: TextStyle(
+                      child: Text('Location', style: TextStyle(
                           fontSize: 17,
                           color: Colors.white,
                           fontWeight: FontWeight.bold
@@ -378,78 +401,12 @@ class _EditIndividualProfileState extends State<EditIndividualProfile> {
                         border: border(context),
                         enabledBorder: border(context),
                         focusedBorder: focusBorder(context),
-                        hintText: '$address',
+                        hintText: '$location',
                       ),
                       textInputAction: TextInputAction.next,
                       onChanged: (val) {
                         setState(() {
-                          address = val;
-                        });
-                      },
-                    ),
-                    SizedBox(height: 40,),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(20, 5, 0, 5),
-                      child: Text('City', style: TextStyle(
-                          fontSize: 17,
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold
-                      ),),
-                    ),
-                    TextField(
-                      style: TextStyle(
-                        fontSize: 15.0,
-                        color: Colors.white,
-                      ),
-                      enabled: true,
-                      decoration: InputDecoration(
-                        hintText: '$city',
-                        filled: true,
-                        fillColor: Color(0xFF3E5A81),
-                        hintStyle: TextStyle(
-                          color: Colors.white,
-                        ),
-                        border: border(context),
-                        enabledBorder: border(context),
-                        focusedBorder: focusBorder(context),
-                      ),
-                      textInputAction: TextInputAction.next,
-                      onChanged: (val) {
-                        setState(() {
-                          city = val;
-                        });
-                      },
-                    ),
-                    SizedBox(height: 40,),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(20, 5, 0, 5),
-                      child: Text('State', style: TextStyle(
-                          fontSize: 17,
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold
-                      ),),
-                    ),
-                    TextField(
-                      style: TextStyle(
-                        fontSize: 15.0,
-                        color: Colors.white,
-                      ),
-                      enabled: true,
-                      decoration: InputDecoration(
-                        filled: true,
-                        fillColor: Color(0xFF3E5A81),
-                        hintStyle: TextStyle(
-                          color: Colors.white,
-                        ),
-                        border: border(context),
-                        enabledBorder: border(context),
-                        focusedBorder: focusBorder(context),
-                        hintText: '$state',
-                      ),
-                      textInputAction: TextInputAction.next,
-                      onChanged: (val) {
-                        setState(() {
-                          state = val;
+                          location = val;
                         });
                       },
                     ),
@@ -486,76 +443,28 @@ class _EditIndividualProfileState extends State<EditIndividualProfile> {
                         });
                       },
                     ),
-                    SizedBox(height: 40,),
-                    Container(
-                      height: 45.0,
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(40),
-                        color: Color(0xFF3E5A81),
-                        boxShadow: [
-                          BoxShadow(color: Colors.white70, spreadRadius: 1),
-                        ],
-                      ),
-                      child: ButtonTheme(
-                        alignedDropdown: true,
-                        child: DropdownButton<String>(
-                          value: _chosenSector,
-                          style: TextStyle(color: Colors.white),
-                          dropdownColor: Color(0xFF3E5A81),
-                          underline: Container(
-                            height: 2,
-                            color: Colors.transparent,
-                          ),
-                          iconSize: 50.0,
-                          iconEnabledColor: Colors.white70,
-                          isExpanded: true,
-                          items: allTheSectors
-                              .map<DropdownMenuItem<String>>((String value) {
-                            return DropdownMenuItem<String>(
-                              value: value,
-                              child: Text(
-                                value,
-                              ),
-                            );
-                          }).toList(),
-                          hint: Text(
-                            "    Sectors",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 15,
-                                fontWeight: FontWeight.w600),
-                          ),
-                          onChanged: (String? value) {
-                            setState(() {
-                              myTrigger = 24;
-                              allTheSectors.remove(value);
-                              selectedSectors.add(value!);
-                              selectedSectorInstances.add(
-                                  SectorInstance(value, deleteSectorInstance));
-                              _chosenSector = allTheSectors[0];
-                            });
-                          },
-                        ),
-                      ),
-                    ),
-                    Column(
-                      children: selectedSectorInstances,
-                    ),
                     SizedBox(height: 65,),
                     ElevatedButton(
                       onPressed: () async {
                         setState(() {
-                            type = 'NGO';
+                            type = 'Donor';
                           });
-                          if (name.length == 0) {
+                          if (fName.length == 0) {
                             final snackBar = SnackBar(
-                              content: Text('Please enter Name'),
+                              content: Text('Please enter First Name'),
                             );
                             ScaffoldMessenger.of(context)
                                 .showSnackBar(snackBar);
                             return;
                           }
+                        if (lName.length == 0) {
+                          final snackBar = SnackBar(
+                            content: Text('Please enter Last Name'),
+                          );
+                          ScaffoldMessenger.of(context)
+                              .showSnackBar(snackBar);
+                          return;
+                        }
                         if (email.length == 0) {
                           final snackBar = SnackBar(
                             content: Text('Please enter a email'),
@@ -563,16 +472,6 @@ class _EditIndividualProfileState extends State<EditIndividualProfile> {
                           ScaffoldMessenger.of(context).showSnackBar(snackBar);
                           return;
                         }
-
-                          if (city.length == 0) {
-                            final snackBar = SnackBar(
-                              content: Text('Please enter city '),
-                            );
-                            ScaffoldMessenger.of(context)
-                                .showSnackBar(snackBar);
-                            return;
-                          }
-
                         if (password.length == 0) {
                           final snackBar = SnackBar(
                             content: Text('Please enter Password '),
@@ -581,35 +480,17 @@ class _EditIndividualProfileState extends State<EditIndividualProfile> {
                               .showSnackBar(snackBar);
                           return;
                         }
-
-
-                          if (state.length == 0) {
+                        if (location.length == 0) {
+                          final snackBar = SnackBar(
+                            content: Text('Please enter Location '),
+                          );
+                          ScaffoldMessenger.of(context)
+                              .showSnackBar(snackBar);
+                          return;
+                        }
+                          if (bio.length == 0) {
                             final snackBar = SnackBar(
-                              content: Text('Please enter a state'),
-                            );
-                            ScaffoldMessenger.of(context)
-                                .showSnackBar(snackBar);
-                            return;
-                          }
-                          if (address.length == 0) {
-                            final snackBar = SnackBar(
-                              content: Text('Please enter address. '),
-                            );
-                            ScaffoldMessenger.of(context)
-                                .showSnackBar(snackBar);
-                            return;
-                          }
-                          if (description.length == 0) {
-                            final snackBar = SnackBar(
-                              content: Text('Please enter description'),
-                            );
-                            ScaffoldMessenger.of(context)
-                                .showSnackBar(snackBar);
-                            return;
-                          }
-                          if (selectedSectors.isEmpty) {
-                            final snackBar = SnackBar(
-                              content: Text('Please select a sector. '),
+                              content: Text('Please enter Bio'),
                             );
                             ScaffoldMessenger.of(context)
                                 .showSnackBar(snackBar);
@@ -619,12 +500,10 @@ class _EditIndividualProfileState extends State<EditIndividualProfile> {
                           Map<String, dynamic> theData = {
                             "email": email,
                             "picture": imageURL,
-                            "name": name,
-                            "city": city,
-                            "state": state,
-                            "address": address,
-                            "sectors": selectedSectors,
-                            "description": description,
+                            "fName": fName,
+                            "lName": lName,
+                            "location": location,
+                            "bio": bio,
                             "password": password
                           };
 
@@ -649,7 +528,7 @@ class _EditIndividualProfileState extends State<EditIndividualProfile> {
                             );
                             ScaffoldMessenger.of(context)
                                 .showSnackBar(snackBar);
-                            Navigator.pushReplacementNamed(context, '/ngoDashboard');
+                            Navigator.pushReplacementNamed(context, '/indvDonor');
                             return;
                           }
                           final snackBar = SnackBar(
