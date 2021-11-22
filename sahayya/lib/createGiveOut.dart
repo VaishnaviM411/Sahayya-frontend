@@ -97,7 +97,7 @@ class _CreateGiveOutState extends State<CreateGiveOut> {
               Padding(
                 padding: const EdgeInsets.fromLTRB(0, 50, 0, 10),
                 child: Text(
-                  'NGO Request',
+                  'Request for Give-Out',
                   style: TextStyle(
                     fontSize: 20,
                     color: Colors.white,

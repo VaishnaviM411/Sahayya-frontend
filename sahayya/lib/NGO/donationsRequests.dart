@@ -3,7 +3,9 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'components/userGiveOutCard.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
+final storage = new FlutterSecureStorage();
 class DonationsRequest extends StatefulWidget {
 
   @override
