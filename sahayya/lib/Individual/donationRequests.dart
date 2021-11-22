@@ -11,6 +11,9 @@ class DonationRequests extends StatefulWidget {
 class _DonationRequestsState extends State<DonationRequests> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold();
+    return Container(
+      color: Color(0xFF3E5A81),
+      height: double.infinity,
+    );
   }
 }

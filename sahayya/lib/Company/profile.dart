@@ -115,6 +115,7 @@ class _ProfileState extends State<Profile> {
 
 
     return Container(
+      height: double.infinity,
       color: Color(0xFF3E5A81),
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 12),

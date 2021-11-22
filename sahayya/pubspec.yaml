@@ -37,6 +37,8 @@ dependencies:
   http_parser: ^4.0.0
   flutter_spinkit: ^5.1.0
   syncfusion_flutter_pdfviewer: any
+  file_picker: ^4.2.4
+  date_field: ^2.1.2
 
 dev_dependencies:
   flutter_test:

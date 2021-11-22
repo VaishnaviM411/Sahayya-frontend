@@ -12,7 +12,8 @@ class _DonationRequestsState extends State<DonationRequests> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.deepOrangeAccent,
+      color: Color(0xFF3E5A81),
+      height: double.infinity,
     );
   }
 }

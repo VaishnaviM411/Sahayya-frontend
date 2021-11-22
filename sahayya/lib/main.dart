@@ -5,6 +5,8 @@ import 'package:sahayya/loginScreen.dart';
 import 'package:sahayya/NGO/ngoDashboard.dart';
 import 'package:sahayya/pdfView.dart';
 import 'package:sahayya/registerScreen.dart';
+import 'createGiveOut.dart';
+import 'createNGORequest.dart';
 import 'startscreen.dart';
 import 'registerScreen.dart';
 import 'NGO/editProfile.dart';
@@ -37,7 +39,9 @@ class MyApp extends StatelessWidget {
         '/editCompanyProfile': (context) => EditCompanyProfile(),
         '/editIndividualProfile': (context) => EditIndividualProfile(),
         '/giveOutDetails': (context) => GiveOutDetails(),
-        '/pdf': (context) => PDFView()
+        '/pdf': (context) => PDFView(),
+        '/create-ngo-request': (context) => CreateNGORequest(),
+        '/create-give-out': (context) => CreateGiveOut()
       },
       debugShowCheckedModeBanner: false,
     );
