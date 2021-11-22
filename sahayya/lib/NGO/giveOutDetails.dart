@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -204,7 +206,7 @@ class _GiveOutDetailsState extends State<GiveOutDetails> {
               SizedBox(
                 height: 20,
               ),
-              (userData['username'] != USERNAME!) ? (
+              (userData['username'] == USERNAME!) ? (
                   Container(
                     width: double.infinity,
                     decoration: BoxDecoration(
@@ -241,8 +243,31 @@ class _GiveOutDetailsState extends State<GiveOutDetails> {
                                         side: BorderSide(color: Color(0xFFFFFFFF), width: 2.0)))),
                             child: Text('Delete Give-Out', style: TextStyle(color: Color(0xFF3E5A81), fontWeight: FontWeight.bold, fontSize: 18)),
                             onPressed: () async {
+                              String theURL = 'https://asia-south1-sahayya-9c930.cloudfunctions.net/api/particular-give-out/${data['id']}';
+                              final response = await http.delete(Uri.parse(theURL), headers: {
+                                HttpHeaders.authorizationHeader: TOKEN!
+                              });
 
-                              Navigator.pushNamed(context, '/ngoDashboard');
+                              if(response.statusCode == 200){
+                                final snackBar = SnackBar(
+                                  content: Text('Give-Out deleted successfully'),
+                                );
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(snackBar);
+
+                                if(userData['donorType'] == 'Individual'){
+                                  Navigator.pushReplacementNamed(context, '/indvDonor');
+                                }
+                                else{
+                                  Navigator.pushReplacementNamed(context, '/compDonor');
+                                }
+                              }
+                              final snackBar = SnackBar(
+                                content: Text('Some error occurred'),
+                              );
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(snackBar);
+                              return;
                             },
                           ),
                         ),
@@ -263,8 +288,7 @@ class _GiveOutDetailsState extends State<GiveOutDetails> {
                     child: Text('Apply', style: TextStyle(color: Color(0xFF3E5A81), fontWeight: FontWeight.bold, fontSize: 18)),
                   ),
                   onPressed: () async {
-                    print("Heyyyyyyyyyyyyyyy");
-                    // Navigator.pushNamed(context, '/ngoDashboard');
+                    Navigator.pushNamed(context, '/apply-for-donor-donation', arguments: {"id": data['id']});
                   },
                 ),
               )),
