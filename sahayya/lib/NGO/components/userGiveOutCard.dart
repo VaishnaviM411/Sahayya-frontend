@@ -5,16 +5,17 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 
 final storage = new FlutterSecureStorage();
-class GiveOutCard extends StatefulWidget {
+class UserGiveOutCard extends StatefulWidget {
 
   Map<dynamic, dynamic> instance = {};
-  GiveOutCard({required this.instance});
+  UserGiveOutCard({required this.instance});
 
   @override
-  _GiveOutCardState createState() => _GiveOutCardState();
+  _UserGiveOutCardState createState() => _UserGiveOutCardState();
 }
 
-class _GiveOutCardState extends State<GiveOutCard> {
+class _UserGiveOutCardState extends State<UserGiveOutCard> {
+
 
   String? TOKEN='', USERNAME='', TYPE='';
 
@@ -36,8 +37,8 @@ class _GiveOutCardState extends State<GiveOutCard> {
     List<MaterialInstance> availableMaterial = [];
 
     setState(() {
-      for(var i=0; i<widget.instance['available-material'].length; i++){
-        availableMaterial.add(MaterialInstance(val: widget.instance['available-material'][i]));
+      for(var i=0; i<widget.instance['requirements'].length; i++){
+        availableMaterial.add(MaterialInstance(val: widget.instance['requirements'][i]));
       }
     });
 
@@ -56,9 +57,9 @@ class _GiveOutCardState extends State<GiveOutCard> {
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 8),
                   child: Text('${widget.instance['title']}', style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w700,
-                    fontSize: 20
+                      color: Colors.white,
+                      fontWeight: FontWeight.w700,
+                      fontSize: 20
                   ),),
                 ),
               ],
@@ -84,24 +85,10 @@ class _GiveOutCardState extends State<GiveOutCard> {
               children: [
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 5),
-                  child: Text('${widget.instance['username']}', style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.w600,
-                      fontStyle: FontStyle.italic,
-                      fontSize: 15
-                  ),),
-                ),
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 5),
                   child: Text('${widget.instance['applyBy']}', style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.w800,
-                      fontSize: 16,
+                    color: Colors.white,
+                    fontWeight: FontWeight.w800,
+                    fontSize: 16,
                     fontStyle: FontStyle.italic,
                   ),),
                 ),
@@ -110,18 +97,17 @@ class _GiveOutCardState extends State<GiveOutCard> {
           ],
         ),
         decoration: BoxDecoration(
-            color: Colors.transparent,
-            borderRadius: BorderRadius.all(Radius.circular(30)),
-            border: Border.all(
-              color: Colors.white,
-              width: 2,
-            ),),
+          color: Colors.transparent,
+          borderRadius: BorderRadius.all(Radius.circular(30)),
+          border: Border.all(
+            color: Colors.white,
+            width: 2,
+          ),),
       ),
       onTap: ()async{
 
         Map<dynamic, dynamic> userDetails = {};
         Map<dynamic, dynamic> forum = {};
-        Map<dynamic, dynamic> applications = {};
 
         String theURL = 'https://asia-south1-sahayya-9c930.cloudfunctions.net/api/profile/'+widget.instance['username'];
         final response = await http.get(Uri.parse(theURL), headers: {
@@ -149,24 +135,12 @@ class _GiveOutCardState extends State<GiveOutCard> {
               forum = resp2;
             });
 
-            String theURL3 = 'https://asia-south1-sahayya-9c930.cloudfunctions.net/api/all-received-applications-for-donor/' + widget.instance['id'].toString();
-            final response3 = await http.get(Uri.parse(theURL3), headers: {
-              HttpHeaders.authorizationHeader: TOKEN!
+            Navigator.pushNamed(context, '/giveOutDetails', arguments: {
+              "data": widget.instance,
+              "userData": userDetails,
+              "forum": forum
             });
-
-            if (response3.statusCode == 200) {
-              Map<String, dynamic> resp3 = jsonDecode(response3.body);
-              setState(() {
-                applications = resp3;
-              });
-              Navigator.pushNamed(context, '/giveOutDetails', arguments: {
-                "data": widget.instance,
-                "userData": userDetails,
-                "forum": forum,
-                "applications": applications['data']
-              });
-              return;
-            }
+            return;
           }
         }
         final snackBar = SnackBar(
@@ -199,8 +173,8 @@ class _MaterialInstanceState extends State<MaterialInstance> {
       padding: EdgeInsets.all(5),
       child: Center(
         child: Text('${widget.val}', style: TextStyle(
-          color: Color(0xFF3E5A81),
-          fontWeight: FontWeight.w700
+            color: Color(0xFF3E5A81),
+            fontWeight: FontWeight.w700
         ),),
       ),
       decoration: BoxDecoration(

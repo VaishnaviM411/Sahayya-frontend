@@ -52,9 +52,11 @@ class _GiveOutDetailsState extends State<GiveOutDetails> {
     final arguments = ModalRoute.of(context)!.settings.arguments as Map;
 
     Map<dynamic, dynamic> data = arguments['data'], userData = arguments['userData'], forum = arguments['forum'];
+    List<dynamic> applications = arguments['applications'];
 
     List<MaterialInstance> availableMaterial = [];
     List<DocumentInstance> docList = [];
+    List<ApplicationInstance> appsList = [];
 
     setState(() {
       for(var i=0; i<data['documentsArray'].length; i++){
@@ -69,6 +71,12 @@ class _GiveOutDetailsState extends State<GiveOutDetails> {
     });
 
     setState(() {
+      for(var i=0; i<applications.length; i++){
+        appsList.add(ApplicationInstance(data: applications[i]));
+      }
+    });
+
+    setState(() {
       if(userData['donorType'] == 'Individual'){
         isCompany = false;
       }
@@ -76,6 +84,7 @@ class _GiveOutDetailsState extends State<GiveOutDetails> {
         isCompany = true;
       }
     });
+
 
 
 
@@ -195,24 +204,70 @@ class _GiveOutDetailsState extends State<GiveOutDetails> {
               SizedBox(
                 height: 20,
               ),
-              (userData['username'] == USERNAME!) ? (
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 5),
-                    child: ElevatedButton(
-                      style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all(Colors.white),
-                          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                              RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(18.0),
-                                  side: BorderSide(color: Color(0xFFFFFFFF), width: 2.0)))),
-                      child: Text('Delete', style: TextStyle(color: Color(0xFF3E5A81))),
-                      onPressed: () async {
+              (userData['username'] != USERNAME!) ? (
+                  Container(
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      color: Colors.transparent,
+                      borderRadius: BorderRadius.all(Radius.circular(30)),
+                      border: Border.all(
+                        color: Colors.white,
+                        width: 2,
+                      ),),
+                    margin: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+                    child: Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 10),
+                          child: Text('Received Applications (${applications.length}) :', style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w700,
+                              fontSize: 22
+                          ),),
+                        ),
+                        SizedBox(height: 20,),
+                        Column(
+                          children: appsList,
+                        ),
+                        SizedBox(height: 20,),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
+                          child: ElevatedButton(
+                            style: ButtonStyle(
+                                backgroundColor: MaterialStateProperty.all(Colors.white),
+                                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                    RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(18.0),
+                                        side: BorderSide(color: Color(0xFFFFFFFF), width: 2.0)))),
+                            child: Text('Delete Give-Out', style: TextStyle(color: Color(0xFF3E5A81), fontWeight: FontWeight.bold, fontSize: 18)),
+                            onPressed: () async {
 
-                        Navigator.pushNamed(context, '/ngoDashboard');
-                      },
+                              Navigator.pushNamed(context, '/ngoDashboard');
+                            },
+                          ),
+                        ),
+                      ],
                     ),
                   )
-              ) : (SizedBox(height: 0,)),
+              ) : (Padding(
+                padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
+                child: ElevatedButton(
+                  style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(Colors.white),
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(18.0),
+                              side: BorderSide(color: Color(0xFFFFFFFF), width: 2.0)))),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 30),
+                    child: Text('Apply', style: TextStyle(color: Color(0xFF3E5A81), fontWeight: FontWeight.bold, fontSize: 18)),
+                  ),
+                  onPressed: () async {
+                    print("Heyyyyyyyyyyyyyyy");
+                    // Navigator.pushNamed(context, '/ngoDashboard');
+                  },
+                ),
+              )),
             ],
           ),
         ),
@@ -222,6 +277,79 @@ class _GiveOutDetailsState extends State<GiveOutDetails> {
 
   }
 }
+
+
+class ApplicationInstance extends StatefulWidget {
+
+  Map<dynamic, dynamic> data = {};
+  ApplicationInstance({required this.data});
+
+  @override
+  _ApplicationInstanceState createState() => _ApplicationInstanceState();
+}
+
+class _ApplicationInstanceState extends State<ApplicationInstance> {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+      width: double.infinity,
+      padding: EdgeInsets.all(5),
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8),
+                child: Text('${widget.data['title']}', style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w700,
+                    fontSize: 20
+                ),),
+              ),
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 5),
+                child: Text('${widget.data['body']}', style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w500,
+                    fontSize: 16
+                ),),
+              ),
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 5),
+                child: Text('${widget.data['username']}', style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w600,
+                    fontStyle: FontStyle.italic,
+                    fontSize: 15
+                ),),
+              ),
+            ],
+          ),
+        ],
+      ),
+      decoration: BoxDecoration(
+        color: Colors.transparent,
+        borderRadius: BorderRadius.all(Radius.circular(30)),
+        border: Border.all(
+          color: Colors.white,
+          width: 2,
+        ),),
+    );
+  }
+}
+
 
 
 class DocumentInstance extends StatefulWidget {

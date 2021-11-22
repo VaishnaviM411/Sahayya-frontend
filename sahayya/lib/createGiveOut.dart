@@ -385,7 +385,6 @@ class _CreateGiveOutState extends State<CreateGiveOut> {
                     if(TYPE == 'Donor'){
                       Navigator.pushReplacementNamed(context, '/indvDonor');
                     }
-
                     return;
                   }
 
