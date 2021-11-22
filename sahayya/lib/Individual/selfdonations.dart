@@ -28,7 +28,7 @@ class _SelfDonationsState extends State<SelfDonations> {
     username = await storage.read(key: 'username');
     type = await storage.read(key: 'type');
 
-    String theURL = 'https://asia-south1-sahayya-9c930.cloudfunctions.net/api/get-give-outs/'+username!;
+    String theURL = 'https://asia-south1-sahayya-9c930.cloudfunctions.net/api/applications-applied-to-by-donor/'+username!;
     final response = await http.get(Uri.parse(theURL), headers: {
       HttpHeaders.authorizationHeader: token!
     });
