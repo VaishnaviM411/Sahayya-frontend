@@ -79,7 +79,7 @@ class _NearbyNGOsState extends State<NearbyNGOs> {
               children: [
                 Padding(
                   padding: const EdgeInsets.fromLTRB(0, 12, 0, 12),
-                  child: Text('NGOs around me', style: TextStyle(
+                  child: Text('NGOs around me (${theNGOs.length})', style: TextStyle(
                     color: Colors.white,
                     fontSize: 23,
                     fontWeight: FontWeight.bold
