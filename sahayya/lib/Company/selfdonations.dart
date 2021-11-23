@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-
+import 'package:sahayya/NGO/components/giveOutCard.dart';
 import 'components/userGiveOutCard.dart';
 
 final storage = new FlutterSecureStorage();
@@ -20,6 +20,8 @@ class _SelfDonationsState extends State<SelfDonations> {
   // var allInstances = <Map<dynamic, dynamic>>[];
   List<dynamic> allInstances = [];
   List<UserGiveOutCard> allInstancesCard = [];
+  List<dynamic> allInstances2 = [];
+  List<GiveOutCard> allInstancesCard2 = [];
 
 
   void getUserData() async {
@@ -28,8 +30,9 @@ class _SelfDonationsState extends State<SelfDonations> {
     username = await storage.read(key: 'username');
     type = await storage.read(key: 'type');
 
+    var response;
     String theURL = 'https://asia-south1-sahayya-9c930.cloudfunctions.net/api/applications-applied-to-by-donor/'+username!;
-    final response = await http.get(Uri.parse(theURL), headers: {
+    response = await http.get(Uri.parse(theURL), headers: {
       HttpHeaders.authorizationHeader: token!
     });
 
@@ -43,8 +46,6 @@ class _SelfDonationsState extends State<SelfDonations> {
         allInstances = resp['data'];
       });
 
-      print(allInstances);
-
       List<UserGiveOutCard> theCards = [];
 
       for(var i=0; i<allInstances.length; i++){
@@ -54,9 +55,33 @@ class _SelfDonationsState extends State<SelfDonations> {
       setState(() {
         allInstancesCard = theCards;
       });
-      print(allInstancesCard.length);
+    }
+
+    theURL = 'https://asia-south1-sahayya-9c930.cloudfunctions.net/api/donation-give-outs/'+username!;
+    response = await http.get(Uri.parse(theURL), headers: {
+      HttpHeaders.authorizationHeader: token!
+    });
+
+    if(response.statusCode == 200){
+      Map<dynamic, dynamic> resp = jsonDecode(response.body);
+
+      setState(() {
+        allInstances2 = resp['data'];
+      });
+
+      List<GiveOutCard> theCards2 = [];
+
+      for(var i=0; i<allInstances2.length; i++){
+        theCards2.add(GiveOutCard(instance: allInstances2[i]));
+      }
+
+      setState(() {
+        allInstancesCard2 = theCards2;
+      });
+
       return;
     }
+
     await storage.write(key: 'username', value: null);
     await storage.write(key: 'token', value: null);
     await storage.write(key: 'type', value: null);
@@ -114,14 +139,26 @@ class _SelfDonationsState extends State<SelfDonations> {
             SizedBox(
               height: 20,
             ),
-            Container(
-              height: double.maxFinite,
-              child: ListView(
-                children: allInstancesCard,
-              ),
+            Column(
+              children: allInstancesCard,
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            Text('Your Give Outs (${allInstancesCard2.length}):', style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+                fontSize: 20
+            ),),
+            SizedBox(
+              height: 20,
+            ),
+            Column(
+              children: allInstancesCard2,
             ),
           ],
         ),
+
       ),
     );
   }
