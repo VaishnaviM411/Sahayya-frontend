@@ -34,14 +34,7 @@ class _UserGiveOutCardState extends State<UserGiveOutCard> {
   @override
   Widget build(BuildContext context) {
 
-    List<MaterialInstance> availableMaterial = [];
-
-    setState(() {
-      for(var i=0; i<widget.instance['requirements'].length; i++){
-        availableMaterial.add(MaterialInstance(val: widget.instance['requirements'][i]));
-      }
-    });
-
+    print(widget.instance);
 
     //print(widget.instance);
     return GestureDetector(
@@ -64,19 +57,18 @@ class _UserGiveOutCardState extends State<UserGiveOutCard> {
                 ),
               ],
             ),
-            Column(
-              children: availableMaterial,
-            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 5),
-                  child: Text('${widget.instance['description']}', style: TextStyle(
+                  child: Text('${widget.instance['body']}', style: TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.w500,
-                      fontSize: 16
-                  ),),
+                      fontSize: 16,
+                  ),
+                  overflow: TextOverflow.fade,
+                  ),
                 ),
               ],
             ),
@@ -85,7 +77,7 @@ class _UserGiveOutCardState extends State<UserGiveOutCard> {
               children: [
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 5),
-                  child: Text('${widget.instance['applyBy']}', style: TextStyle(
+                  child: Text('${widget.instance['status']}', style: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.w800,
                     fontSize: 16,
