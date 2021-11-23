@@ -87,10 +87,6 @@ class _GiveOutDetailsState extends State<GiveOutDetails> {
       }
     });
 
-
-
-
-
     return isLoading ? Container(
       height: double.infinity,
       color: Color(0xFF3E5A81),

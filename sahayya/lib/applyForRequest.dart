@@ -74,19 +74,32 @@ class _ApplyForRequestState extends State<ApplyForRequest> {
             children: [
               Padding(
                 padding: const EdgeInsets.fromLTRB(0, 50, 0, 10),
-                child: Text(
-                  'Application for Request',
-                  style: TextStyle(
-                    fontSize: 20,
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                  ),
+                child:RichText(
+                  text: TextSpan(children: [
+                    TextSpan(text: 'Application for Request',
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20
+                      ),)
+                  ]),
                 ),
+
               ),
               SizedBox(height: 40.0),
               Padding(
                 padding: const EdgeInsets.fromLTRB(0, 0, 0, 5),
-                child: Text(
+                child: RichText(
+                  text: TextSpan(children: [
+                    TextSpan(text: 'Tit',
+                      style: TextStyle(
+                          color: Color(0xFF3E5A81),
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18
+                      ),)
+                  ]),
+                ),
+                Text(
                   'Title',
                   style: TextStyle(
                     fontSize: 17,

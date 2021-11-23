@@ -98,48 +98,61 @@ class _UserGiveOutCardState extends State<UserGiveOutCard> {
       ),
       onTap: ()async{
 
-        Map<dynamic, dynamic> userDetails = {};
-        Map<dynamic, dynamic> forum = {};
+        Map<dynamic, dynamic> requestData = widget.instance;
+        Map<dynamic, dynamic> theGiveOutDetailsData = {};
+        Map<dynamic, dynamic> theDonorWhoIsGivingData = {};
 
-        String theURL = 'https://asia-south1-sahayya-9c930.cloudfunctions.net/api/profile/'+widget.instance['username'];
-        final response = await http.get(Uri.parse(theURL), headers: {
+        ///give-out-application/:id
+
+        var response;
+        String theURL = 'https://asia-south1-sahayya-9c930.cloudfunctions.net/api/particular-give-out/'+widget.instance['requestID'];
+        response = await http.get(Uri.parse(theURL), headers: {
           HttpHeaders.authorizationHeader: TOKEN!
         });
 
         if(response.statusCode == 200) {
-          print(response.statusCode);
           Map<String, dynamic> resp = jsonDecode(response.body);
           setState(() {
-            userDetails = resp;
+            theGiveOutDetailsData = resp;
           });
-
-          print(widget.instance['id']);
-
-          String theURL2 = 'https://asia-south1-sahayya-9c930.cloudfunctions.net/api/forum/' + widget.instance['id'].toString();
-          final response2 = await http.get(Uri.parse(theURL2), headers: {
-            HttpHeaders.authorizationHeader: TOKEN!
-          });
-
-          if (response2.statusCode == 200) {
-            print(response.statusCode);
-            Map<String, dynamic> resp2 = jsonDecode(response2.body);
-            setState(() {
-              forum = resp2;
-            });
-
-            Navigator.pushNamed(context, '/giveOutDetails', arguments: {
-              "data": widget.instance,
-              "userData": userDetails,
-              "forum": forum
-            });
-            return;
-          }
         }
-        final snackBar = SnackBar(
-          content: Text('Some error occurred. Try again later.'),
-        );
-        ScaffoldMessenger.of(context)
-            .showSnackBar(snackBar);
+        else{
+          final snackBar = SnackBar(
+            content: Text('Some error occurred. Try again later.'),
+          );
+          ScaffoldMessenger.of(context)
+              .showSnackBar(snackBar);
+          return;
+        }
+
+        String theDonorUsername = theGiveOutDetailsData['username'];
+
+        theURL = 'https://asia-south1-sahayya-9c930.cloudfunctions.net/api/profile/'+theDonorUsername;
+        response = await http.get(Uri.parse(theURL), headers: {
+          HttpHeaders.authorizationHeader: TOKEN!
+        });
+
+        if(response.statusCode == 200) {
+          Map<String, dynamic> resp = jsonDecode(response.body);
+          setState(() {
+            theDonorWhoIsGivingData = resp;
+          });
+        }
+        else{
+          final snackBar = SnackBar(
+            content: Text('Some error occurred. Try again later.'),
+          );
+          ScaffoldMessenger.of(context)
+              .showSnackBar(snackBar);
+          return;
+        }
+
+        Navigator.pushNamed(context, '/applicationPageDonationGiveout', arguments: {
+          "requestData": requestData,
+          "theGiveOutDetailsData": theGiveOutDetailsData,
+          "theDonorWhoIsGivingData": theDonorWhoIsGivingData,
+          "id": widget.instance['requestID']
+        });
         return;
       },
     );

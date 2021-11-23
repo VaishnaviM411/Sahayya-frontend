@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:sahayya/Application/applicationPageDonationGiveout.dart';
+import 'package:sahayya/Application/applicationPageNGORequest.dart';
 import 'package:sahayya/Company/companyDonor.dart';
 import 'package:sahayya/Individual/individualDonor.dart';
 import 'package:sahayya/loginScreen.dart';
@@ -47,7 +49,9 @@ class MyApp extends StatelessWidget {
         '/create-ngo-request': (context) => CreateNGORequest(),
         '/create-give-out': (context) => CreateGiveOut(),
         '/apply-for-donor-donation': (context) => ApplyForGiveOut(),
-        '/apply-for-ngo-help': (context) => ApplyForRequest()
+        '/apply-for-ngo-help': (context) => ApplyForRequest(),
+        '/applicationPageNGORequest': (context) => ApplicationPageNGORequest(),
+        '/applicationPageDonationGiveout': (context) => ApplicationPageDonationGiveOut()
       },
       debugShowCheckedModeBanner: false,
     );
