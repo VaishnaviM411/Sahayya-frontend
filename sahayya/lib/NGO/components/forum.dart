@@ -6,10 +6,10 @@ import 'package:http/http.dart' as http;
 class Forum extends StatefulWidget {
 
   Map<dynamic,dynamic> userData = {}, forum = {};
-  String theUsername = '', token='', id='';
+  String theUsername = '', token='', id='', type='';
   Function triggerUpdate = (){print("Hey");};
 
-  Forum({required this.userData, required this.forum, required this.theUsername, required this.token, required this.id, required this.triggerUpdate});
+  Forum({required this.userData, required this.forum, required this.theUsername, required this.token, required this.id, required this.triggerUpdate, required this.type});
 
   @override
   _ForumState createState() => _ForumState();
@@ -114,6 +114,18 @@ class _ForumState extends State<Forum> {
                   padding: const EdgeInsets.fromLTRB(0, 2, 15, 2),
                   child: ElevatedButton(
                     onPressed: () async{
+
+                      if (messageTextController.text.length == 0) {
+                        final snackBar = SnackBar(
+                          content: Text('Please enter your Comment'),
+                        );
+                        ScaffoldMessenger.of(context)
+                            .showSnackBar(snackBar);
+                        return;
+                      }
+
+
+
                       Map<String, dynamic> theData = {
                         "message": messageTextController.text,
                         "username": widget.theUsername
@@ -135,7 +147,13 @@ class _ForumState extends State<Forum> {
                         );
                         ScaffoldMessenger.of(context)
                             .showSnackBar(snackBar);
-                        Navigator.pushNamed(context, '/ngoDashboard');
+                        if (widget.type == 'NGO') {
+                          Navigator.pushReplacementNamed(context, '/ngoDashboard');
+                        } else if (widget.type == 'Donor') {
+                          Navigator.pushReplacementNamed(context, '/indvDonor');
+                        } else if (widget.type == 'Company') {
+                          Navigator.pushReplacementNamed(context, '/compDonor');
+                        }
                         return;
                       }
                     },

@@ -1,25 +1,27 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:sahayya/NGO/components/companyData.dart';
-import 'package:sahayya/NGO/components/forum.dart';
-import 'package:sahayya/NGO/components/individualData.dart';
+import 'dart:io';
+import 'dart:convert';
+import 'dart:math';
+import 'package:path_provider/path_provider.dart';
 import 'package:http/http.dart' as http;
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:sahayya/NGO/components/ngoData.dart';
+
+import 'NGO/components/companyData.dart';
+import 'NGO/components/forum.dart';
+import 'NGO/components/individualData.dart';
 
 final storage = new FlutterSecureStorage();
 
-class GiveOutDetails extends StatefulWidget {
-  const GiveOutDetails({Key? key}) : super(key: key);
+class RequestDetails extends StatefulWidget {
+  const RequestDetails({Key? key}) : super(key: key);
 
   @override
-  _GiveOutDetailsState createState() => _GiveOutDetailsState();
-
-
+  _RequestDetailsState createState() => _RequestDetailsState();
 }
 
-class _GiveOutDetailsState extends State<GiveOutDetails> {
+class _RequestDetailsState extends State<RequestDetails> {
 
   bool isLoading = true;
   String? TOKEN='', USERNAME='', TYPE='';
@@ -67,8 +69,8 @@ class _GiveOutDetailsState extends State<GiveOutDetails> {
     });
 
     setState(() {
-      for(var i=0; i<data['available-material'].length; i++){
-        availableMaterial.add(MaterialInstance(val: data['available-material'][i]));
+      for(var i=0; i<data['requirements'].length; i++){
+        availableMaterial.add(MaterialInstance(val: data['requirements'][i]));
       }
     });
 
@@ -88,16 +90,13 @@ class _GiveOutDetailsState extends State<GiveOutDetails> {
     });
 
 
-
-
-
     return isLoading ? Container(
       height: double.infinity,
       color: Color(0xFF3E5A81),
       child: SpinKitRotatingCircle(
-      color: Colors.white,
-      size: 50.0,
-    ),) : Scaffold(
+        color: Colors.white,
+        size: 50.0,
+      ),) : Scaffold(
       body: Container(
         color: Color(0xFF3E5A81),
         height: double.infinity,
@@ -198,7 +197,7 @@ class _GiveOutDetailsState extends State<GiveOutDetails> {
               SizedBox(
                 height: 20,
               ),
-              isCompany ? CompanyData(data: userData) : IndividualData(data: userData),
+              NGOData(data: userData),
               SizedBox(
                 height: 20,
               ),
@@ -241,9 +240,9 @@ class _GiveOutDetailsState extends State<GiveOutDetails> {
                                     RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(18.0),
                                         side: BorderSide(color: Color(0xFFFFFFFF), width: 2.0)))),
-                            child: Text('Delete Give-Out', style: TextStyle(color: Color(0xFF3E5A81), fontWeight: FontWeight.bold, fontSize: 18)),
+                            child: Text('Delete Request', style: TextStyle(color: Color(0xFF3E5A81), fontWeight: FontWeight.bold, fontSize: 18)),
                             onPressed: () async {
-                              String theURL = 'https://asia-south1-sahayya-9c930.cloudfunctions.net/api/particular-give-out/${data['id']}';
+                              String theURL = 'https://asia-south1-sahayya-9c930.cloudfunctions.net/api/particular-donation-request/${data['id']}';
                               final response = await http.delete(Uri.parse(theURL), headers: {
                                 HttpHeaders.authorizationHeader: TOKEN!
                               });
@@ -255,10 +254,11 @@ class _GiveOutDetailsState extends State<GiveOutDetails> {
                                 ScaffoldMessenger.of(context)
                                     .showSnackBar(snackBar);
 
-                                if(userData['donorType'] == 'Individual'){
+                                if (TYPE == 'NGO') {
+                                  Navigator.pushReplacementNamed(context, '/ngoDashboard');
+                                } else if (TYPE == 'Donor') {
                                   Navigator.pushReplacementNamed(context, '/indvDonor');
-                                }
-                                else{
+                                } else if (TYPE == 'Company') {
                                   Navigator.pushReplacementNamed(context, '/compDonor');
                                 }
                               }
@@ -288,7 +288,7 @@ class _GiveOutDetailsState extends State<GiveOutDetails> {
                     child: Text('Apply', style: TextStyle(color: Color(0xFF3E5A81), fontWeight: FontWeight.bold, fontSize: 18)),
                   ),
                   onPressed: () async {
-                    Navigator.pushNamed(context, '/apply-for-donor-donation', arguments: {"id": data['id']});
+                    Navigator.pushNamed(context, '/apply-for-ngo-help', arguments: {"id": data['id']});
                   },
                 ),
               )),
@@ -298,7 +298,6 @@ class _GiveOutDetailsState extends State<GiveOutDetails> {
 
       ),
     );
-
   }
 }
 
@@ -374,8 +373,6 @@ class _ApplicationInstanceState extends State<ApplicationInstance> {
   }
 }
 
-
-
 class DocumentInstance extends StatefulWidget {
   String link = '';
   int index = -1;
@@ -440,9 +437,9 @@ class _MaterialInstanceState extends State<MaterialInstance> {
       padding: EdgeInsets.all(5),
       child: Center(
         child: Text('${widget.val}', style: TextStyle(
-            color: Color(0xFF3E5A81),
-            fontSize: 18,
-            fontWeight: FontWeight.w700,
+          color: Color(0xFF3E5A81),
+          fontSize: 18,
+          fontWeight: FontWeight.w700,
         ),),
       ),
       decoration: BoxDecoration(

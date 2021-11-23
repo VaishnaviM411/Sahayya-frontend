@@ -32,7 +32,7 @@ class _LoginScreenState extends State<LoginScreen> {
       if (username!.length > 0) {
         if (type == 'NGO') {
           Navigator.pushReplacementNamed(context, '/ngoDashboard');
-        } else if (type == 'Individual') {
+        } else if (type == 'Donor') {
           Navigator.pushReplacementNamed(context, '/indvDonor');
         } else if (type == 'Company') {
           Navigator.pushReplacementNamed(context, '/compDonor');
