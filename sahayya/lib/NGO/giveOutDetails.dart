@@ -3,10 +3,12 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:sahayya/Company/nearbyNGOs.dart';
 import 'package:sahayya/NGO/components/companyData.dart';
 import 'package:sahayya/NGO/components/forum.dart';
 import 'package:sahayya/NGO/components/individualData.dart';
 import 'package:http/http.dart' as http;
+import 'package:sahayya/NGO/components/ngoData.dart';
 
 final storage = new FlutterSecureStorage();
 
@@ -86,6 +88,20 @@ class _GiveOutDetailsState extends State<GiveOutDetails> {
         isCompany = true;
       }
     });
+
+
+    Widget theAuthorCard(){
+      if(userData['type'] == 'NGO'){
+        return NGOData(data: userData);
+      }
+      if(userData['donorType'] == 'Individual'){
+        return IndividualData(data: userData);
+      }
+      if(userData['donorType'] == 'Company'){
+        return CompanyData(data: userData);
+      }
+      return CompanyData(data: userData);
+    }
 
     return isLoading ? Container(
       height: double.infinity,
@@ -194,7 +210,7 @@ class _GiveOutDetailsState extends State<GiveOutDetails> {
               SizedBox(
                 height: 20,
               ),
-              isCompany ? CompanyData(data: userData) : IndividualData(data: userData),
+              theAuthorCard(),
               SizedBox(
                 height: 20,
               ),

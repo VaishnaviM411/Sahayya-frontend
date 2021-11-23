@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'dart:io';
@@ -121,12 +122,15 @@ class _RequestDetailsState extends State<RequestDetails> {
                       children: [
                         Padding(
                           padding: const EdgeInsets.symmetric(vertical: 30),
-                          child: Text('${data['title']}', style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w700,
-                              fontSize: 30
-                          ),),
-                        ),
+                          child:RichText(
+                            text: TextSpan(children:[
+                              TextSpan(text:'${data['title']}',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 30),
+                              ),],
+                            ),)                        ),
                       ],
                     ),
                     Column(
@@ -140,11 +144,16 @@ class _RequestDetailsState extends State<RequestDetails> {
                       children: [
                         Padding(
                           padding: const EdgeInsets.symmetric(vertical: 5),
-                          child: Text('${data['description']}', style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w500,
-                              fontSize: 20
-                          ),),
+                          child:RichText(
+                            text: TextSpan(children:[
+                              TextSpan(text:'${data['description']}',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 20),
+                              ),],
+                            ),),
+
                         ),
                       ],
                     ),
@@ -156,12 +165,17 @@ class _RequestDetailsState extends State<RequestDetails> {
                       children: [
                         Padding(
                           padding: const EdgeInsets.symmetric(vertical: 5),
-                          child: Text('${data['username']}', style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w600,
-                              fontStyle: FontStyle.italic,
-                              fontSize: 20
-                          ),),
+                          child:RichText(
+                            text: TextSpan(children:[
+                              TextSpan(text:'${data['username']}',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w600,
+                                    fontStyle: FontStyle.italic,
+                                    fontSize: 20),
+                              ),],
+                            ),),
+
                         ),
                       ],
                     ),
@@ -173,12 +187,15 @@ class _RequestDetailsState extends State<RequestDetails> {
                       children: [
                         Padding(
                           padding: const EdgeInsets.symmetric(vertical: 5),
-                          child: Text('${data['applyBy']}', style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w800,
-                            fontSize: 20,
-                            fontStyle: FontStyle.italic,
-                          ),),
+                          child: RichText(
+                            text: TextSpan(children:[
+                              TextSpan(text: '${data['applyBy']}',
+                                style: TextStyle(color: Colors.white,
+                                    fontWeight: FontWeight.w800,
+                                    fontStyle: FontStyle.italic,
+                                    fontSize: 18),
+                              ),],
+                            ),),
                         ),
                       ],
                     ),
@@ -220,11 +237,18 @@ class _RequestDetailsState extends State<RequestDetails> {
                       children: [
                         Padding(
                           padding: const EdgeInsets.symmetric(vertical: 10),
-                          child: Text('Received Applications (${applications.length}) :', style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w700,
-                              fontSize: 22
-                          ),),
+                          child: RichText(
+                            text: TextSpan(children:[
+                              TextSpan(text:'Received Applications (${applications.length}) :',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 22,
+
+                                    fontWeight:FontWeight.w700,
+                                ),
+                              ),],
+                            ),),
+
                         ),
                         SizedBox(height: 20,),
                         Column(
@@ -240,7 +264,17 @@ class _RequestDetailsState extends State<RequestDetails> {
                                     RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(18.0),
                                         side: BorderSide(color: Color(0xFFFFFFFF), width: 2.0)))),
-                            child: Text('Delete Request', style: TextStyle(color: Color(0xFF3E5A81), fontWeight: FontWeight.bold, fontSize: 18)),
+                            child:RichText(
+                              text: TextSpan(children:[
+                                TextSpan(text:'Delete Request',
+                                  style: TextStyle(
+                                      color: Color(0xFF3E5A81),
+                                      fontWeight: FontWeight.bold,
+
+                                      fontSize: 18),
+                                ),],
+                              ),),
+
                             onPressed: () async {
                               String theURL = 'https://asia-south1-sahayya-9c930.cloudfunctions.net/api/particular-donation-request/${data['id']}';
                               final response = await http.delete(Uri.parse(theURL), headers: {
@@ -285,7 +319,15 @@ class _RequestDetailsState extends State<RequestDetails> {
                               side: BorderSide(color: Color(0xFFFFFFFF), width: 2.0)))),
                   child: Padding(
                     padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 30),
-                    child: Text('Apply', style: TextStyle(color: Color(0xFF3E5A81), fontWeight: FontWeight.bold, fontSize: 18)),
+                    child: RichText(
+                      text: TextSpan(children:[
+                        TextSpan(text:'Apply',
+                          style: TextStyle(
+                              color: Color(0xFF3E5A81),
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18),
+                        ),],
+                      ),),
                   ),
                   onPressed: () async {
                     Navigator.pushNamed(context, '/apply-for-ngo-help', arguments: {"id": data['id']});
@@ -325,11 +367,15 @@ class _ApplicationInstanceState extends State<ApplicationInstance> {
             children: [
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 8),
-                child: Text('${widget.data['title']}', style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w700,
-                    fontSize: 20
-                ),),
+                child:RichText(
+                  text: TextSpan(children:[
+                    TextSpan(text:'${widget.data['title']}',
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w700,
+                          fontSize: 20),
+                    ),],
+                  ),),
               ),
             ],
           ),
@@ -338,11 +384,16 @@ class _ApplicationInstanceState extends State<ApplicationInstance> {
             children: [
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 5),
-                child: Text('${widget.data['body']}', style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w500,
-                    fontSize: 16
-                ),),
+                child: RichText(
+                  text: TextSpan(children:[
+                    TextSpan(text:'${widget.data['body']}',
+                      style: TextStyle(
+                           color: Colors.white,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 16),
+                    ),],
+                  ),),
+
               ),
             ],
           ),
@@ -351,12 +402,17 @@ class _ApplicationInstanceState extends State<ApplicationInstance> {
             children: [
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 5),
-                child: Text('${widget.data['username']}', style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w600,
-                    fontStyle: FontStyle.italic,
-                    fontSize: 15
-                ),),
+                child: RichText(
+                  text: TextSpan(children:[
+                    TextSpan(text:'${widget.data['e']}',
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w600,
+                          fontStyle:FontStyle.italic,
+
+                          fontSize: 15),
+                    ),],
+                  ),), //akku wait kar naaa okkii sorry kr tera
               ),
             ],
           ),

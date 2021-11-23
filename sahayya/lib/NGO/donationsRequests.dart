@@ -1,7 +1,9 @@
 import 'dart:io';
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:http/http.dart' as http;
+import 'package:sahayya/NGO/components/cardNGOApplication.dart';
 import 'components/userGiveOutCard.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
@@ -22,7 +24,8 @@ class _DonationsRequestState extends State<DonationsRequest> {
   // var allInstances = <Map<dynamic, dynamic>>[];
   List<dynamic> allInstances = [];
   List<UserGiveOutCard> allInstancesCard = [];
-
+  List<dynamic> allInstances2 = [];
+  List<CardNGOApplication> allInstancesCard2 = [];
 
   void getUserData() async {
 
@@ -30,8 +33,10 @@ class _DonationsRequestState extends State<DonationsRequest> {
     username = await storage.read(key: 'username');
     type = await storage.read(key: 'type');
 
+    var response;
+
     String theURL = 'https://asia-south1-sahayya-9c930.cloudfunctions.net/api/applications-applied-to-by-an-ngo/'+username!;
-    final response = await http.get(Uri.parse(theURL), headers: {
+    response = await http.get(Uri.parse(theURL), headers: {
       HttpHeaders.authorizationHeader: token!
     });
 
@@ -45,7 +50,6 @@ class _DonationsRequestState extends State<DonationsRequest> {
         allInstances = resp['data'];
       });
 
-      print(allInstances);
 
       List<UserGiveOutCard> theCards = [];
 
@@ -56,9 +60,36 @@ class _DonationsRequestState extends State<DonationsRequest> {
       setState(() {
         allInstancesCard = theCards;
       });
-      print(allInstancesCard.length);
+    }
+
+    theURL = 'https://asia-south1-sahayya-9c930.cloudfunctions.net/api/donation-requests/'+username!;
+    response = await http.get(Uri.parse(theURL), headers: {
+      HttpHeaders.authorizationHeader: token!
+    });
+
+    print('hippo '+allInstancesCard2.length.toString());
+
+
+    if(response.statusCode == 200){
+      Map<dynamic, dynamic> resp = jsonDecode(response.body);
+
+      setState(() {
+        allInstances2 = resp['data'];
+      });
+
+      List<CardNGOApplication> theCards2 = [];
+
+      for(var i=0; i<allInstances2.length; i++){
+        theCards2.add(CardNGOApplication(instance: allInstances2[i]));
+      }
+
+      setState(() {
+        allInstancesCard2 = theCards2;
+      });
+
       return;
     }
+
     await storage.write(key: 'username', value: null);
     await storage.write(key: 'token', value: null);
     await storage.write(key: 'type', value: null);
@@ -66,13 +97,11 @@ class _DonationsRequestState extends State<DonationsRequest> {
     return;
   }
 
-
   @override
   void initState() {
     super.initState();
     getUserData();
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -119,11 +148,22 @@ class _DonationsRequestState extends State<DonationsRequest> {
               SizedBox(
                 height: 20,
               ),
-              Container(
-                height: double.maxFinite,
-                child: ListView(
-                  children: allInstancesCard,
-                ),
+              Column(
+                children: allInstancesCard,
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              Text('Your Donation Requests (${allInstancesCard2.length}):', style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20
+              ),),
+              SizedBox(
+                height: 20,
+              ),
+              Column(
+                children: allInstancesCard2,
               ),
             ],
           ),

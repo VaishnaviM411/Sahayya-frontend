@@ -5,17 +5,16 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 
 final storage = new FlutterSecureStorage();
-class UserGiveOutCard extends StatefulWidget {
+class CardNGOApplication extends StatefulWidget {
 
   Map<dynamic, dynamic> instance = {};
-  UserGiveOutCard({required this.instance});
+  CardNGOApplication({required this.instance});
 
   @override
-  _UserGiveOutCardState createState() => _UserGiveOutCardState();
+  _CardNGOApplicationState createState() => _CardNGOApplicationState();
 }
 
-class _UserGiveOutCardState extends State<UserGiveOutCard> {
-
+class _CardNGOApplicationState extends State<CardNGOApplication> {
 
   String? TOKEN='', USERNAME='', TYPE='';
 
@@ -34,7 +33,14 @@ class _UserGiveOutCardState extends State<UserGiveOutCard> {
   @override
   Widget build(BuildContext context) {
 
-    print(widget.instance);
+    List<MaterialInstance> availableMaterial = [];
+
+    setState(() {
+      for(var i=0; i<widget.instance['requirements'].length; i++){
+        availableMaterial.add(MaterialInstance(val: widget.instance['requirements'][i]));
+      }
+    });
+
 
     //print(widget.instance);
     return GestureDetector(
@@ -57,12 +63,15 @@ class _UserGiveOutCardState extends State<UserGiveOutCard> {
                 ),
               ],
             ),
+            Column(
+              children: availableMaterial,
+            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 5),
-                  child: Text('${widget.instance['body']}', style: TextStyle(
+                  child: Text('${widget.instance['description']}', style: TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.w500,
                       fontSize: 16
@@ -75,7 +84,7 @@ class _UserGiveOutCardState extends State<UserGiveOutCard> {
               children: [
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 5),
-                  child: Text('${widget.instance['status']}', style: TextStyle(
+                  child: Text('${widget.instance['applyBy']}', style: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.w800,
                     fontSize: 16,
@@ -96,61 +105,65 @@ class _UserGiveOutCardState extends State<UserGiveOutCard> {
       ),
       onTap: ()async{
 
-        Map<dynamic, dynamic> requestData = widget.instance;
-        Map<dynamic, dynamic> theGiveOutDetailsData = {};
-        Map<dynamic, dynamic> theDonorWhoIsGivingData = {};
+        Map<dynamic, dynamic> userDetails = {};
+        Map<dynamic, dynamic> forum = {};
+        Map<dynamic, dynamic> applications = {};
 
-        ///give-out-application/:id
-
-        var response;
-        String theURL = 'https://asia-south1-sahayya-9c930.cloudfunctions.net/api/particular-donation-request/'+widget.instance['giveoutID'];
-        response = await http.get(Uri.parse(theURL), headers: {
+        String theURL = 'https://asia-south1-sahayya-9c930.cloudfunctions.net/api/profile/'+widget.instance['username'];
+        final response = await http.get(Uri.parse(theURL), headers: {
           HttpHeaders.authorizationHeader: TOKEN!
         });
 
         if(response.statusCode == 200) {
+          print(response.statusCode);
           Map<String, dynamic> resp = jsonDecode(response.body);
           setState(() {
-            theGiveOutDetailsData = resp;
+            userDetails = resp;
           });
-        }
-        else{
-          final snackBar = SnackBar(
-            content: Text('Some error occurred. Try again later.'),
-          );
-          ScaffoldMessenger.of(context)
-              .showSnackBar(snackBar);
-          return;
-        }
 
-        String theDonorUsername = theGiveOutDetailsData['username'];
+          print(widget.instance['id']);
 
-        theURL = 'https://asia-south1-sahayya-9c930.cloudfunctions.net/api/profile/'+theDonorUsername;
-        response = await http.get(Uri.parse(theURL), headers: {
-          HttpHeaders.authorizationHeader: TOKEN!
-        });
-
-        if(response.statusCode == 200) {
-          Map<String, dynamic> resp = jsonDecode(response.body);
-          setState(() {
-            theDonorWhoIsGivingData = resp;
+          String theURL2 = 'https://asia-south1-sahayya-9c930.cloudfunctions.net/api/forum/' + widget.instance['id'].toString();
+          final response2 = await http.get(Uri.parse(theURL2), headers: {
+            HttpHeaders.authorizationHeader: TOKEN!
           });
-        }
-        else{
-          final snackBar = SnackBar(
-            content: Text('Some error occurred. Try again later.'),
-          );
-          ScaffoldMessenger.of(context)
-              .showSnackBar(snackBar);
-          return;
-        }
 
-        Navigator.pushNamed(context, '/applicationPageNGORequest', arguments: {
-          "requestData": requestData,
-          "theGiveOutDetailsData": theGiveOutDetailsData,
-          "theDonorWhoIsGivingData": theDonorWhoIsGivingData,
-          "id": widget.instance['giveoutID']
-        });
+          if (response2.statusCode == 200) {
+            print(response.statusCode);
+            Map<String, dynamic> resp2 = jsonDecode(response2.body);
+            setState(() {
+              forum = resp2;
+            });
+
+            String theURL3 = 'https://asia-south1-sahayya-9c930.cloudfunctions.net/api/all-received-applications-for-donor/' + widget.instance['id'].toString();
+            final response3 = await http.get(Uri.parse(theURL3), headers: {
+              HttpHeaders.authorizationHeader: TOKEN!
+            });
+
+            if (response3.statusCode == 200) {
+              Map<String, dynamic> resp3 = jsonDecode(response3.body);
+              setState(() {
+                applications = resp3;
+              });
+
+              Map<dynamic, dynamic> data = widget.instance;
+              data['available-material'] = data['requirements'];
+
+              Navigator.pushNamed(context, '/giveOutDetails', arguments: {
+                "data": widget.instance,
+                "userData": userDetails,
+                "forum": forum,
+                "applications": applications['data']
+              });
+              return;
+            }
+          }
+        }
+        final snackBar = SnackBar(
+          content: Text('Some error occurred. Try again later.'),
+        );
+        ScaffoldMessenger.of(context)
+            .showSnackBar(snackBar);
         return;
       },
     );

@@ -181,7 +181,7 @@ class _ApplicationPageDonationGiveOutState extends State<ApplicationPageDonation
                           padding: const EdgeInsets.symmetric(vertical: 5),
                           child: RichText(
                             text: TextSpan(children:[
-                              TextSpan(text:'${theGiveOutDetailsData['status']}',
+                              TextSpan(text:'${theGiveOutDetailsData['applyBy']}',
                                 style: TextStyle(color: Colors.white,
                                     fontWeight: FontWeight.w600,
                                     fontSize: 20),
@@ -302,7 +302,7 @@ class _ApplicationPageDonationGiveOutState extends State<ApplicationPageDonation
 
                             if(response.statusCode == 201){
                               final snackBar = SnackBar(
-                                content: Text('Proposal Accepted Successfully'),
+                                content: Text('Proposal Rejected Successfully'),
                               );
                               ScaffoldMessenger.of(context).showSnackBar(snackBar);
                               if (type == 'NGO') {

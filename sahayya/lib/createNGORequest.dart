@@ -96,26 +96,32 @@ class _CreateNGORequestState extends State<CreateNGORequest> {
             children: [
               Padding(
                 padding: const EdgeInsets.fromLTRB(0, 50, 0, 10),
-                child: Text(
-                  'NGO Request',
-                  style: TextStyle(
-                    fontSize: 20,
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                  ),
+                child: RichText(
+                  text: TextSpan(children: [
+                    TextSpan(text: 'NGO Request',
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20
+                      ),)
+                  ]),
                 ),
+
               ),
               SizedBox(height: 40.0),
               Padding(
                 padding: const EdgeInsets.fromLTRB(0, 0, 0, 5),
-                child: Text(
-                  'Title',
-                  style: TextStyle(
-                    fontSize: 17,
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                  ),
+                child: RichText(
+                  text: TextSpan(children: [
+                    TextSpan(text: 'Title',
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 187
+                      ),)
+                  ]),
                 ),
+
               ),
               TextField(
                 style: TextStyle(
@@ -144,12 +150,15 @@ class _CreateNGORequestState extends State<CreateNGORequest> {
               SizedBox(height: 40.0),
               Padding(
                 padding: const EdgeInsets.fromLTRB(20, 5, 0, 5),
-                child: Text(
-                  'Description',
-                  style: TextStyle(
-                      fontSize: 17,
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold),
+                child:RichText(
+                  text: TextSpan(children: [
+                    TextSpan(text: 'Description',
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 17
+                      ),)
+                  ]),
                 ),
               ),
               TextField(
@@ -181,13 +190,17 @@ class _CreateNGORequestState extends State<CreateNGORequest> {
               ),
               Padding(
                 padding: const EdgeInsets.fromLTRB(20, 5, 0, 5),
-                child: Text(
-                  'Requirements',
-                  style: TextStyle(
-                      fontSize: 17,
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold),
+                child: RichText(
+                  text: TextSpan(children: [
+                    TextSpan(text: 'Requirements',
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 17
+                      ),)
+                  ]),
                 ),
+
               ),
               TextField(
                 onChanged: (val) {
@@ -218,12 +231,15 @@ class _CreateNGORequestState extends State<CreateNGORequest> {
               ),
               Padding(
                 padding: const EdgeInsets.fromLTRB(20, 5, 0, 5),
-                child: Text(
-                  'Apply By Date',
-                  style: TextStyle(
-                      fontSize: 17,
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold),
+                child:RichText(
+                  text: TextSpan(children: [
+                    TextSpan(text: 'Apply By Date',
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 17
+                      ),)
+                  ]),
                 ),
               ),
               DateTimeField(
@@ -247,13 +263,17 @@ class _CreateNGORequestState extends State<CreateNGORequest> {
               ),
               Padding(
                 padding: const EdgeInsets.fromLTRB(20, 5, 0, 5),
-                child: Text(
-                  'Relevant Documents',
-                  style: TextStyle(
-                      fontSize: 17,
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold),
+                child: RichText(
+                  text: TextSpan(children: [
+                    TextSpan(text: 'Relevant Documents',
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18
+                      ),)
+                  ]),
                 ),
+
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 15),
@@ -266,7 +286,17 @@ class _CreateNGORequestState extends State<CreateNGORequest> {
                               side: BorderSide(color: Color(0xFFFFFFFF), width: 2.0)))),
                   child: Padding(
                     padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 15),
-                    child: Text('Upload', style: TextStyle(color: Color(0xFF3E5A81), fontSize: 18, fontWeight: FontWeight.bold)),
+                    child:RichText(
+                      text: TextSpan(children: [
+                        TextSpan(text: 'Upload',
+                          style: TextStyle(
+                              color: Color(0xFF3E5A81),
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18
+                          ),)
+                      ]),
+                    ),
+
                   ),
                   onPressed: () async {
                     FilePickerResult? result = await FilePicker.platform.pickFiles(
@@ -399,7 +429,17 @@ class _CreateNGORequestState extends State<CreateNGORequest> {
                     padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
-                      child: Text('Create Request', style: TextStyle(color: Color(0xFF3E5A81), fontSize: 20)),
+                      child: RichText(
+                        text: TextSpan(children: [
+                          TextSpan(text: 'Create Request',
+                            style: TextStyle(
+                                color: Color(0xFF3E5A81),
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18
+                            ),)
+                        ]),
+                      ),
+
                     ),
                   ),
                   decoration: BoxDecoration(
