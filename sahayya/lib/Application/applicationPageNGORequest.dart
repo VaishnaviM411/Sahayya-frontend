@@ -59,9 +59,20 @@ class _ApplicationPageNGORequestState extends State<ApplicationPageNGORequest> {
     });
 
     setState(() {
-      for(var i=0; i<theGiveOutDetailsData['requirements'].length; i++){
-        availableMaterial.add(MaterialInstance(val: theGiveOutDetailsData['requirements'][i]));
+      try{
+        for(var i=0; i<theGiveOutDetailsData['requirements'].length; i++){
+          availableMaterial.add(MaterialInstance(val: theGiveOutDetailsData['requirements'][i]));
+        }
       }
+      catch(e){}
+
+      try{
+        for(var i=0; i<theGiveOutDetailsData['available-material'].length; i++){
+          availableMaterial.add(MaterialInstance(val: theGiveOutDetailsData['available-material'][i]));
+        }
+      }
+      catch(e){}
+
     });
 
     setState(() {
@@ -244,8 +255,21 @@ class _ApplicationPageNGORequestState extends State<ApplicationPageNGORequest> {
                           child: Icon(Icons.check, color: Color(0xFF3E5A81),),
                           onPressed: () async {
 
+                            String theURL = "https://asia-south1-sahayya-9c930.cloudfunctions.net/api/company-application-pass-verdict/${requestData['username']}-${requestData['giveoutID']}";
+
                             if(requestData['giveoutID'] == null){
+
+                              //we aint gonna use the default URL
                               requestData['giveoutID'] = requestData['requestID'];
+
+                              //company-application-pass-verdict
+                              // setState(() {
+                              //   theURL = "https://asia-south1-sahayya-9c930.cloudfunctions.net/api/ngo-application-pass-verdict/"+requestData['username']+"-"+requestData['giveoutID'];
+                              // });
+                            }
+
+                            if(theDonorWhoIsGivingData['type'] != 'NGO'){
+                                theURL = "https://asia-south1-sahayya-9c930.cloudfunctions.net/api/ngo-application-pass-verdict/"+requestData['username']+"-"+requestData['giveoutID'];
                             }
 
                             Map<String, dynamic> theData = {
@@ -255,7 +279,7 @@ class _ApplicationPageNGORequestState extends State<ApplicationPageNGORequest> {
                             final dynamic object = encoder.convert(theData);
                             final response = await http.post(
                                 Uri.parse(
-                                    'https://asia-south1-sahayya-9c930.cloudfunctions.net/api/ngo-application-pass-verdict/${requestData['username']}-${requestData['giveoutID']}'),
+                                    theURL),
                                 headers: <String, String>{
                                   'Content-Type':
                                   'application/json; charset=UTF-8',
@@ -295,9 +319,23 @@ class _ApplicationPageNGORequestState extends State<ApplicationPageNGORequest> {
                           ),
                           child: Icon(Icons.close, color: Color(0xFF3E5A81),),
                           onPressed: () async {
+                            String theURL = "https://asia-south1-sahayya-9c930.cloudfunctions.net/api/company-application-pass-verdict/${requestData['username']}-${requestData['giveoutID']}";
+
                             if(requestData['giveoutID'] == null){
+
+                              //we aint gonna use the default URL
                               requestData['giveoutID'] = requestData['requestID'];
+
+                              //company-application-pass-verdict
+                              // setState(() {
+                              //   theURL = "https://asia-south1-sahayya-9c930.cloudfunctions.net/api/ngo-application-pass-verdict/"+requestData['username']+"-"+requestData['giveoutID'];
+                              // });
                             }
+
+                            if(theDonorWhoIsGivingData['type'] != 'NGO'){
+                                theURL = "https://asia-south1-sahayya-9c930.cloudfunctions.net/api/ngo-application-pass-verdict/"+requestData['username']+"-"+requestData['giveoutID'];
+                            }
+
                             Map<String, dynamic> theData = {
                               "verdict": "rejected"
                             };
@@ -305,7 +343,7 @@ class _ApplicationPageNGORequestState extends State<ApplicationPageNGORequest> {
                             final dynamic object = encoder.convert(theData);
                             final response = await http.post(
                                 Uri.parse(
-                                    'https://asia-south1-sahayya-9c930.cloudfunctions.net/api/ngo-application-pass-verdict/${requestData['username']}-${requestData['giveoutID']}'),
+                                    theURL),
                                 headers: <String, String>{
                                   'Content-Type':
                                   'application/json; charset=UTF-8',
@@ -313,9 +351,11 @@ class _ApplicationPageNGORequestState extends State<ApplicationPageNGORequest> {
                                 },
                                 body: object);
 
+                            print(response.body);
+
                             if(response.statusCode == 201){
                               final snackBar = SnackBar(
-                                content: Text('Proposal Rejected Successfully'),
+                                content: Text('Proposal Accepted Successfully'),
                               );
                               ScaffoldMessenger.of(context).showSnackBar(snackBar);
                               if (type == 'NGO') {
@@ -377,9 +417,16 @@ class _ApplicationPageNGORequestState extends State<ApplicationPageNGORequest> {
                             };
                             JsonEncoder encoder = JsonEncoder();
                             final dynamic object = encoder.convert(theData);
+
+                            String theURL = 'https://asia-south1-sahayya-9c930.cloudfunctions.net/api/transaction-completion-side-ngo-request';
+
+                            if(theDonorWhoIsGivingData['type'] != 'NGO'){
+                              theURL = "https://asia-south1-sahayya-9c930.cloudfunctions.net/api/transaction-completion-side-donor-giveout";
+                            }
+                            
                             final response = await http.post(
                                 Uri.parse(
-                                    'https://asia-south1-sahayya-9c930.cloudfunctions.net/api/transaction-completion-side-donor-giveout'),
+                                    theURL),
                                 headers: <String, String>{
                                   'Content-Type':
                                   'application/json; charset=UTF-8',
