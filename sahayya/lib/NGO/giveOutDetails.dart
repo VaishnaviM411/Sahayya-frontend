@@ -256,8 +256,11 @@ class _GiveOutDetailsState extends State<GiveOutDetails> {
                                         side: BorderSide(color: Color(0xFFFFFFFF), width: 2.0)))),
                             child: Text('Delete Give-Out', style: TextStyle(color: Color(0xFF3E5A81), fontWeight: FontWeight.bold, fontSize: 18)),
                             onPressed: () async {
+
+                              var response;
+
                               String theURL = 'https://asia-south1-sahayya-9c930.cloudfunctions.net/api/particular-give-out/${data['id']}';
-                              final response = await http.delete(Uri.parse(theURL), headers: {
+                              response = await http.delete(Uri.parse(theURL), headers: {
                                 HttpHeaders.authorizationHeader: TOKEN!
                               });
 
@@ -275,6 +278,28 @@ class _GiveOutDetailsState extends State<GiveOutDetails> {
                                   Navigator.pushReplacementNamed(context, '/compDonor');
                                 }
                               }
+
+                              theURL = 'https://asia-south1-sahayya-9c930.cloudfunctions.net/api/particular-donation-request/${data['id']}';
+                              response = await http.delete(Uri.parse(theURL), headers: {
+                                HttpHeaders.authorizationHeader: TOKEN!
+                              });
+
+                              if(response.statusCode == 200){
+                                final snackBar = SnackBar(
+                                  content: Text('Give-Out deleted successfully'),
+                                );
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(snackBar);
+
+                                if (TYPE == 'NGO') {
+                                  Navigator.pushReplacementNamed(context, '/ngoDashboard');
+                                } else if (TYPE == 'Donor') {
+                                  Navigator.pushReplacementNamed(context, '/indvDonor');
+                                } else if (TYPE == 'Company') {
+                                  Navigator.pushReplacementNamed(context, '/compDonor');
+                                }
+                              }
+
                               final snackBar = SnackBar(
                                 content: Text('Some error occurred'),
                               );

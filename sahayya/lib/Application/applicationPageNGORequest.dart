@@ -243,6 +243,11 @@ class _ApplicationPageNGORequestState extends State<ApplicationPageNGORequest> {
                           ),
                           child: Icon(Icons.check, color: Color(0xFF3E5A81),),
                           onPressed: () async {
+
+                            if(requestData['giveoutID'] == null){
+                              requestData['giveoutID'] = requestData['requestID'];
+                            }
+
                             Map<String, dynamic> theData = {
                               "verdict": "accepted"
                             };
@@ -290,6 +295,9 @@ class _ApplicationPageNGORequestState extends State<ApplicationPageNGORequest> {
                           ),
                           child: Icon(Icons.close, color: Color(0xFF3E5A81),),
                           onPressed: () async {
+                            if(requestData['giveoutID'] == null){
+                              requestData['giveoutID'] = requestData['requestID'];
+                            }
                             Map<String, dynamic> theData = {
                               "verdict": "rejected"
                             };
@@ -360,6 +368,9 @@ class _ApplicationPageNGORequestState extends State<ApplicationPageNGORequest> {
                           ),
                           child: Icon(Icons.check, color: Color(0xFF3E5A81),),
                           onPressed: () async {
+                            if(requestData['giveoutID'] == null){
+                              requestData['giveoutID'] = requestData['requestID'];
+                            }
                             Map<String, dynamic> theData = {
                               "id": '${requestData['username']}-${requestData['giveoutID']}',
                               "username": username

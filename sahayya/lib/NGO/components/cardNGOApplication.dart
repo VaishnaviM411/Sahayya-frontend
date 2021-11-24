@@ -55,11 +55,16 @@ class _CardNGOApplicationState extends State<CardNGOApplication> {
               children: [
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 8),
-                  child: Text('${widget.instance['title']}', style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.w700,
-                      fontSize: 20
-                  ),),
+                  child: RichText(
+                    text: TextSpan(children: [
+                      TextSpan(text: '${widget.instance['title']}',
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w700,
+                            fontSize: 20
+                        ),)
+                    ]),
+                  ),
                 ),
               ],
             ),
@@ -71,11 +76,17 @@ class _CardNGOApplicationState extends State<CardNGOApplication> {
               children: [
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 5),
-                  child: Text('${widget.instance['description']}', style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.w500,
-                      fontSize: 16
-                  ),),
+                  child: RichText(
+                    text: TextSpan(children: [
+                      TextSpan(text: '${widget.instance['description']}',
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w500,
+                            fontSize: 16
+                        ),)
+                    ]),
+                  ),
+
                 ),
               ],
             ),
@@ -84,12 +95,18 @@ class _CardNGOApplicationState extends State<CardNGOApplication> {
               children: [
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 5),
-                  child: Text('${widget.instance['applyBy']}', style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w800,
-                    fontSize: 16,
-                    fontStyle: FontStyle.italic,
-                  ),),
+                  child: RichText(
+                    text: TextSpan(children: [
+                      TextSpan(text: '${widget.instance['applyBy']}',
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w800,
+                            fontStyle: FontStyle.italic,
+                            fontSize: 16
+                        ),)
+                    ]),
+                  ),
+
                 ),
               ],
             ),
@@ -190,10 +207,17 @@ class _MaterialInstanceState extends State<MaterialInstance> {
       width: double.infinity,
       padding: EdgeInsets.all(5),
       child: Center(
-        child: Text('${widget.val}', style: TextStyle(
-            color: Color(0xFF3E5A81),
-            fontWeight: FontWeight.w700
-        ),),
+        child: RichText(
+          text: TextSpan(children: [
+            TextSpan(text: '${widget.val}',
+              style: TextStyle(
+                  color: Color(0xFF3E5A81),
+                  fontWeight: FontWeight.w700,
+                  fontSize: 20
+              ),)
+          ]),
+        ),
+
       ),
       decoration: BoxDecoration(
         color: Colors.white,

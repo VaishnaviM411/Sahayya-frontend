@@ -289,8 +289,11 @@ class _RequestDetailsState extends State<RequestDetails> {
                               ),),
 
                             onPressed: () async {
+
+                             var response;
+
                               String theURL = 'https://asia-south1-sahayya-9c930.cloudfunctions.net/api/particular-donation-request/${data['id']}';
-                              final response = await http.delete(Uri.parse(theURL), headers: {
+                              response = await http.delete(Uri.parse(theURL), headers: {
                                 HttpHeaders.authorizationHeader: TOKEN!
                               });
 
@@ -309,6 +312,29 @@ class _RequestDetailsState extends State<RequestDetails> {
                                   Navigator.pushReplacementNamed(context, '/compDonor');
                                 }
                               }
+
+                             theURL = 'https://asia-south1-sahayya-9c930.cloudfunctions.net/api/particular-give-out/${data['id']}';
+                             response = await http.delete(Uri.parse(theURL), headers: {
+                               HttpHeaders.authorizationHeader: TOKEN!
+                             });
+
+                             if(response.statusCode == 200){
+                               final snackBar = SnackBar(
+                                 content: Text('Give-Out deleted successfully'),
+                               );
+                               ScaffoldMessenger.of(context)
+                                   .showSnackBar(snackBar);
+
+                               if (TYPE == 'NGO') {
+                                 Navigator.pushReplacementNamed(context, '/ngoDashboard');
+                               } else if (TYPE == 'Donor') {
+                                 Navigator.pushReplacementNamed(context, '/indvDonor');
+                               } else if (TYPE == 'Company') {
+                                 Navigator.pushReplacementNamed(context, '/compDonor');
+                               }
+                             }
+
+
                               final snackBar = SnackBar(
                                 content: Text('Some error occurred'),
                               );
@@ -419,7 +445,7 @@ class _ApplicationInstanceState extends State<ApplicationInstance> {
                   padding: const EdgeInsets.symmetric(vertical: 5),
                   child: RichText(
                     text: TextSpan(children:[
-                      TextSpan(text:'${widget.data['e']}',
+                      TextSpan(text:'${widget.data['status']}',
                         style: TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.w600,
@@ -427,7 +453,7 @@ class _ApplicationInstanceState extends State<ApplicationInstance> {
 
                             fontSize: 15),
                       ),],
-                    ),), //akku wait kar naaa okkii sorry kr tera
+                    ),),
                 ),
               ],
             ),
@@ -529,11 +555,16 @@ class _DocumentInstanceState extends State<DocumentInstance> {
         child: Container(
           padding: EdgeInsets.all(5),
           child: Center(
-            child: Text('Document ${widget.index}', style: TextStyle(
-              color: Color(0xFF3E5A81),
-              fontSize: 18,
-              fontWeight: FontWeight.w700,
-            ),),
+            child: RichText(
+              text: TextSpan(children: [
+                TextSpan(text: 'Document ${widget.index}',
+                  style: TextStyle(
+                      color: Color(0xFF3E5A81),
+                      fontWeight: FontWeight.w700,
+                      fontSize: 18
+                  ),)
+              ]),
+            ),
           ),
 
         ),
@@ -568,11 +599,16 @@ class _MaterialInstanceState extends State<MaterialInstance> {
       width: double.infinity,
       padding: EdgeInsets.all(5),
       child: Center(
-        child: Text('${widget.val}', style: TextStyle(
-          color: Color(0xFF3E5A81),
-          fontSize: 18,
-          fontWeight: FontWeight.w700,
-        ),),
+        child:RichText(
+          text: TextSpan(children: [
+            TextSpan(text: '${widget.val}',
+              style: TextStyle(
+                  color: Color(0xFF3E5A81),
+                  fontWeight: FontWeight.w700,
+                  fontSize: 18
+              ),)
+          ]),
+        ),
       ),
       decoration: BoxDecoration(
         color: Colors.white,

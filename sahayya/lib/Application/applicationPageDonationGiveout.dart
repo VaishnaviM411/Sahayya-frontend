@@ -238,6 +238,9 @@ class _ApplicationPageDonationGiveOutState extends State<ApplicationPageDonation
                           ),
                           child: Icon(Icons.check, color: Color(0xFF3E5A81),),
                           onPressed: () async {
+                            if(requestData['requestID'] == null){
+                              requestData['requestID'] = requestData['giveoutID'];
+                            }
                             Map<String, dynamic> theData = {
                               "verdict": "accepted"
                             };
@@ -285,6 +288,9 @@ class _ApplicationPageDonationGiveOutState extends State<ApplicationPageDonation
                           ),
                           child: Icon(Icons.close, color: Color(0xFF3E5A81),),
                           onPressed: () async {
+                            if(requestData['requestID'] == null){
+                              requestData['requestID'] = requestData['giveoutID'];
+                            }
                             Map<String, dynamic> theData = {
                               "verdict": "rejected"
                             };
@@ -355,6 +361,9 @@ class _ApplicationPageDonationGiveOutState extends State<ApplicationPageDonation
                           ),
                           child: Icon(Icons.check, color: Color(0xFF3E5A81),),
                           onPressed: () async {
+                            if(requestData['requestID'] == null){
+                              requestData['requestID'] = requestData['giveoutID'];
+                            }
                             Map<String, dynamic> theData = {
                               "id": '${requestData['username']}-${requestData['requestID']}',
                               "username": username
