@@ -99,11 +99,16 @@ class _CompanyDataState extends State<CompanyData> {
             children: [
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 20),
-                child: Text('${data['name']}', style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w700,
-                    fontSize: 30
-                ),),
+                child:RichText(
+                  text: TextSpan(children: [
+                    TextSpan(text: '${data['name']}',
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w700,
+                          fontSize: 30
+                      ),)
+                  ]),
+                ),
               ),
             ],
           ),
@@ -112,11 +117,16 @@ class _CompanyDataState extends State<CompanyData> {
             children: [
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 5),
-                child: Text(statusOfCompany, style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w500,
-                    fontSize: 20
-                ),),
+                child: RichText(
+                  text: TextSpan(children: [
+                    TextSpan(text: statusOfCompany,
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 20
+                      ),)
+                  ]),
+                ),
               ),
             ],
           ),
@@ -132,11 +142,17 @@ class _CompanyDataState extends State<CompanyData> {
             children: [
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 5),
-                child: Text('${data['description']}', style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w500,
-                    fontSize: 20
-                ),),
+                child: RichText(
+                  text: TextSpan(children: [
+                    TextSpan(text: '${data['description']}',
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 20
+                      ),)
+                  ]),
+                ),
+
               ),
             ],
           ),
@@ -148,12 +164,13 @@ class _CompanyDataState extends State<CompanyData> {
             children: [
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 5),
-                child: Text('${data['username']}', style: TextStyle(
+                child:Text('${data['email']}', style: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.w600,
                     fontStyle: FontStyle.italic,
                     fontSize: 16
                 ),),
+
               ),
             ],
           ),
@@ -165,12 +182,17 @@ class _CompanyDataState extends State<CompanyData> {
             children: [
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 5),
-                child: Text('${data['email']}', style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w600,
-                    fontStyle: FontStyle.italic,
-                    fontSize: 16
-                ),),
+                child: RichText(
+                  text: TextSpan(children: [
+                    TextSpan(text: '${data['email']}',
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w600,
+                          fontStyle: FontStyle.italic,
+                          fontSize: 16
+                      ),)
+                  ]),
+                ),
               ),
             ],
           ),
@@ -180,26 +202,31 @@ class _CompanyDataState extends State<CompanyData> {
             children: [
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 5),
-                child: Text('${data['contactNo']}', style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w600,
-                    fontStyle: FontStyle.italic,
-                    fontSize: 16
-                ),),
-              ),
-            ],
-          ),
-          SizedBox(height: 20,),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 5),
-                child: Text('${data['address']}', style: TextStyle(
+                child:Text('${data['address']}', style: TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.w500,
                   fontSize: 16,
                 ),),
+              ),
+            ],
+          ),
+          SizedBox(height: 20,),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 5),
+                child:RichText(
+                  text: TextSpan(children: [
+                    TextSpan(text: '${data['address']}',
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w500,
+
+                          fontSize: 16
+                      ),)
+                  ]),
+                ),
               ),
             ],
           ),

@@ -465,6 +465,13 @@ class _ApplicationInstanceState extends State<ApplicationInstance> {
           "theDonorWhoIsGivingData": theDonorWhoIsGivingData,
           "id": widget.data['giveoutID']
         });
+
+        // Navigator.pushNamed(context, '/applicationPageDonationGiveout', arguments: {
+        //   "requestData": requestData,
+        //   "theGiveOutDetailsData": theGiveOutDetailsData,
+        //   "theDonorWhoIsGivingData": theDonorWhoIsGivingData,
+        //   "id": widget.data['giveoutID']
+        // });
         return;
     },
     );

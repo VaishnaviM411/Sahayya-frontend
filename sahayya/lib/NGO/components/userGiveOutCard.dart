@@ -147,11 +147,18 @@ class _UserGiveOutCardState extends State<UserGiveOutCard> {
           return;
         }
 
-        Navigator.pushNamed(context, '/applicationPageDonationGiveout', arguments: {
-          "requestData": requestData,
-          "theGiveOutDetailsData": theGiveOutDetailsData,
-          "theDonorWhoIsGivingData": theDonorWhoIsGivingData,
-          "id": widget.instance['requestID']
+        // Navigator.pushNamed(context, '/applicationPageDonationGiveout', arguments: {
+        //   "requestData": requestData,
+        //   "theGiveOutDetailsData": theGiveOutDetailsData,
+        //   "theDonorWhoIsGivingData": theDonorWhoIsGivingData,
+        //   "id": widget.instance['requestID']
+        // });
+
+        Navigator.pushNamed(context, '/applicationPageNGORequest', arguments: {
+        "requestData": requestData,
+        "theGiveOutDetailsData": theGiveOutDetailsData,
+        "theDonorWhoIsGivingData": theDonorWhoIsGivingData,
+        "id": widget.instance['requestID']
         });
         return;
       },

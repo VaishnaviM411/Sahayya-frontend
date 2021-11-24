@@ -58,8 +58,8 @@ class _ApplicationPageDonationGiveOutState extends State<ApplicationPageDonation
     });
 
     setState(() {
-      for(var i=0; i<theGiveOutDetailsData['available-material'].length; i++){
-        availableMaterial.add(MaterialInstance(val: theGiveOutDetailsData['available-material'][i]));
+      for(var i=0; i<theGiveOutDetailsData['requirements'].length; i++){
+        availableMaterial.add(MaterialInstance(val: theGiveOutDetailsData['requirements'][i]));
       }
     });
 
@@ -103,6 +103,7 @@ class _ApplicationPageDonationGiveOutState extends State<ApplicationPageDonation
         child: SingleChildScrollView(
           child: Column(
             children: [
+              Text("Fuck my life", style: TextStyle(fontSize: 32),),
               Container(
                 decoration: BoxDecoration(
                   color: Colors.transparent,
