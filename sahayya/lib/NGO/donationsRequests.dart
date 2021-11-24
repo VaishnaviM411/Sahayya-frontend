@@ -67,8 +67,6 @@ class _DonationsRequestState extends State<DonationsRequest> {
       HttpHeaders.authorizationHeader: token!
     });
 
-    print('hippo '+allInstancesCard2.length.toString());
-
 
     if(response.statusCode == 200){
       Map<dynamic, dynamic> resp = jsonDecode(response.body);

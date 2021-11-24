@@ -162,6 +162,17 @@ class _GiveOutCardState extends State<GiveOutCard> {
 
               data['requirements'] = data['available-material'];
 
+
+              if(TYPE == 'NGO'){
+                Navigator.pushNamed(context, '/giveOutDetails', arguments: {
+                  "data": data,
+                  "userData": userDetails,
+                  "forum": forum,
+                  "applications": applications['data']
+                });
+                return;
+              }
+
               Navigator.pushNamed(context, '/requestDetails', arguments: {
                 "data": data,
                 "userData": userDetails,

@@ -117,7 +117,7 @@ class _CreateNGORequestState extends State<CreateNGORequest> {
                       style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
-                          fontSize: 187
+                          fontSize: 18
                       ),)
                   ]),
                 ),
