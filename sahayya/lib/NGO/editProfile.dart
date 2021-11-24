@@ -23,9 +23,7 @@ class EditNGOProfile extends StatefulWidget {
   _EditNGOProfileState createState() => _EditNGOProfileState();
 }
 
-
 class _EditNGOProfileState extends State<EditNGOProfile> {
-
   String username = '',
       email = '',
       name = '',
@@ -34,7 +32,8 @@ class _EditNGOProfileState extends State<EditNGOProfile> {
       address = '',
       description = '',
       password = '',
-      imageURL = 'https://firebasestorage.googleapis.com/v0/b/bizrep-b0184.appspot.com/o/profile_picture.png?alt=media&token=f23c3431-328e-47d6-8e0c-a1dfabbf13bf';
+      imageURL =
+          'https://firebasestorage.googleapis.com/v0/b/bizrep-b0184.appspot.com/o/profile_picture.png?alt=media&token=f23c3431-328e-47d6-8e0c-a1dfabbf13bf';
 
   double latitude = 0.0, longitude = 0.0;
 
@@ -110,7 +109,7 @@ class _EditNGOProfileState extends State<EditNGOProfile> {
   }
 
   Map<String, dynamic> entityData = {};
-  String? TOKEN='', USERNAME='', TYPE='';
+  String? TOKEN = '', USERNAME = '', TYPE = '';
 
   void getStorageValues() async {
     TOKEN = await storage.read(key: 'token');
@@ -119,17 +118,17 @@ class _EditNGOProfileState extends State<EditNGOProfile> {
   }
 
   void getUserData() async {
-
     TOKEN = await storage.read(key: 'token');
     USERNAME = await storage.read(key: 'username');
     TYPE = await storage.read(key: 'type');
 
-    String theURL = 'https://asia-south1-sahayya-9c930.cloudfunctions.net/api/profile/'+USERNAME!;
-    final response = await http.get(Uri.parse(theURL), headers: {
-      HttpHeaders.authorizationHeader: TOKEN!
-    });
+    String theURL =
+        'https://asia-south1-sahayya-9c930.cloudfunctions.net/api/profile/' +
+            USERNAME!;
+    final response = await http.get(Uri.parse(theURL),
+        headers: {HttpHeaders.authorizationHeader: TOKEN!});
 
-    if(response.statusCode == 200){
+    if (response.statusCode == 200) {
       print(response.statusCode);
       Map<String, dynamic> resp = jsonDecode(response.body);
       setState(() {
@@ -161,8 +160,7 @@ class _EditNGOProfileState extends State<EditNGOProfile> {
 
   @override
   Widget build(BuildContext context) {
-
-    if(username == null){
+    if (username == null) {
       Navigator.pushReplacementNamed(context, '/start');
     }
 
@@ -224,458 +222,518 @@ class _EditNGOProfileState extends State<EditNGOProfile> {
         padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 40.0),
         child: SingleChildScrollView(
           child:
-              Column(crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    SizedBox(height: 10.0),
-                    Text('Edit Profile', style: TextStyle(
+              Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+            SizedBox(height: 10.0),
+            RichText(
+              text: TextSpan(children: [
+                TextSpan(
+                  text: 'Edit Profile',
+                  style: TextStyle(
                       color: Colors.white,
-                      fontSize: 23,
-                      fontWeight: FontWeight.bold
-                    ),),
-                    SizedBox(
-                      height: 35,
-                    ),
-                    GestureDetector(
-                      onTap: () async{
-                        await getImage();
-                      },
-                      child: CircleAvatar(
-                        radius: 70,
-                        child: ClipOval(
-                          child: (_image != null)
-                              ? Image.file(
-                            _image!,
-                            width: 140,
-                            height: 140,
-                            fit: BoxFit.cover,
-                          )
-                              : Container(
-                            color: Colors.white,
-                          ),
+                      fontWeight: FontWeight.bold,
+                      fontSize: 23),
+                )
+              ]),
+            ),
+            SizedBox(
+              height: 35,
+            ),
+            GestureDetector(
+              onTap: () async {
+                await getImage();
+              },
+              child: CircleAvatar(
+                radius: 70,
+                child: ClipOval(
+                  child: (_image != null)
+                      ? Image.file(
+                          _image!,
+                          width: 140,
+                          height: 140,
+                          fit: BoxFit.cover,
+                        )
+                      : Container(
+                          color: Colors.white,
                         ),
-                      ),
-                    ),
-                    SizedBox(height: 40.0),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(20, 5, 0, 5),
-                      child: Text('Name', style: TextStyle(
-                        fontSize: 17,
+                ),
+              ),
+            ),
+            SizedBox(height: 40.0),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(20, 5, 0, 5),
+              child: RichText(
+                text: TextSpan(children: [
+                  TextSpan(
+                    text: 'Name',
+                    style: TextStyle(
                         color: Colors.white,
-                        fontWeight: FontWeight.bold
-                      ),),
-                    ),
-                    TextField(
-                      style: TextStyle(
-                        fontSize: 15.0,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 17),
+                  )
+                ]),
+              ),
+            ),
+            TextField(
+              style: TextStyle(
+                fontSize: 15.0,
+                color: Colors.white,
+              ),
+              enabled: true,
+              decoration: InputDecoration(
+                filled: true,
+                fillColor: Color(0xFF3E5A81),
+                hintStyle: TextStyle(
+                  color: Colors.white,
+                ),
+                border: border(context),
+                enabledBorder: border(context),
+                focusedBorder: focusBorder(context),
+                hintText: '$name',
+              ),
+              textInputAction: TextInputAction.next,
+              onChanged: (val) {
+                setState(() {
+                  name = val;
+                });
+              },
+            ),
+            SizedBox(height: 40.0),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(20, 5, 0, 5),
+              child: RichText(
+                text: TextSpan(children: [
+                  TextSpan(
+                    text: 'Email',
+                    style: TextStyle(
                         color: Colors.white,
-                      ),
-                      enabled: true,
-                      decoration: InputDecoration(
-                        filled: true,
-                        fillColor: Color(0xFF3E5A81),
-                        hintStyle: TextStyle(
-                          color: Colors.white,
-                        ),
-                        border: border(context),
-                        enabledBorder: border(context),
-                        focusedBorder: focusBorder(context),
-                        hintText: '$name',
-                      ),
-                      textInputAction: TextInputAction.next,
-                      onChanged: (val) {
-                        setState(() {
-                          name = val;
-                        });
-                      },
-                    ),
-                    SizedBox(height: 40.0),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(20, 5, 0, 5),
-                      child: Text('Email', style: TextStyle(
-                          fontSize: 17,
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold
-                      ),),
-                    ),
-                    TextField(
-                      style: TextStyle(
-                        fontSize: 15.0,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 17),
+                  )
+                ]),
+              ),
+            ),
+            TextField(
+              style: TextStyle(
+                fontSize: 15.0,
+                color: Colors.white,
+              ),
+              enabled: true,
+              decoration: InputDecoration(
+                filled: true,
+                fillColor: Color(0xFF3E5A81),
+                hintStyle: TextStyle(
+                  color: Colors.white,
+                ),
+                border: border(context),
+                enabledBorder: border(context),
+                focusedBorder: focusBorder(context),
+                hintText: '$email',
+              ),
+              textInputAction: TextInputAction.next,
+              onChanged: (val) {
+                setState(() {
+                  email = val;
+                });
+              },
+            ),
+            SizedBox(height: 40.0),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(20, 5, 0, 5),
+              child: RichText(
+                text: TextSpan(children: [
+                  TextSpan(
+                    text: 'Description',
+                    style: TextStyle(
                         color: Colors.white,
-                      ),
-                      enabled: true,
-                      decoration: InputDecoration(
-                        filled: true,
-                        fillColor: Color(0xFF3E5A81),
-                        hintStyle: TextStyle(
-                          color: Colors.white,
-                        ),
-                        border: border(context),
-                        enabledBorder: border(context),
-                        focusedBorder: focusBorder(context),
-                        hintText: '$email',
-                      ),
-                      textInputAction: TextInputAction.next,
-                      onChanged: (val) {
-                        setState(() {
-                          email = val;
-                        });
-                      },
-                    ),
-                    SizedBox(height: 40.0),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(20, 5, 0, 5),
-                      child: Text('Description', style: TextStyle(
-                          fontSize: 17,
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold
-                      ),),
-                    ),
-                    TextField(
-                      onChanged: (val) {
-                        setState(() {
-                          description = val;
-                        });
-                      },
-                      style: TextStyle(
-                        fontSize: 15.0,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 17),
+                  )
+                ]),
+              ),
+            ),
+            TextField(
+              onChanged: (val) {
+                setState(() {
+                  description = val;
+                });
+              },
+              style: TextStyle(
+                fontSize: 15.0,
+                color: Colors.white,
+              ),
+              maxLines: 4,
+              keyboardType: TextInputType.multiline,
+              decoration: InputDecoration(
+                hintText: "$description",
+                filled: true,
+                fillColor: Color(0xFF3E5A81),
+                hintStyle: TextStyle(
+                  color: Colors.white,
+                ),
+                border: border(context),
+                enabledBorder: border(context),
+                focusedBorder: focusBorder(context),
+              ),
+            ),
+            SizedBox(
+              height: 40,
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(20, 5, 0, 5),
+              child: RichText(
+                text: TextSpan(children: [
+                  TextSpan(
+                    text: 'Address',
+                    style: TextStyle(
                         color: Colors.white,
-                      ),
-                      maxLines: 4,
-                      keyboardType: TextInputType.multiline,
-                      decoration: InputDecoration(
-                        hintText: "$description",
-                        filled: true,
-                        fillColor: Color(0xFF3E5A81),
-                        hintStyle: TextStyle(
-                          color: Colors.white,
-                        ),
-                        border: border(context),
-                        enabledBorder: border(context),
-                        focusedBorder: focusBorder(context),
-                      ),
-                    ),
-                    SizedBox(height: 40,),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(20, 5, 0, 5),
-                      child: Text('Address', style: TextStyle(
-                          fontSize: 17,
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold
-                      ),),
-                    ),
-                    TextField(
-                      style: TextStyle(
-                        fontSize: 15.0,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 17),
+                  )
+                ]),
+              ),
+            ),
+            TextField(
+              style: TextStyle(
+                fontSize: 15.0,
+                color: Colors.white,
+              ),
+              enabled: true,
+              decoration: InputDecoration(
+                filled: true,
+                fillColor: Color(0xFF3E5A81),
+                hintStyle: TextStyle(
+                  color: Colors.white,
+                ),
+                border: border(context),
+                enabledBorder: border(context),
+                focusedBorder: focusBorder(context),
+                hintText: '$address',
+              ),
+              textInputAction: TextInputAction.next,
+              onChanged: (val) {
+                setState(() {
+                  address = val;
+                });
+              },
+            ),
+            SizedBox(
+              height: 40,
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(20, 5, 0, 5),
+              child: RichText(
+                text: TextSpan(children: [
+                  TextSpan(
+                    text: 'City',
+                    style: TextStyle(
                         color: Colors.white,
-                      ),
-                      enabled: true,
-                      decoration: InputDecoration(
-                        filled: true,
-                        fillColor: Color(0xFF3E5A81),
-                        hintStyle: TextStyle(
-                          color: Colors.white,
-                        ),
-                        border: border(context),
-                        enabledBorder: border(context),
-                        focusedBorder: focusBorder(context),
-                        hintText: '$address',
-                      ),
-                      textInputAction: TextInputAction.next,
-                      onChanged: (val) {
-                        setState(() {
-                          address = val;
-                        });
-                      },
-                    ),
-                    SizedBox(height: 40,),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(20, 5, 0, 5),
-                      child: Text('City', style: TextStyle(
-                          fontSize: 17,
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold
-                      ),),
-                    ),
-                    TextField(
-                      style: TextStyle(
-                        fontSize: 15.0,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 17),
+                  )
+                ]),
+              ),
+            ),
+            TextField(
+              style: TextStyle(
+                fontSize: 15.0,
+                color: Colors.white,
+              ),
+              enabled: true,
+              decoration: InputDecoration(
+                hintText: '$city',
+                filled: true,
+                fillColor: Color(0xFF3E5A81),
+                hintStyle: TextStyle(
+                  color: Colors.white,
+                ),
+                border: border(context),
+                enabledBorder: border(context),
+                focusedBorder: focusBorder(context),
+              ),
+              textInputAction: TextInputAction.next,
+              onChanged: (val) {
+                setState(() {
+                  city = val;
+                });
+              },
+            ),
+            SizedBox(
+              height: 40,
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(20, 5, 0, 5),
+              child: RichText(
+                text: TextSpan(children: [
+                  TextSpan(
+                    text: 'State',
+                    style: TextStyle(
                         color: Colors.white,
-                      ),
-                      enabled: true,
-                      decoration: InputDecoration(
-                        hintText: '$city',
-                        filled: true,
-                        fillColor: Color(0xFF3E5A81),
-                        hintStyle: TextStyle(
-                          color: Colors.white,
-                        ),
-                        border: border(context),
-                        enabledBorder: border(context),
-                        focusedBorder: focusBorder(context),
-                      ),
-                      textInputAction: TextInputAction.next,
-                      onChanged: (val) {
-                        setState(() {
-                          city = val;
-                        });
-                      },
-                    ),
-                    SizedBox(height: 40,),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(20, 5, 0, 5),
-                      child: Text('State', style: TextStyle(
-                          fontSize: 17,
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold
-                      ),),
-                    ),
-                    TextField(
-                      style: TextStyle(
-                        fontSize: 15.0,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 17),
+                  )
+                ]),
+              ),
+            ),
+            TextField(
+              style: TextStyle(
+                fontSize: 15.0,
+                color: Colors.white,
+              ),
+              enabled: true,
+              decoration: InputDecoration(
+                filled: true,
+                fillColor: Color(0xFF3E5A81),
+                hintStyle: TextStyle(
+                  color: Colors.white,
+                ),
+                border: border(context),
+                enabledBorder: border(context),
+                focusedBorder: focusBorder(context),
+                hintText: '$state',
+              ),
+              textInputAction: TextInputAction.next,
+              onChanged: (val) {
+                setState(() {
+                  state = val;
+                });
+              },
+            ),
+            SizedBox(
+              height: 40,
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(20, 5, 0, 5),
+              child: RichText(
+                text: TextSpan(children: [
+                  TextSpan(
+                    text: 'Password',
+                    style: TextStyle(
                         color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 17),
+                  )
+                ]),
+              ),
+            ),
+            TextField(
+              style: TextStyle(
+                fontSize: 15.0,
+                color: Colors.white,
+              ),
+              enabled: true,
+              decoration: InputDecoration(
+                hintText: 'Enter New Password',
+                filled: true,
+                fillColor: Color(0xFF3E5A81),
+                hintStyle: TextStyle(
+                  color: Colors.white,
+                ),
+                border: border(context),
+                enabledBorder: border(context),
+                focusedBorder: focusBorder(context),
+              ),
+              textInputAction: TextInputAction.next,
+              onChanged: (val) {
+                setState(() {
+                  password = val;
+                });
+              },
+            ),
+            SizedBox(
+              height: 40,
+            ),
+            Container(
+              height: 45.0,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(40),
+                color: Color(0xFF3E5A81),
+                boxShadow: [
+                  BoxShadow(color: Colors.white70, spreadRadius: 1),
+                ],
+              ),
+              child: ButtonTheme(
+                alignedDropdown: true,
+                child: DropdownButton<String>(
+                  value: _chosenSector,
+                  style: TextStyle(color: Colors.white),
+                  dropdownColor: Color(0xFF3E5A81),
+                  underline: Container(
+                    height: 2,
+                    color: Colors.transparent,
+                  ),
+                  iconSize: 50.0,
+                  iconEnabledColor: Colors.white70,
+                  isExpanded: true,
+                  items: allTheSectors
+                      .map<DropdownMenuItem<String>>((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(
+                        value,
                       ),
-                      enabled: true,
-                      decoration: InputDecoration(
-                        filled: true,
-                        fillColor: Color(0xFF3E5A81),
-                        hintStyle: TextStyle(
-                          color: Colors.white,
-                        ),
-                        border: border(context),
-                        enabledBorder: border(context),
-                        focusedBorder: focusBorder(context),
-                        hintText: '$state',
-                      ),
-                      textInputAction: TextInputAction.next,
-                      onChanged: (val) {
-                        setState(() {
-                          state = val;
-                        });
-                      },
-                    ),
-                    SizedBox(height: 40,),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(20, 5, 0, 5),
-                      child: Text('Password', style: TextStyle(
-                          fontSize: 17,
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold
-                      ),),
-                    ),
-                    TextField(
-                      style: TextStyle(
-                        fontSize: 15.0,
+                    );
+                  }).toList(),
+                  hint: Text(
+                    "    Sectors",
+                    style: TextStyle(
                         color: Colors.white,
-                      ),
-                      enabled: true,
-                      decoration: InputDecoration(
-                        hintText: 'Enter New Password',
-                        filled: true,
-                        fillColor: Color(0xFF3E5A81),
-                        hintStyle: TextStyle(
-                          color: Colors.white,
-                        ),
-                        border: border(context),
-                        enabledBorder: border(context),
-                        focusedBorder: focusBorder(context),
-                      ),
-                      textInputAction: TextInputAction.next,
-                      onChanged: (val) {
-                        setState(() {
-                          password = val;
-                        });
-                      },
-                    ),
-                    SizedBox(height: 40,),
-                    Container(
-                      height: 45.0,
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(40),
-                        color: Color(0xFF3E5A81),
-                        boxShadow: [
-                          BoxShadow(color: Colors.white70, spreadRadius: 1),
-                        ],
-                      ),
-                      child: ButtonTheme(
-                        alignedDropdown: true,
-                        child: DropdownButton<String>(
-                          value: _chosenSector,
-                          style: TextStyle(color: Colors.white),
-                          dropdownColor: Color(0xFF3E5A81),
-                          underline: Container(
-                            height: 2,
-                            color: Colors.transparent,
-                          ),
-                          iconSize: 50.0,
-                          iconEnabledColor: Colors.white70,
-                          isExpanded: true,
-                          items: allTheSectors
-                              .map<DropdownMenuItem<String>>((String value) {
-                            return DropdownMenuItem<String>(
-                              value: value,
-                              child: Text(
-                                value,
-                              ),
-                            );
-                          }).toList(),
-                          hint: Text(
-                            "    Sectors",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 15,
-                                fontWeight: FontWeight.w600),
-                          ),
-                          onChanged: (String? value) {
-                            setState(() {
-                              myTrigger = 24;
-                              allTheSectors.remove(value);
-                              selectedSectors.add(value!);
-                              selectedSectorInstances.add(
-                                  SectorInstance(value, deleteSectorInstance));
-                              _chosenSector = allTheSectors[0];
-                            });
-                          },
-                        ),
-                      ),
-                    ),
-                    Column(
-                      children: selectedSectorInstances,
-                    ),
-                    SizedBox(height: 65,),
-                    ElevatedButton(
-                      onPressed: () async {
-                        setState(() {
-                            type = 'NGO';
-                          });
-                          if (name.length == 0) {
-                            final snackBar = SnackBar(
-                              content: Text('Please enter Name'),
-                            );
-                            ScaffoldMessenger.of(context)
-                                .showSnackBar(snackBar);
-                            return;
-                          }
-                        if (email.length == 0) {
-                          final snackBar = SnackBar(
-                            content: Text('Please enter a email'),
-                          );
-                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                          return;
-                        }
+                        fontSize: 15,
+                        fontWeight: FontWeight.w600),
+                  ),
+                  onChanged: (String? value) {
+                    setState(() {
+                      myTrigger = 24;
+                      allTheSectors.remove(value);
+                      selectedSectors.add(value!);
+                      selectedSectorInstances
+                          .add(SectorInstance(value, deleteSectorInstance));
+                      _chosenSector = allTheSectors[0];
+                    });
+                  },
+                ),
+              ),
+            ),
+            Column(
+              children: selectedSectorInstances,
+            ),
+            SizedBox(
+              height: 65,
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                setState(() {
+                  type = 'NGO';
+                });
+                if (name.length == 0) {
+                  final snackBar = SnackBar(
+                    content: Text('Please enter Name'),
+                  );
+                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                  return;
+                }
+                if (email.length == 0) {
+                  final snackBar = SnackBar(
+                    content: Text('Please enter a email'),
+                  );
+                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                  return;
+                }
 
-                          if (city.length == 0) {
-                            final snackBar = SnackBar(
-                              content: Text('Please enter city '),
-                            );
-                            ScaffoldMessenger.of(context)
-                                .showSnackBar(snackBar);
-                            return;
-                          }
+                if (city.length == 0) {
+                  final snackBar = SnackBar(
+                    content: Text('Please enter city '),
+                  );
+                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                  return;
+                }
 
-                        if (password.length == 0) {
-                          final snackBar = SnackBar(
-                            content: Text('Please enter Password '),
-                          );
-                          ScaffoldMessenger.of(context)
-                              .showSnackBar(snackBar);
-                          return;
-                        }
+                if (password.length == 0) {
+                  final snackBar = SnackBar(
+                    content: Text('Please enter Password '),
+                  );
+                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                  return;
+                }
 
+                if (state.length == 0) {
+                  final snackBar = SnackBar(
+                    content: Text('Please enter a state'),
+                  );
+                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                  return;
+                }
+                if (address.length == 0) {
+                  final snackBar = SnackBar(
+                    content: Text('Please enter address. '),
+                  );
+                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                  return;
+                }
+                if (description.length == 0) {
+                  final snackBar = SnackBar(
+                    content: Text('Please enter description'),
+                  );
+                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                  return;
+                }
+                if (selectedSectors.isEmpty) {
+                  final snackBar = SnackBar(
+                    content: Text('Please select a sector. '),
+                  );
+                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                  return;
+                }
 
-                          if (state.length == 0) {
-                            final snackBar = SnackBar(
-                              content: Text('Please enter a state'),
-                            );
-                            ScaffoldMessenger.of(context)
-                                .showSnackBar(snackBar);
-                            return;
-                          }
-                          if (address.length == 0) {
-                            final snackBar = SnackBar(
-                              content: Text('Please enter address. '),
-                            );
-                            ScaffoldMessenger.of(context)
-                                .showSnackBar(snackBar);
-                            return;
-                          }
-                          if (description.length == 0) {
-                            final snackBar = SnackBar(
-                              content: Text('Please enter description'),
-                            );
-                            ScaffoldMessenger.of(context)
-                                .showSnackBar(snackBar);
-                            return;
-                          }
-                          if (selectedSectors.isEmpty) {
-                            final snackBar = SnackBar(
-                              content: Text('Please select a sector. '),
-                            );
-                            ScaffoldMessenger.of(context)
-                                .showSnackBar(snackBar);
-                            return;
-                          }
+                Map<String, dynamic> theData = {
+                  "email": email,
+                  "picture": imageURL,
+                  "name": name,
+                  "city": city,
+                  "state": state,
+                  "address": address,
+                  "sectors": selectedSectors,
+                  "description": description,
+                  "password": password
+                };
 
-                          Map<String, dynamic> theData = {
-                            "email": email,
-                            "picture": imageURL,
-                            "name": name,
-                            "city": city,
-                            "state": state,
-                            "address": address,
-                            "sectors": selectedSectors,
-                            "description": description,
-                            "password": password
-                          };
+                print(theData);
 
-                          print(theData);
+                final response = await http.put(
+                    Uri.parse(
+                        'https://asia-south1-sahayya-9c930.cloudfunctions.net/api/profile/$USERNAME'),
+                    headers: <String, String>{
+                      'Content-Type': 'application/json; charset=UTF-8',
+                      HttpHeaders.authorizationHeader: '$TOKEN'
+                    },
+                    body: json.encode(theData));
 
-                          final response = await http.put(
-                              Uri.parse(
-                                  'https://asia-south1-sahayya-9c930.cloudfunctions.net/api/profile/$USERNAME'),
-                              headers: <String, String>{
-                                'Content-Type':
-                                'application/json; charset=UTF-8',
-                                HttpHeaders.authorizationHeader: '$TOKEN'
-                              },
-                              body: json.encode(theData));
+                print(response.statusCode);
+                print(response.body);
 
-                          print(response.statusCode);
-                          print(response.body);
-
-                          if(response.statusCode == 200){
-                            final snackBar = SnackBar(
-                              content: Text('Profile updated successfully'),
-                            );
-                            ScaffoldMessenger.of(context)
-                                .showSnackBar(snackBar);
-                            Navigator.pushReplacementNamed(context, '/ngoDashboard');
-                            return;
-                          }
-                          final snackBar = SnackBar(
-                            content: Text('Some error occurred. Please try later '),
-                          );
-                          ScaffoldMessenger.of(context)
-                              .showSnackBar(snackBar);
-                          return;
-                        },
-                      style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all(Colors.white),
-                          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                              RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(18.0),
-                                  side: BorderSide(color: Color(0xFFFFFFFF), width: 2.0)))),
-                      child: Container(
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
-                          child: Text('Update Profile', style: TextStyle(color: Color(0xFF3E5A81), fontSize: 20)),
-                        ),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20.0),
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 10,)
+                if (response.statusCode == 200) {
+                  final snackBar = SnackBar(
+                    content: Text('Profile updated successfully'),
+                  );
+                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                  Navigator.pushReplacementNamed(context, '/ngoDashboard');
+                  return;
+                }
+                final snackBar = SnackBar(
+                  content: Text('Some error occurred. Please try later '),
+                );
+                ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                return;
+              },
+              style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(Colors.white),
+                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                      RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(18.0),
+                          side: BorderSide(
+                              color: Color(0xFFFFFFFF), width: 2.0)))),
+              child: Container(
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
+                  child: RichText(
+                    text: TextSpan(children: [
+                      TextSpan(
+                        text: 'Update Profile',
+                        style:
+                            TextStyle(color: Color(0xFF3E5A81), fontSize: 20),
+                      )
+                    ]),
+                  ),
+                ),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20.0),
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 10,
+            )
           ]),
         ),
       ),

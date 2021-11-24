@@ -5,7 +5,6 @@ import 'package:http/http.dart' as http;
 import 'dart:io';
 
 class IndividualData extends StatefulWidget {
-
   Map<dynamic, dynamic> data = {};
   IndividualData({required this.data});
 
@@ -14,7 +13,6 @@ class IndividualData extends StatefulWidget {
 }
 
 class _IndividualDataState extends State<IndividualData> {
-
   File? _image;
 
   Future<File> urlToFile(String imageUrl) async {
@@ -35,7 +33,6 @@ class _IndividualDataState extends State<IndividualData> {
     });
   }
 
-
   @override
   void initState() {
     super.initState();
@@ -44,7 +41,6 @@ class _IndividualDataState extends State<IndividualData> {
 
   @override
   Widget build(BuildContext context) {
-
     Map<dynamic, dynamic> data = widget.data;
 
     return Container(
@@ -54,7 +50,8 @@ class _IndividualDataState extends State<IndividualData> {
         border: Border.all(
           color: Colors.white,
           width: 2,
-        ),),
+        ),
+      ),
       margin: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
       child: Column(
         children: [
@@ -67,14 +64,14 @@ class _IndividualDataState extends State<IndividualData> {
                 child: ClipOval(
                   child: (_image != null)
                       ? Image.file(
-                    _image!,
-                    width: 140,
-                    height: 140,
-                    fit: BoxFit.cover,
-                  )
+                          _image!,
+                          width: 140,
+                          height: 140,
+                          fit: BoxFit.cover,
+                        )
                       : Container(
-                    color: Colors.white,
-                  ),
+                          color: Colors.white,
+                        ),
                 ),
               ),
             ],
@@ -84,11 +81,17 @@ class _IndividualDataState extends State<IndividualData> {
             children: [
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 20),
-                child: Text('${data['fName']} ${data['lName']}', style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w700,
-                    fontSize: 30
-                ),),
+                child: RichText(
+                  text: TextSpan(children: [
+                    TextSpan(
+                      text: '${data['fName']} ${data['lName']}',
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w700,
+                          fontSize: 30),
+                    )
+                  ]),
+                ),
               ),
             ],
           ),
@@ -100,11 +103,17 @@ class _IndividualDataState extends State<IndividualData> {
             children: [
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 5),
-                child: Text('${data['bio']}', style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w500,
-                    fontSize: 20
-                ),),
+                child: RichText(
+                  text: TextSpan(children: [
+                    TextSpan(
+                      text: '${data['bio']}',
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 20),
+                    )
+                  ]),
+                ),
               ),
             ],
           ),
@@ -116,12 +125,18 @@ class _IndividualDataState extends State<IndividualData> {
             children: [
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 5),
-                child: Text('${data['username']}', style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w600,
-                    fontStyle: FontStyle.italic,
-                    fontSize: 16
-                ),),
+                child: RichText(
+                  text: TextSpan(children: [
+                    TextSpan(
+                      text: '${data['username']}',
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w600,
+                          fontStyle: FontStyle.italic,
+                          fontSize: 16),
+                    )
+                  ]),
+                ),
               ),
             ],
           ),
@@ -133,27 +148,41 @@ class _IndividualDataState extends State<IndividualData> {
             children: [
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 5),
-                child: Text('${data['email']}', style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w600,
-                    fontStyle: FontStyle.italic,
-                    fontSize: 16
-                ),),
+                child: RichText(
+                  text: TextSpan(children: [
+                    TextSpan(
+                      text: '${data['email']}',
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w600,
+                          fontStyle: FontStyle.italic,
+                          fontSize: 16),
+                    )
+                  ]),
+                ),
               ),
             ],
           ),
-          SizedBox(height: 20,),
+          SizedBox(
+            height: 20,
+          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 5),
-                child: Text('${data['location']}', style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w600,
-                    fontStyle: FontStyle.italic,
-                    fontSize: 16
-                ),),
+                child: RichText(
+                  text: TextSpan(children: [
+                    TextSpan(
+                      text: '${data['location']}',
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w600,
+                          fontStyle: FontStyle.italic,
+                          fontSize: 16),
+                    )
+                  ]),
+                ),
               ),
             ],
           ),
@@ -165,6 +194,3 @@ class _IndividualDataState extends State<IndividualData> {
     );
   }
 }
-
-
-

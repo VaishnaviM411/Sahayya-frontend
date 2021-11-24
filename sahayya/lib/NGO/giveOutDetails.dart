@@ -18,14 +18,11 @@ class GiveOutDetails extends StatefulWidget {
 
   @override
   _GiveOutDetailsState createState() => _GiveOutDetailsState();
-
-
 }
 
 class _GiveOutDetailsState extends State<GiveOutDetails> {
-
   bool isLoading = true;
-  String? TOKEN='', USERNAME='', TYPE='';
+  String? TOKEN = '', USERNAME = '', TYPE = '';
 
   void getUserData() async {
     TOKEN = await storage.read(key: 'token');
@@ -44,9 +41,8 @@ class _GiveOutDetailsState extends State<GiveOutDetails> {
 
   @override
   Widget build(BuildContext context) {
-
-    int randomSetStateVariable =0;
-    void triggerUpdate(){
+    int randomSetStateVariable = 0;
+    void triggerUpdate() {
       setState(() {
         randomSetStateVariable = 2;
       });
@@ -56,7 +52,9 @@ class _GiveOutDetailsState extends State<GiveOutDetails> {
 
     final arguments = ModalRoute.of(context)!.settings.arguments as Map;
 
-    Map<dynamic, dynamic> data = arguments['data'], userData = arguments['userData'], forum = arguments['forum'];
+    Map<dynamic, dynamic> data = arguments['data'],
+        userData = arguments['userData'],
+        forum = arguments['forum'];
     List<dynamic> applications = arguments['applications'];
 
     List<MaterialInstance> availableMaterial = [];
@@ -64,285 +62,385 @@ class _GiveOutDetailsState extends State<GiveOutDetails> {
     List<ApplicationInstance> appsList = [];
 
     setState(() {
-      for(var i=0; i<data['documentsArray'].length; i++){
-        docList.add(DocumentInstance(link: data['documentsArray'][i], index: i+1));
+      for (var i = 0; i < data['documentsArray'].length; i++) {
+        docList.add(
+            DocumentInstance(link: data['documentsArray'][i], index: i + 1));
       }
     });
 
     setState(() {
-      for(var i=0; i<data['available-material'].length; i++){
-        availableMaterial.add(MaterialInstance(val: data['available-material'][i]));
+      for (var i = 0; i < data['available-material'].length; i++) {
+        availableMaterial
+            .add(MaterialInstance(val: data['available-material'][i]));
       }
     });
 
     setState(() {
-      for(var i=0; i<applications.length; i++){
-        appsList.add(ApplicationInstance(data: applications[i], token: TOKEN,));
+      for (var i = 0; i < applications.length; i++) {
+        appsList.add(ApplicationInstance(
+          data: applications[i],
+          token: TOKEN,
+        ));
       }
     });
 
     setState(() {
-      if(userData['donorType'] == 'Individual'){
+      if (userData['donorType'] == 'Individual') {
         isCompany = false;
       }
-      if(userData['donorType'] == 'Company'){
+      if (userData['donorType'] == 'Company') {
         isCompany = true;
       }
     });
 
-
-    Widget theAuthorCard(){
-      if(userData['type'] == 'NGO'){
+    Widget theAuthorCard() {
+      if (userData['type'] == 'NGO') {
         return NGOData(data: userData);
       }
-      if(userData['donorType'] == 'Individual'){
+      if (userData['donorType'] == 'Individual') {
         return IndividualData(data: userData);
       }
-      if(userData['donorType'] == 'Company'){
+      if (userData['donorType'] == 'Company') {
         return CompanyData(data: userData);
       }
       return CompanyData(data: userData);
     }
 
-    return isLoading ? Container(
-      height: double.infinity,
-      color: Color(0xFF3E5A81),
-      child: SpinKitRotatingCircle(
-      color: Colors.white,
-      size: 50.0,
-    ),) : Scaffold(
-      body: Container(
-        color: Color(0xFF3E5A81),
-        height: double.infinity,
-        padding: EdgeInsets.symmetric(vertical: 20, horizontal: 5),
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-
-              Container(
-                decoration: BoxDecoration(
-                  color: Colors.transparent,
-                  borderRadius: BorderRadius.all(Radius.circular(30)),
-                  border: Border.all(
-                    color: Colors.white,
-                    width: 2,
-                  ),),
-                margin: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+    return isLoading
+        ? Container(
+            height: double.infinity,
+            color: Color(0xFF3E5A81),
+            child: SpinKitRotatingCircle(
+              color: Colors.white,
+              size: 50.0,
+            ),
+          )
+        : Scaffold(
+            body: Container(
+              color: Color(0xFF3E5A81),
+              height: double.infinity,
+              padding: EdgeInsets.symmetric(vertical: 20, horizontal: 5),
+              child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 30),
-                          child: Text('${data['title']}', style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w700,
-                              fontSize: 30
-                          ),),
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Colors.transparent,
+                        borderRadius: BorderRadius.all(Radius.circular(30)),
+                        border: Border.all(
+                          color: Colors.white,
+                          width: 2,
                         ),
-                      ],
-                    ),
-                    Column(
-                      children: availableMaterial,
+                      ),
+                      margin:
+                          EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+                      child: Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 30),
+                                child: RichText(
+                                  text: TextSpan(children: [
+                                    TextSpan(
+                                      text: '${data['title']}',
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 30),
+                                    )
+                                  ]),
+                                ),
+                              ),
+                            ],
+                          ),
+                          Column(
+                            children: availableMaterial,
+                          ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 5),
+                                child: RichText(
+                                  text: TextSpan(children: [
+                                    TextSpan(
+                                      text: '${data['description']}',
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 20),
+                                    )
+                                  ]),
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 5),
+                                child: RichText(
+                                  text: TextSpan(children: [
+                                    TextSpan(
+                                      text: '${data['username']}',
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.w600,
+                                          fontStyle: FontStyle.italic,
+                                          fontSize: 20),
+                                    )
+                                  ]),
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 5),
+                                child: RichText(
+                                  text: TextSpan(children: [
+                                    TextSpan(
+                                      text: '${data['applyBy']}',
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.w800,
+                                          fontStyle: FontStyle.italic,
+                                          fontSize: 20),
+                                    )
+                                  ]),
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          Column(
+                            children: docList,
+                          ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                        ],
+                      ),
                     ),
                     SizedBox(
                       height: 20,
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 5),
-                          child: Text('${data['description']}', style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w500,
-                              fontSize: 20
-                          ),),
-                        ),
-                      ],
-                    ),
+                    theAuthorCard(),
                     SizedBox(
                       height: 20,
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 5),
-                          child: Text('${data['username']}', style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w600,
-                              fontStyle: FontStyle.italic,
-                              fontSize: 20
-                          ),),
-                        ),
-                      ],
-                    ),
+                    Forum(
+                        userData: userData,
+                        forum: forum,
+                        theUsername: USERNAME!,
+                        token: TOKEN!,
+                        id: data['id'],
+                        triggerUpdate: triggerUpdate,
+                        type: TYPE!),
                     SizedBox(
                       height: 20,
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 5),
-                          child: Text('${data['applyBy']}', style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w800,
-                            fontSize: 20,
-                            fontStyle: FontStyle.italic,
-                          ),),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    Column(
-                      children: docList,
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
+                    (userData['username'] == USERNAME!)
+                        ? (Container(
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                              color: Colors.transparent,
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(30)),
+                              border: Border.all(
+                                color: Colors.white,
+                                width: 2,
+                              ),
+                            ),
+                            margin: EdgeInsets.symmetric(
+                                vertical: 20, horizontal: 10),
+                            child: Column(
+                              children: [
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 10),
+                                  child: RichText(
+                                    text: TextSpan(children: [
+                                      TextSpan(
+                                        text:
+                                            'Received Applications (${applications.length}) :',
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.w700,
+                                            fontSize: 22),
+                                      )
+                                    ]),
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 20,
+                                ),
+                                Column(
+                                  children: appsList,
+                                ),
+                                SizedBox(
+                                  height: 20,
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 10, horizontal: 5),
+                                  child: ElevatedButton(
+                                    style: ButtonStyle(
+                                        backgroundColor:
+                                            MaterialStateProperty.all(
+                                                Colors.white),
+                                        shape: MaterialStateProperty.all<
+                                                RoundedRectangleBorder>(
+                                            RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(18.0),
+                                                side: BorderSide(
+                                                    color: Color(0xFFFFFFFF),
+                                                    width: 2.0)))),
+                                    child: RichText(
+                                      text: TextSpan(children: [
+                                        TextSpan(
+                                          text: 'Delete Give-Out',
+                                          style: TextStyle(
+                                              color: Color(0xFF3E5A81),
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 18),
+                                        )
+                                      ]),
+                                    ),
+                                    onPressed: () async {
+                                      var response;
+
+                                      String theURL =
+                                          'https://asia-south1-sahayya-9c930.cloudfunctions.net/api/particular-give-out/${data['id']}';
+                                      response = await http
+                                          .delete(Uri.parse(theURL), headers: {
+                                        HttpHeaders.authorizationHeader: TOKEN!
+                                      });
+
+                                      if (response.statusCode == 200) {
+                                        final snackBar = SnackBar(
+                                          content: Text(
+                                              'Give-Out deleted successfully'),
+                                        );
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(snackBar);
+
+                                        if (userData['donorType'] ==
+                                            'Individual') {
+                                          Navigator.pushReplacementNamed(
+                                              context, '/indvDonor');
+                                        } else {
+                                          Navigator.pushReplacementNamed(
+                                              context, '/compDonor');
+                                        }
+                                      }
+
+                                      theURL =
+                                          'https://asia-south1-sahayya-9c930.cloudfunctions.net/api/particular-donation-request/${data['id']}';
+                                      response = await http
+                                          .delete(Uri.parse(theURL), headers: {
+                                        HttpHeaders.authorizationHeader: TOKEN!
+                                      });
+
+                                      if (response.statusCode == 200) {
+                                        final snackBar = SnackBar(
+                                          content: Text(
+                                              'Give-Out deleted successfully'),
+                                        );
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(snackBar);
+
+                                        if (TYPE == 'NGO') {
+                                          Navigator.pushReplacementNamed(
+                                              context, '/ngoDashboard');
+                                        } else if (TYPE == 'Donor') {
+                                          Navigator.pushReplacementNamed(
+                                              context, '/indvDonor');
+                                        } else if (TYPE == 'Company') {
+                                          Navigator.pushReplacementNamed(
+                                              context, '/compDonor');
+                                        }
+                                      }
+
+                                      final snackBar = SnackBar(
+                                        content: Text('Some error occurred'),
+                                      );
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(snackBar);
+                                      return;
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ))
+                        : (Padding(
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 10, horizontal: 5),
+                            child: ElevatedButton(
+                              style: ButtonStyle(
+                                  backgroundColor:
+                                      MaterialStateProperty.all(Colors.white),
+                                  shape: MaterialStateProperty.all<
+                                          RoundedRectangleBorder>(
+                                      RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(18.0),
+                                          side: BorderSide(
+                                              color: Color(0xFFFFFFFF),
+                                              width: 2.0)))),
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 5, horizontal: 30),
+                                child: RichText(
+                                  text: TextSpan(children: [
+                                    TextSpan(
+                                      text: 'Apply',
+                                      style: TextStyle(
+                                          color: Color(0xFF3E5A81),
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 18),
+                                    )
+                                  ]),
+                                ),
+                              ),
+                              onPressed: () async {
+                                Navigator.pushNamed(
+                                    context, '/apply-for-donor-donation',
+                                    arguments: {"id": data['id']});
+                              },
+                            ),
+                          )),
                   ],
                 ),
               ),
-              SizedBox(
-                height: 20,
-              ),
-              theAuthorCard(),
-              SizedBox(
-                height: 20,
-              ),
-              Forum(userData: userData, forum: forum, theUsername: USERNAME!, token: TOKEN!, id: data['id'], triggerUpdate: triggerUpdate, type: TYPE!),
-              SizedBox(
-                height: 20,
-              ),
-              (userData['username'] == USERNAME!) ? (
-                  Container(
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      color: Colors.transparent,
-                      borderRadius: BorderRadius.all(Radius.circular(30)),
-                      border: Border.all(
-                        color: Colors.white,
-                        width: 2,
-                      ),),
-                    margin: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
-                    child: Column(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 10),
-                          child: Text('Received Applications (${applications.length}) :', style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w700,
-                              fontSize: 22
-                          ),),
-                        ),
-                        SizedBox(height: 20,),
-                        Column(
-                          children: appsList,
-                        ),
-                        SizedBox(height: 20,),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
-                          child: ElevatedButton(
-                            style: ButtonStyle(
-                                backgroundColor: MaterialStateProperty.all(Colors.white),
-                                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                                    RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(18.0),
-                                        side: BorderSide(color: Color(0xFFFFFFFF), width: 2.0)))),
-                            child: Text('Delete Give-Out', style: TextStyle(color: Color(0xFF3E5A81), fontWeight: FontWeight.bold, fontSize: 18)),
-                            onPressed: () async {
-
-                              var response;
-
-                              String theURL = 'https://asia-south1-sahayya-9c930.cloudfunctions.net/api/particular-give-out/${data['id']}';
-                              response = await http.delete(Uri.parse(theURL), headers: {
-                                HttpHeaders.authorizationHeader: TOKEN!
-                              });
-
-                              if(response.statusCode == 200){
-                                final snackBar = SnackBar(
-                                  content: Text('Give-Out deleted successfully'),
-                                );
-                                ScaffoldMessenger.of(context)
-                                    .showSnackBar(snackBar);
-
-                                if(userData['donorType'] == 'Individual'){
-                                  Navigator.pushReplacementNamed(context, '/indvDonor');
-                                }
-                                else{
-                                  Navigator.pushReplacementNamed(context, '/compDonor');
-                                }
-                              }
-
-                              theURL = 'https://asia-south1-sahayya-9c930.cloudfunctions.net/api/particular-donation-request/${data['id']}';
-                              response = await http.delete(Uri.parse(theURL), headers: {
-                                HttpHeaders.authorizationHeader: TOKEN!
-                              });
-
-                              if(response.statusCode == 200){
-                                final snackBar = SnackBar(
-                                  content: Text('Give-Out deleted successfully'),
-                                );
-                                ScaffoldMessenger.of(context)
-                                    .showSnackBar(snackBar);
-
-                                if (TYPE == 'NGO') {
-                                  Navigator.pushReplacementNamed(context, '/ngoDashboard');
-                                } else if (TYPE == 'Donor') {
-                                  Navigator.pushReplacementNamed(context, '/indvDonor');
-                                } else if (TYPE == 'Company') {
-                                  Navigator.pushReplacementNamed(context, '/compDonor');
-                                }
-                              }
-
-                              final snackBar = SnackBar(
-                                content: Text('Some error occurred'),
-                              );
-                              ScaffoldMessenger.of(context)
-                                  .showSnackBar(snackBar);
-                              return;
-                            },
-                          ),
-                        ),
-                      ],
-                    ),
-                  )
-              ) : (Padding(
-                padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
-                child: ElevatedButton(
-                  style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(Colors.white),
-                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                          RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(18.0),
-                              side: BorderSide(color: Color(0xFFFFFFFF), width: 2.0)))),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 30),
-                    child: Text('Apply', style: TextStyle(color: Color(0xFF3E5A81), fontWeight: FontWeight.bold, fontSize: 18)),
-                  ),
-                  onPressed: () async {
-                    Navigator.pushNamed(context, '/apply-for-donor-donation', arguments: {"id": data['id']});
-                  },
-                ),
-              )),
-            ],
-          ),
-        ),
-
-      ),
-    );
-
+            ),
+          );
   }
 }
 
-
 class ApplicationInstance extends StatefulWidget {
-
   Map<dynamic, dynamic> data = {};
   String? token;
   ApplicationInstance({required this.data, required this.token});
@@ -366,11 +464,17 @@ class _ApplicationInstanceState extends State<ApplicationInstance> {
               children: [
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 8),
-                  child: Text('${widget.data['title']}', style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.w700,
-                      fontSize: 20
-                  ),),
+                  child: RichText(
+                    text: TextSpan(children: [
+                      TextSpan(
+                        text: '${widget.data['title']}',
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w700,
+                            fontSize: 20),
+                      )
+                    ]),
+                  ),
                 ),
               ],
             ),
@@ -379,11 +483,17 @@ class _ApplicationInstanceState extends State<ApplicationInstance> {
               children: [
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 5),
-                  child: Text('${widget.data['body']}', style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.w500,
-                      fontSize: 16
-                  ),),
+                  child: RichText(
+                    text: TextSpan(children: [
+                      TextSpan(
+                        text: '${widget.data['body']}',
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w500,
+                            fontSize: 16),
+                      )
+                    ]),
+                  ),
                 ),
               ],
             ),
@@ -392,12 +502,17 @@ class _ApplicationInstanceState extends State<ApplicationInstance> {
               children: [
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 5),
-                  child: Text('${widget.data['username']}', style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.w600,
-                      fontStyle: FontStyle.italic,
-                      fontSize: 15
-                  ),),
+                  child: RichText(
+                    text: TextSpan(children: [
+                      TextSpan(
+                        text: '${widget.data['username']}',
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 15),
+                      )
+                    ]),
+                  ),
                 ),
               ],
             ),
@@ -409,53 +524,52 @@ class _ApplicationInstanceState extends State<ApplicationInstance> {
           border: Border.all(
             color: Colors.white,
             width: 2,
-          ),),
+          ),
+        ),
       ),
-      onTap: ()async{
+      onTap: () async {
         Map<dynamic, dynamic> requestData = widget.data;
         Map<dynamic, dynamic> theGiveOutDetailsData = {};
         Map<dynamic, dynamic> theDonorWhoIsGivingData = {};
 
         var response;
-        String theURL = 'https://asia-south1-sahayya-9c930.cloudfunctions.net/api/particular-donation-request/'+widget.data['giveoutID'];
-        response = await http.get(Uri.parse(theURL), headers: {
-          HttpHeaders.authorizationHeader: widget.token!
-        });
+        String theURL =
+            'https://asia-south1-sahayya-9c930.cloudfunctions.net/api/particular-donation-request/' +
+                widget.data['giveoutID'];
+        response = await http.get(Uri.parse(theURL),
+            headers: {HttpHeaders.authorizationHeader: widget.token!});
 
-        if(response.statusCode == 200) {
+        if (response.statusCode == 200) {
           Map<String, dynamic> resp = jsonDecode(response.body);
           setState(() {
             theGiveOutDetailsData = resp;
           });
-        }
-        else{
+        } else {
           final snackBar = SnackBar(
             content: Text('Some error occurred. Try again later.'),
           );
-          ScaffoldMessenger.of(context)
-              .showSnackBar(snackBar);
+          ScaffoldMessenger.of(context).showSnackBar(snackBar);
           return;
         }
 
         String theDonorUsername = theGiveOutDetailsData['username'];
 
-        theURL = 'https://asia-south1-sahayya-9c930.cloudfunctions.net/api/profile/'+theDonorUsername;
-        response = await http.get(Uri.parse(theURL), headers: {
-          HttpHeaders.authorizationHeader: widget.token!
-        });
+        theURL =
+            'https://asia-south1-sahayya-9c930.cloudfunctions.net/api/profile/' +
+                theDonorUsername;
+        response = await http.get(Uri.parse(theURL),
+            headers: {HttpHeaders.authorizationHeader: widget.token!});
 
-        if(response.statusCode == 200) {
+        if (response.statusCode == 200) {
           Map<String, dynamic> resp = jsonDecode(response.body);
           setState(() {
             theDonorWhoIsGivingData = resp;
           });
-        }
-        else{
+        } else {
           final snackBar = SnackBar(
             content: Text('Some error occurred. Try again later.'),
           );
-          ScaffoldMessenger.of(context)
-              .showSnackBar(snackBar);
+          ScaffoldMessenger.of(context).showSnackBar(snackBar);
           return;
         }
 
@@ -473,12 +587,10 @@ class _ApplicationInstanceState extends State<ApplicationInstance> {
         //   "id": widget.data['giveoutID']
         // });
         return;
-    },
+      },
     );
   }
 }
-
-
 
 class DocumentInstance extends StatefulWidget {
   String link = '';
@@ -496,21 +608,25 @@ class _DocumentInstanceState extends State<DocumentInstance> {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
       child: ElevatedButton(
-        onPressed: (){
-          Navigator.pushNamed(context, '/pdf', arguments: {
-            "link": widget.link
-          });
+        onPressed: () {
+          Navigator.pushNamed(context, '/pdf',
+              arguments: {"link": widget.link});
         },
         child: Container(
           padding: EdgeInsets.all(5),
           child: Center(
-            child: Text('Document ${widget.index}', style: TextStyle(
-              color: Color(0xFF3E5A81),
-              fontSize: 18,
-              fontWeight: FontWeight.w700,
-            ),),
+            child: RichText(
+              text: TextSpan(children: [
+                TextSpan(
+                  text: 'Document ${widget.index}',
+                  style: TextStyle(
+                      color: Color(0xFF3E5A81),
+                      fontWeight: FontWeight.w700,
+                      fontSize: 18),
+                )
+              ]),
+            ),
           ),
-
         ),
         style: ButtonStyle(
             backgroundColor: MaterialStateProperty.all(Colors.white),
@@ -523,10 +639,7 @@ class _DocumentInstanceState extends State<DocumentInstance> {
   }
 }
 
-
-
 class MaterialInstance extends StatefulWidget {
-
   String val = '';
 
   MaterialInstance({required this.val});
@@ -543,11 +656,14 @@ class _MaterialInstanceState extends State<MaterialInstance> {
       width: double.infinity,
       padding: EdgeInsets.all(5),
       child: Center(
-        child: Text('${widget.val}', style: TextStyle(
+        child: Text(
+          '${widget.val}',
+          style: TextStyle(
             color: Color(0xFF3E5A81),
             fontSize: 18,
             fontWeight: FontWeight.w700,
-        ),),
+          ),
+        ),
       ),
       decoration: BoxDecoration(
         color: Colors.white,
@@ -555,7 +671,8 @@ class _MaterialInstanceState extends State<MaterialInstance> {
         border: Border.all(
           color: Colors.white,
           width: 2,
-        ),),
+        ),
+      ),
     );
   }
 }

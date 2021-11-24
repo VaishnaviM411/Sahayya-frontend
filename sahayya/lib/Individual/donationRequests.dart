@@ -18,24 +18,23 @@ class DonationRequests extends StatefulWidget {
 }
 
 class _DonationRequestsState extends State<DonationRequests> {
-
-  String? token='', username='', type='';
+  String? token = '', username = '', type = '';
   // var allInstances = <Map<dynamic, dynamic>>[];
   List<dynamic> allInstances = [];
   List<GiveOutCard> allInstancesCard = [];
 
   void getUserData() async {
-
     token = await storage.read(key: 'token');
     username = await storage.read(key: 'username');
     type = await storage.read(key: 'type');
 
-    String theURL = 'https://asia-south1-sahayya-9c930.cloudfunctions.net/api/get-donation-requests/'+username!;
-    final response = await http.get(Uri.parse(theURL), headers: {
-      HttpHeaders.authorizationHeader: token!
-    });
+    String theURL =
+        'https://asia-south1-sahayya-9c930.cloudfunctions.net/api/get-donation-requests/' +
+            username!;
+    final response = await http.get(Uri.parse(theURL),
+        headers: {HttpHeaders.authorizationHeader: token!});
 
-    if(response.statusCode == 200){
+    if (response.statusCode == 200) {
       print(response.body);
       print(response.statusCode);
       Map<dynamic, dynamic> resp = jsonDecode(response.body);
@@ -48,7 +47,7 @@ class _DonationRequestsState extends State<DonationRequests> {
       });
 
       List<GiveOutCard> theCards = [];
-      for(var i=0; i<allInstances.length; i++){
+      for (var i = 0; i < allInstances.length; i++) {
         theCards.add(GiveOutCard(instance: allInstances[i]));
       }
 
@@ -71,8 +70,6 @@ class _DonationRequestsState extends State<DonationRequests> {
     getUserData();
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -81,19 +78,22 @@ class _DonationRequestsState extends State<DonationRequests> {
       child: SingleChildScrollView(
         child: Column(
           children: [
-            Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 15),
-                    child: Text('NGO requests around you (${allInstances.length})', style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 26,
-                        color: Colors.white
-                    ),),
-                  ),
-                ]
-            ),
+            Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 15),
+                child: RichText(
+                  text: TextSpan(children: [
+                    TextSpan(
+                      text: 'NGO requests around you (${allInstances.length})',
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 26),
+                    )
+                  ]),
+                ),
+              ),
+            ]),
             Column(
               children: allInstancesCard,
             ),

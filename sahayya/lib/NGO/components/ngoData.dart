@@ -5,7 +5,6 @@ import 'package:http/http.dart' as http;
 import 'dart:io';
 
 class NGOData extends StatefulWidget {
-
   Map<dynamic, dynamic> data = {};
   NGOData({required this.data});
 
@@ -14,7 +13,6 @@ class NGOData extends StatefulWidget {
 }
 
 class _NGODataState extends State<NGOData> {
-
   File? _image;
 
   Future<File> urlToFile(String imageUrl) async {
@@ -43,13 +41,12 @@ class _NGODataState extends State<NGOData> {
 
   @override
   Widget build(BuildContext context) {
-
     Map<dynamic, dynamic> data = widget.data;
 
     List<MaterialInstance> availableMaterial = [];
 
     setState(() {
-      for(var i=0; i<data['sectors'].length; i++){
+      for (var i = 0; i < data['sectors'].length; i++) {
         availableMaterial.add(MaterialInstance(val: data['sectors'][i]));
       }
     });
@@ -57,7 +54,7 @@ class _NGODataState extends State<NGOData> {
     String statusOfCompany = '(Unverified)';
 
     setState(() {
-      if(data['isVerified']){
+      if (data['isVerified']) {
         statusOfCompany = '(Verified)';
       }
     });
@@ -69,7 +66,8 @@ class _NGODataState extends State<NGOData> {
         border: Border.all(
           color: Colors.white,
           width: 2,
-        ),),
+        ),
+      ),
       margin: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
       child: Column(
         children: [
@@ -82,14 +80,14 @@ class _NGODataState extends State<NGOData> {
                 child: ClipOval(
                   child: (_image != null)
                       ? Image.file(
-                    _image!,
-                    width: 140,
-                    height: 140,
-                    fit: BoxFit.cover,
-                  )
+                          _image!,
+                          width: 140,
+                          height: 140,
+                          fit: BoxFit.cover,
+                        )
                       : Container(
-                    color: Colors.white,
-                  ),
+                          color: Colors.white,
+                        ),
                 ),
               ),
             ],
@@ -99,11 +97,17 @@ class _NGODataState extends State<NGOData> {
             children: [
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 20),
-                child: Text('${data['name']}', style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w700,
-                    fontSize: 30
-                ),),
+                child: RichText(
+                  text: TextSpan(children: [
+                    TextSpan(
+                      text: '${data['name']}',
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w700,
+                          fontSize: 30),
+                    )
+                  ]),
+                ),
               ),
             ],
           ),
@@ -112,15 +116,23 @@ class _NGODataState extends State<NGOData> {
             children: [
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 5),
-                child: Text(statusOfCompany, style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w500,
-                    fontSize: 20
-                ),),
+                child: RichText(
+                  text: TextSpan(children: [
+                    TextSpan(
+                      text: statusOfCompany,
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 20),
+                    )
+                  ]),
+                ),
               ),
             ],
           ),
-          SizedBox(height: 10,),
+          SizedBox(
+            height: 10,
+          ),
           Column(
             children: availableMaterial,
           ),
@@ -132,11 +144,17 @@ class _NGODataState extends State<NGOData> {
             children: [
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 5),
-                child: Text('${data['description']}', style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w500,
-                    fontSize: 20
-                ),),
+                child: RichText(
+                  text: TextSpan(children: [
+                    TextSpan(
+                      text: '${data['description']}',
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 20),
+                    )
+                  ]),
+                ),
               ),
             ],
           ),
@@ -148,12 +166,18 @@ class _NGODataState extends State<NGOData> {
             children: [
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 5),
-                child: Text('${data['username']}', style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w600,
-                    fontStyle: FontStyle.italic,
-                    fontSize: 16
-                ),),
+                child: RichText(
+                  text: TextSpan(children: [
+                    TextSpan(
+                      text: '${data['username']}',
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w600,
+                          fontStyle: FontStyle.italic,
+                          fontSize: 16),
+                    )
+                  ]),
+                ),
               ),
             ],
           ),
@@ -165,26 +189,40 @@ class _NGODataState extends State<NGOData> {
             children: [
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 5),
-                child: Text('${data['email']}', style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w600,
-                    fontStyle: FontStyle.italic,
-                    fontSize: 16
-                ),),
+                child: RichText(
+                  text: TextSpan(children: [
+                    TextSpan(
+                      text: '${data['email']}',
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w600,
+                          fontStyle: FontStyle.italic,
+                          fontSize: 16),
+                    )
+                  ]),
+                ),
               ),
             ],
           ),
-          SizedBox(height: 20,),
+          SizedBox(
+            height: 20,
+          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 5),
-                child: Text('${data['address']}', style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.w500,
-                  fontSize: 16,
-                ),),
+                child: RichText(
+                  text: TextSpan(children: [
+                    TextSpan(
+                      text: '${data['address']}',
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 16),
+                    )
+                  ]),
+                ),
               ),
             ],
           ),
@@ -197,10 +235,7 @@ class _NGODataState extends State<NGOData> {
   }
 }
 
-
-
 class MaterialInstance extends StatefulWidget {
-
   String val = '';
 
   MaterialInstance({required this.val});
@@ -217,11 +252,17 @@ class _MaterialInstanceState extends State<MaterialInstance> {
       width: double.infinity,
       padding: EdgeInsets.all(5),
       child: Center(
-        child: Text('${widget.val}', style: TextStyle(
-          color: Color(0xFF3E5A81),
-          fontSize: 18,
-          fontWeight: FontWeight.w700,
-        ),),
+        child: RichText(
+          text: TextSpan(children: [
+            TextSpan(
+              text: '${widget.val}',
+              style: TextStyle(
+                  color: Color(0xFF3E5A81),
+                  fontWeight: FontWeight.w700,
+                  fontSize: 18),
+            )
+          ]),
+        ),
       ),
       decoration: BoxDecoration(
         color: Colors.white,
@@ -229,7 +270,8 @@ class _MaterialInstanceState extends State<MaterialInstance> {
         border: Border.all(
           color: Colors.white,
           width: 2,
-        ),),
+        ),
+      ),
     );
   }
 }

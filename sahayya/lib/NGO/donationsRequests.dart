@@ -8,8 +8,8 @@ import 'components/userGiveOutCard.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 final storage = new FlutterSecureStorage();
-class DonationsRequest extends StatefulWidget {
 
+class DonationsRequest extends StatefulWidget {
   @override
   _DonationsRequestState createState() => _DonationsRequestState();
   final Map<String, dynamic> entityData;
@@ -18,9 +18,7 @@ class DonationsRequest extends StatefulWidget {
 }
 
 class _DonationsRequestState extends State<DonationsRequest> {
-
-
-  String? token='', username='', type='';
+  String? token = '', username = '', type = '';
   // var allInstances = <Map<dynamic, dynamic>>[];
   List<dynamic> allInstances = [];
   List<UserGiveOutCard> allInstancesCard = [];
@@ -28,19 +26,19 @@ class _DonationsRequestState extends State<DonationsRequest> {
   List<CardNGOApplication> allInstancesCard2 = [];
 
   void getUserData() async {
-
     token = await storage.read(key: 'token');
     username = await storage.read(key: 'username');
     type = await storage.read(key: 'type');
 
     var response;
 
-    String theURL = 'https://asia-south1-sahayya-9c930.cloudfunctions.net/api/applications-applied-to-by-an-ngo/'+username!;
-    response = await http.get(Uri.parse(theURL), headers: {
-      HttpHeaders.authorizationHeader: token!
-    });
+    String theURL =
+        'https://asia-south1-sahayya-9c930.cloudfunctions.net/api/applications-applied-to-by-an-ngo/' +
+            username!;
+    response = await http.get(Uri.parse(theURL),
+        headers: {HttpHeaders.authorizationHeader: token!});
 
-    if(response.statusCode == 200){
+    if (response.statusCode == 200) {
       print(response.body);
       print(response.statusCode);
       Map<dynamic, dynamic> resp = jsonDecode(response.body);
@@ -50,10 +48,9 @@ class _DonationsRequestState extends State<DonationsRequest> {
         allInstances = resp['data'];
       });
 
-
       List<UserGiveOutCard> theCards = [];
 
-      for(var i=0; i<allInstances.length; i++){
+      for (var i = 0; i < allInstances.length; i++) {
         theCards.add(UserGiveOutCard(instance: allInstances[i]));
       }
 
@@ -62,13 +59,13 @@ class _DonationsRequestState extends State<DonationsRequest> {
       });
     }
 
-    theURL = 'https://asia-south1-sahayya-9c930.cloudfunctions.net/api/donation-requests/'+username!;
-    response = await http.get(Uri.parse(theURL), headers: {
-      HttpHeaders.authorizationHeader: token!
-    });
+    theURL =
+        'https://asia-south1-sahayya-9c930.cloudfunctions.net/api/donation-requests/' +
+            username!;
+    response = await http.get(Uri.parse(theURL),
+        headers: {HttpHeaders.authorizationHeader: token!});
 
-
-    if(response.statusCode == 200){
+    if (response.statusCode == 200) {
       Map<dynamic, dynamic> resp = jsonDecode(response.body);
 
       setState(() {
@@ -77,7 +74,7 @@ class _DonationsRequestState extends State<DonationsRequest> {
 
       List<CardNGOApplication> theCards2 = [];
 
-      for(var i=0; i<allInstances2.length; i++){
+      for (var i = 0; i < allInstances2.length; i++) {
         theCards2.add(CardNGOApplication(instance: allInstances2[i]));
       }
 
@@ -115,19 +112,30 @@ class _DonationsRequestState extends State<DonationsRequest> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 5),
+                    padding:
+                        const EdgeInsets.symmetric(vertical: 15, horizontal: 5),
                     child: ElevatedButton(
                       style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all(Colors.white),
-                          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                              RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(18.0),
-                                  side: BorderSide(color: Color(0xFFFFFFFF), width: 2.0)))),
-                      child: Text('Create Donation Request', style: TextStyle(
-                          color: Color(0xFF3E5A81),
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18
-                      ),),
+                          backgroundColor:
+                              MaterialStateProperty.all(Colors.white),
+                          shape:
+                              MaterialStateProperty.all<RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(18.0),
+                                      side: BorderSide(
+                                          color: Color(0xFFFFFFFF),
+                                          width: 2.0)))),
+                      child: RichText(
+                        text: TextSpan(children: [
+                          TextSpan(
+                            text: 'Create Donation Request',
+                            style: TextStyle(
+                                color: Color(0xFF3E5A81),
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18),
+                          )
+                        ]),
+                      ),
                       onPressed: () {
                         Navigator.pushNamed(context, '/create-ngo-request');
                       },
@@ -138,11 +146,17 @@ class _DonationsRequestState extends State<DonationsRequest> {
               SizedBox(
                 height: 10,
               ),
-              Text('Your Requests (${allInstancesCard.length}):', style: TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-                fontSize: 20
-              ),),
+              RichText(
+                text: TextSpan(children: [
+                  TextSpan(
+                    text: 'Your Requests (${allInstancesCard.length}):',
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20),
+                  )
+                ]),
+              ),
               SizedBox(
                 height: 20,
               ),
@@ -152,11 +166,18 @@ class _DonationsRequestState extends State<DonationsRequest> {
               SizedBox(
                 height: 20,
               ),
-              Text('Your Donation Requests (${allInstancesCard2.length}):', style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20
-              ),),
+              RichText(
+                text: TextSpan(children: [
+                  TextSpan(
+                    text:
+                        'Your Donation Requests (${allInstancesCard2.length}):',
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20),
+                  )
+                ]),
+              ),
               SizedBox(
                 height: 20,
               ),

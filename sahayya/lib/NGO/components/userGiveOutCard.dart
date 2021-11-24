@@ -5,8 +5,8 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 
 final storage = new FlutterSecureStorage();
-class UserGiveOutCard extends StatefulWidget {
 
+class UserGiveOutCard extends StatefulWidget {
   Map<dynamic, dynamic> instance = {};
   UserGiveOutCard({required this.instance});
 
@@ -15,9 +15,7 @@ class UserGiveOutCard extends StatefulWidget {
 }
 
 class _UserGiveOutCardState extends State<UserGiveOutCard> {
-
-
-  String? TOKEN='', USERNAME='', TYPE='';
+  String? TOKEN = '', USERNAME = '', TYPE = '';
 
   void getUserData() async {
     TOKEN = await storage.read(key: 'token');
@@ -33,7 +31,6 @@ class _UserGiveOutCardState extends State<UserGiveOutCard> {
 
   @override
   Widget build(BuildContext context) {
-
     print(widget.instance);
 
     //print(widget.instance);
@@ -49,25 +46,16 @@ class _UserGiveOutCardState extends State<UserGiveOutCard> {
               children: [
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 8),
-                  child: Text('${widget.instance['title']}', style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.w700,
-                      fontSize: 20
-                  ),),
-                ),
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 5),
-                  child: Text('${widget.instance['body']}', style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.w500,
-                      fontSize: 16,
-                  ),
-                  overflow: TextOverflow.fade,
+                  child: RichText(
+                    text: TextSpan(children: [
+                      TextSpan(
+                        text: '${widget.instance['title']}',
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w700,
+                            fontSize: 20),
+                      )
+                    ]),
                   ),
                 ),
               ],
@@ -77,12 +65,37 @@ class _UserGiveOutCardState extends State<UserGiveOutCard> {
               children: [
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 5),
-                  child: Text('${widget.instance['status']}', style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w800,
-                    fontSize: 16,
-                    fontStyle: FontStyle.italic,
-                  ),),
+                  child: RichText(
+                    text: TextSpan(children: [
+                      TextSpan(
+                        text: '${widget.instance['body']}',
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w500,
+                            fontSize: 16),
+                      )
+                    ]),
+                  ),
+                ),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 5),
+                  child: RichText(
+                    text: TextSpan(children: [
+                      TextSpan(
+                        text: '${widget.instance['status']}',
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w800,
+                            fontStyle: FontStyle.italic,
+                            fontSize: 16),
+                      )
+                    ]),
+                  ),
                 ),
               ],
             ),
@@ -94,10 +107,10 @@ class _UserGiveOutCardState extends State<UserGiveOutCard> {
           border: Border.all(
             color: Colors.white,
             width: 2,
-          ),),
+          ),
+        ),
       ),
-      onTap: ()async{
-
+      onTap: () async {
         Map<dynamic, dynamic> requestData = widget.instance;
         Map<dynamic, dynamic> theGiveOutDetailsData = {};
         Map<dynamic, dynamic> theDonorWhoIsGivingData = {};
@@ -105,45 +118,43 @@ class _UserGiveOutCardState extends State<UserGiveOutCard> {
         ///give-out-application/:id
 
         var response;
-        String theURL = 'https://asia-south1-sahayya-9c930.cloudfunctions.net/api/particular-give-out/'+widget.instance['requestID'];
-        response = await http.get(Uri.parse(theURL), headers: {
-          HttpHeaders.authorizationHeader: TOKEN!
-        });
+        String theURL =
+            'https://asia-south1-sahayya-9c930.cloudfunctions.net/api/particular-give-out/' +
+                widget.instance['requestID'];
+        response = await http.get(Uri.parse(theURL),
+            headers: {HttpHeaders.authorizationHeader: TOKEN!});
 
-        if(response.statusCode == 200) {
+        if (response.statusCode == 200) {
           Map<String, dynamic> resp = jsonDecode(response.body);
           setState(() {
             theGiveOutDetailsData = resp;
           });
-        }
-        else{
+        } else {
           final snackBar = SnackBar(
             content: Text('Some error occurred. Try again later.'),
           );
-          ScaffoldMessenger.of(context)
-              .showSnackBar(snackBar);
+          ScaffoldMessenger.of(context).showSnackBar(snackBar);
           return;
         }
 
         String theDonorUsername = theGiveOutDetailsData['username'];
 
-        theURL = 'https://asia-south1-sahayya-9c930.cloudfunctions.net/api/profile/'+theDonorUsername;
-        response = await http.get(Uri.parse(theURL), headers: {
-          HttpHeaders.authorizationHeader: TOKEN!
-        });
+        theURL =
+            'https://asia-south1-sahayya-9c930.cloudfunctions.net/api/profile/' +
+                theDonorUsername;
+        response = await http.get(Uri.parse(theURL),
+            headers: {HttpHeaders.authorizationHeader: TOKEN!});
 
-        if(response.statusCode == 200) {
+        if (response.statusCode == 200) {
           Map<String, dynamic> resp = jsonDecode(response.body);
           setState(() {
             theDonorWhoIsGivingData = resp;
           });
-        }
-        else{
+        } else {
           final snackBar = SnackBar(
             content: Text('Some error occurred. Try again later.'),
           );
-          ScaffoldMessenger.of(context)
-              .showSnackBar(snackBar);
+          ScaffoldMessenger.of(context).showSnackBar(snackBar);
           return;
         }
 
@@ -155,10 +166,10 @@ class _UserGiveOutCardState extends State<UserGiveOutCard> {
         // });
 
         Navigator.pushNamed(context, '/applicationPageNGORequest', arguments: {
-        "requestData": requestData,
-        "theGiveOutDetailsData": theGiveOutDetailsData,
-        "theDonorWhoIsGivingData": theDonorWhoIsGivingData,
-        "id": widget.instance['requestID']
+          "requestData": requestData,
+          "theGiveOutDetailsData": theGiveOutDetailsData,
+          "theDonorWhoIsGivingData": theDonorWhoIsGivingData,
+          "id": widget.instance['requestID']
         });
         return;
       },
@@ -167,7 +178,6 @@ class _UserGiveOutCardState extends State<UserGiveOutCard> {
 }
 
 class MaterialInstance extends StatefulWidget {
-
   String val = '';
 
   MaterialInstance({required this.val});
@@ -184,10 +194,17 @@ class _MaterialInstanceState extends State<MaterialInstance> {
       width: double.infinity,
       padding: EdgeInsets.all(5),
       child: Center(
-        child: Text('${widget.val}', style: TextStyle(
-            color: Color(0xFF3E5A81),
-            fontWeight: FontWeight.w700
-        ),),
+        child: RichText(
+          text: TextSpan(children: [
+            TextSpan(
+              text: '${widget.val}',
+              style: TextStyle(
+                  color: Color(0xFF3E5A81),
+                  fontWeight: FontWeight.w700,
+                  fontSize: 16),
+            )
+          ]),
+        ),
       ),
       decoration: BoxDecoration(
         color: Colors.white,
@@ -195,7 +212,8 @@ class _MaterialInstanceState extends State<MaterialInstance> {
         border: Border.all(
           color: Colors.white,
           width: 2,
-        ),),
+        ),
+      ),
     );
   }
 }

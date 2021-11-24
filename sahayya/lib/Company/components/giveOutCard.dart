@@ -5,8 +5,8 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 
 final storage = new FlutterSecureStorage();
-class GiveOutCard extends StatefulWidget {
 
+class GiveOutCard extends StatefulWidget {
   Map<dynamic, dynamic> instance = {};
   GiveOutCard({required this.instance});
 
@@ -15,8 +15,7 @@ class GiveOutCard extends StatefulWidget {
 }
 
 class _GiveOutCardState extends State<GiveOutCard> {
-
-  String? TOKEN='', USERNAME='', TYPE='';
+  String? TOKEN = '', USERNAME = '', TYPE = '';
 
   void getUserData() async {
     TOKEN = await storage.read(key: 'token');
@@ -32,15 +31,14 @@ class _GiveOutCardState extends State<GiveOutCard> {
 
   @override
   Widget build(BuildContext context) {
-
     List<MaterialInstance> availableMaterial = [];
 
     setState(() {
-      for(var i=0; i<widget.instance['requirements'].length; i++){
-        availableMaterial.add(MaterialInstance(val: widget.instance['requirements'][i]));
+      for (var i = 0; i < widget.instance['requirements'].length; i++) {
+        availableMaterial
+            .add(MaterialInstance(val: widget.instance['requirements'][i]));
       }
     });
-
 
     //print(widget.instance);
     return GestureDetector(
@@ -55,11 +53,17 @@ class _GiveOutCardState extends State<GiveOutCard> {
               children: [
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 8),
-                  child: Text('${widget.instance['title']}', style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.w700,
-                      fontSize: 20
-                  ),),
+                  child: RichText(
+                    text: TextSpan(children: [
+                      TextSpan(
+                        text: '${widget.instance['title']}',
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w700,
+                            fontSize: 20),
+                      )
+                    ]),
+                  ),
                 ),
               ],
             ),
@@ -71,11 +75,17 @@ class _GiveOutCardState extends State<GiveOutCard> {
               children: [
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 5),
-                  child: Text('${widget.instance['description']}', style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.w500,
-                      fontSize: 16
-                  ),),
+                  child: RichText(
+                    text: TextSpan(children: [
+                      TextSpan(
+                        text: '${widget.instance['description']}',
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w500,
+                            fontSize: 16),
+                      )
+                    ]),
+                  ),
                 ),
               ],
             ),
@@ -84,12 +94,18 @@ class _GiveOutCardState extends State<GiveOutCard> {
               children: [
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 5),
-                  child: Text('${widget.instance['username']}', style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.w600,
-                      fontStyle: FontStyle.italic,
-                      fontSize: 15
-                  ),),
+                  child: RichText(
+                    text: TextSpan(children: [
+                      TextSpan(
+                        text: '${widget.instance['username']}',
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w600,
+                            fontStyle: FontStyle.italic,
+                            fontSize: 15),
+                      )
+                    ]),
+                  ),
                 ),
               ],
             ),
@@ -98,12 +114,18 @@ class _GiveOutCardState extends State<GiveOutCard> {
               children: [
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 5),
-                  child: Text('${widget.instance['applyBy']}', style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w800,
-                    fontSize: 16,
-                    fontStyle: FontStyle.italic,
-                  ),),
+                  child: RichText(
+                    text: TextSpan(children: [
+                      TextSpan(
+                        text: '${widget.instance['applyBy']}',
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w800,
+                            fontStyle: FontStyle.italic,
+                            fontSize: 16),
+                      )
+                    ]),
+                  ),
                 ),
               ],
             ),
@@ -115,20 +137,21 @@ class _GiveOutCardState extends State<GiveOutCard> {
           border: Border.all(
             color: Colors.white,
             width: 2,
-          ),),
+          ),
+        ),
       ),
-      onTap: ()async{
-
+      onTap: () async {
         Map<dynamic, dynamic> userDetails = {};
         Map<dynamic, dynamic> forum = {};
         Map<dynamic, dynamic> applications = {};
 
-        String theURL = 'https://asia-south1-sahayya-9c930.cloudfunctions.net/api/profile/'+widget.instance['username'];
-        final response = await http.get(Uri.parse(theURL), headers: {
-          HttpHeaders.authorizationHeader: TOKEN!
-        });
+        String theURL =
+            'https://asia-south1-sahayya-9c930.cloudfunctions.net/api/profile/' +
+                widget.instance['username'];
+        final response = await http.get(Uri.parse(theURL),
+            headers: {HttpHeaders.authorizationHeader: TOKEN!});
 
-        if(response.statusCode == 200) {
+        if (response.statusCode == 200) {
           print(response.statusCode);
           Map<String, dynamic> resp = jsonDecode(response.body);
           setState(() {
@@ -137,10 +160,11 @@ class _GiveOutCardState extends State<GiveOutCard> {
 
           // print(widget.instance['id']);
 
-          String theURL2 = 'https://asia-south1-sahayya-9c930.cloudfunctions.net/api/forum/' + widget.instance['id'].toString();
-          final response2 = await http.get(Uri.parse(theURL2), headers: {
-            HttpHeaders.authorizationHeader: TOKEN!
-          });
+          String theURL2 =
+              'https://asia-south1-sahayya-9c930.cloudfunctions.net/api/forum/' +
+                  widget.instance['id'].toString();
+          final response2 = await http.get(Uri.parse(theURL2),
+              headers: {HttpHeaders.authorizationHeader: TOKEN!});
 
           if (response2.statusCode == 200) {
             print(response.statusCode);
@@ -149,10 +173,11 @@ class _GiveOutCardState extends State<GiveOutCard> {
               forum = resp2;
             });
 
-            String theURL3 = 'https://asia-south1-sahayya-9c930.cloudfunctions.net/api/all-received-applications-for-donor/' + widget.instance['id'].toString();
-            final response3 = await http.get(Uri.parse(theURL3), headers: {
-              HttpHeaders.authorizationHeader: TOKEN!
-            });
+            String theURL3 =
+                'https://asia-south1-sahayya-9c930.cloudfunctions.net/api/all-received-applications-for-donor/' +
+                    widget.instance['id'].toString();
+            final response3 = await http.get(Uri.parse(theURL3),
+                headers: {HttpHeaders.authorizationHeader: TOKEN!});
 
             if (response3.statusCode == 200) {
               Map<String, dynamic> resp3 = jsonDecode(response3.body);
@@ -172,8 +197,7 @@ class _GiveOutCardState extends State<GiveOutCard> {
         final snackBar = SnackBar(
           content: Text('Some error occurred. Try again later.'),
         );
-        ScaffoldMessenger.of(context)
-            .showSnackBar(snackBar);
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
         return;
       },
     );
@@ -181,7 +205,6 @@ class _GiveOutCardState extends State<GiveOutCard> {
 }
 
 class MaterialInstance extends StatefulWidget {
-
   String val = '';
 
   MaterialInstance({required this.val});
@@ -198,10 +221,17 @@ class _MaterialInstanceState extends State<MaterialInstance> {
       width: double.infinity,
       padding: EdgeInsets.all(5),
       child: Center(
-        child: Text('${widget.val}', style: TextStyle(
-            color: Color(0xFF3E5A81),
-            fontWeight: FontWeight.w700
-        ),),
+        child: RichText(
+          text: TextSpan(children: [
+            TextSpan(
+              text: '${widget.val}',
+              style: TextStyle(
+                color: Color(0xFF3E5A81),
+                fontWeight: FontWeight.w700,
+              ),
+            )
+          ]),
+        ),
       ),
       decoration: BoxDecoration(
         color: Colors.white,
@@ -209,7 +239,8 @@ class _MaterialInstanceState extends State<MaterialInstance> {
         border: Border.all(
           color: Colors.white,
           width: 2,
-        ),),
+        ),
+      ),
     );
   }
 }

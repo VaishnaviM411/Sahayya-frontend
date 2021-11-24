@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class TextNonEdit extends StatefulWidget {
-  String label='', text='';
+  String label = '', text = '';
 
   TextNonEdit({required this.label, required this.text});
 
@@ -19,29 +19,38 @@ class _TextNonEditState extends State<TextNonEdit> {
           decoration: BoxDecoration(
             shape: BoxShape.rectangle,
             color: Colors.white,
-            borderRadius: BorderRadius.all(Radius.circular(10)),),
+            borderRadius: BorderRadius.all(Radius.circular(10)),
+          ),
           width: double.infinity,
           child: Column(
             children: [
               SizedBox(
                 height: 5,
               ),
-              Text('${widget.label}', style: TextStyle(
-                  fontSize: 12,
-                  color: Color(0xFF3E5A81)
-              ),),
-              Text('${widget.text}', style: TextStyle(
-                  fontSize: 20,
-                  color: Color(0xFF3E5A81),
-                  fontWeight: FontWeight.bold
-              ),),
+              RichText(
+                text: TextSpan(children: [
+                  TextSpan(
+                    text: '${widget.label}',
+                    style: TextStyle(color: Color(0xFF3E5A81), fontSize: 12),
+                  )
+                ]),
+              ),
+              RichText(
+                text: TextSpan(children: [
+                  TextSpan(
+                    text: '${widget.text}',
+                    style: TextStyle(
+                        color: Color(0xFF3E5A81),
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20),
+                  )
+                ]),
+              ),
               SizedBox(
                 height: 5,
               ),
             ],
-          )
-      ),
+          )),
     );
   }
 }
-

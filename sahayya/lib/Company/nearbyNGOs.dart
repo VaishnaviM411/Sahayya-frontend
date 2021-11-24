@@ -17,7 +17,6 @@ class NearbyNGOs extends StatefulWidget {
 }
 
 class _NearbyNGOsState extends State<NearbyNGOs> {
-
   Map<String, dynamic> entityData = {};
   double latitude = 0.0, longitude = 0.0;
   String? token = '', username = '', type = '';
@@ -30,7 +29,8 @@ class _NearbyNGOsState extends State<NearbyNGOs> {
     type = await storage.read(key: 'type');
 
     try {
-      String theURL = 'https://asia-south1-sahayya-9c930.cloudfunctions.net/api/get-ngos/$username';
+      String theURL =
+          'https://asia-south1-sahayya-9c930.cloudfunctions.net/api/get-ngos/$username';
       final response = await http.get(Uri.parse(theURL),
           headers: {HttpHeaders.authorizationHeader: token!});
 
@@ -40,8 +40,9 @@ class _NearbyNGOsState extends State<NearbyNGOs> {
         List<Map<dynamic, dynamic>> allNGOs = [];
         setState(() {
           entityData = resp;
-          for(var i=0; i<theArray.length; i++){
-            Map<dynamic, dynamic> thread2 = Map<dynamic, dynamic>.from(theArray[i]);
+          for (var i = 0; i < theArray.length; i++) {
+            Map<dynamic, dynamic> thread2 =
+                Map<dynamic, dynamic>.from(theArray[i]);
             allNGOs.add(thread2);
             theNGOs.add(NGOInstance(data: thread2));
           }
@@ -78,11 +79,17 @@ class _NearbyNGOsState extends State<NearbyNGOs> {
               children: [
                 Padding(
                   padding: const EdgeInsets.fromLTRB(0, 12, 0, 12),
-                  child: Text('NGOs around me (${theNGOs.length})', style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 23,
-                      fontWeight: FontWeight.bold
-                  ),),
+                  child: RichText(
+                    text: TextSpan(children: [
+                      TextSpan(
+                        text: 'NGOs around me (${theNGOs.length})',
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 23),
+                      )
+                    ]),
+                  ),
                 )
               ],
             ),
@@ -96,9 +103,7 @@ class _NearbyNGOsState extends State<NearbyNGOs> {
   }
 }
 
-
 class NGOInstance extends StatefulWidget {
-
   var data = {};
   NGOInstance({required this.data});
 
@@ -107,7 +112,6 @@ class NGOInstance extends StatefulWidget {
 }
 
 class _NGOInstanceState extends State<NGOInstance> {
-
   File? _image;
 
   Future<File> urlToFile(String imageUrl) async {
@@ -134,11 +138,11 @@ class _NGOInstanceState extends State<NGOInstance> {
     setImage();
   }
 
-  String listToString(List<dynamic> lst){
+  String listToString(List<dynamic> lst) {
     String val = '';
-    for(var i=0; i<lst.length; i++){
+    for (var i = 0; i < lst.length; i++) {
       val += lst[i];
-      if(i != lst.length-1){
+      if (i != lst.length - 1) {
         val += ', ';
       }
     }
@@ -147,7 +151,6 @@ class _NGOInstanceState extends State<NGOInstance> {
 
   @override
   Widget build(BuildContext context) {
-
     var data = widget.data;
 
     print(data['sectors'].length);
@@ -159,7 +162,8 @@ class _NGOInstanceState extends State<NGOInstance> {
         border: Border.all(
           color: Colors.white,
           width: 2,
-        ),),
+        ),
+      ),
       margin: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
       child: Column(
         children: [
@@ -172,14 +176,14 @@ class _NGOInstanceState extends State<NGOInstance> {
                 child: ClipOval(
                   child: (_image != null)
                       ? Image.file(
-                    _image!,
-                    width: 140,
-                    height: 140,
-                    fit: BoxFit.cover,
-                  )
+                          _image!,
+                          width: 140,
+                          height: 140,
+                          fit: BoxFit.cover,
+                        )
                       : Container(
-                    color: Colors.white,
-                  ),
+                          color: Colors.white,
+                        ),
                 ),
               ),
             ],
@@ -189,11 +193,17 @@ class _NGOInstanceState extends State<NGOInstance> {
             children: [
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 20),
-                child: Text('${data['name']}', style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w700,
-                    fontSize: 30
-                ),),
+                child: RichText(
+                  text: TextSpan(children: [
+                    TextSpan(
+                      text: '${data['name']}',
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w700,
+                          fontSize: 30),
+                    )
+                  ]),
+                ),
               ),
             ],
           ),
@@ -205,11 +215,17 @@ class _NGOInstanceState extends State<NGOInstance> {
             children: [
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 5),
-                child: Text('${data['description']}', style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w500,
-                    fontSize: 20
-                ),),
+                child: RichText(
+                  text: TextSpan(children: [
+                    TextSpan(
+                      text: '${data['description']}',
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 20),
+                    )
+                  ]),
+                ),
               ),
             ],
           ),
@@ -221,11 +237,17 @@ class _NGOInstanceState extends State<NGOInstance> {
             children: [
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 5),
-                child: Text('${listToString(data['sectors'])}', style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w500,
-                    fontSize: 20
-                ),),
+                child: RichText(
+                  text: TextSpan(children: [
+                    TextSpan(
+                      text: '${listToString(data['sectors'])}',
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 20),
+                    )
+                  ]),
+                ),
               ),
             ],
           ),
@@ -237,12 +259,18 @@ class _NGOInstanceState extends State<NGOInstance> {
             children: [
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 5),
-                child: Text('${data['username']}', style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w600,
-                    fontStyle: FontStyle.italic,
-                    fontSize: 16
-                ),),
+                child: RichText(
+                  text: TextSpan(children: [
+                    TextSpan(
+                      text: '${data['username']}',
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w600,
+                          fontStyle: FontStyle.italic,
+                          fontSize: 16),
+                    )
+                  ]),
+                ),
               ),
             ],
           ),
@@ -254,27 +282,41 @@ class _NGOInstanceState extends State<NGOInstance> {
             children: [
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 5),
-                child: Text('${data['email']}', style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w600,
-                    fontStyle: FontStyle.italic,
-                    fontSize: 16
-                ),),
+                child: RichText(
+                  text: TextSpan(children: [
+                    TextSpan(
+                      text: '${data['email']}',
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w600,
+                          fontStyle: FontStyle.italic,
+                          fontSize: 16),
+                    )
+                  ]),
+                ),
               ),
             ],
           ),
-          SizedBox(height: 20,),
+          SizedBox(
+            height: 20,
+          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 5),
-                child: Text('${data['address']}', style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w600,
-                    fontStyle: FontStyle.italic,
-                    fontSize: 16
-                ),),
+                child: RichText(
+                  text: TextSpan(children: [
+                    TextSpan(
+                      text: '${data['address']}',
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w600,
+                          fontStyle: FontStyle.italic,
+                          fontSize: 16),
+                    )
+                  ]),
+                ),
               ),
             ],
           ),
@@ -286,12 +328,18 @@ class _NGOInstanceState extends State<NGOInstance> {
             children: [
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 5),
-                child: Text('${data['city']}, ${data['state']}', style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w600,
-                    fontStyle: FontStyle.italic,
-                    fontSize: 16
-                ),),
+                child: RichText(
+                  text: TextSpan(children: [
+                    TextSpan(
+                      text: '${data['city']}, ${data['state']}',
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w600,
+                          fontStyle: FontStyle.italic,
+                          fontSize: 16),
+                    )
+                  ]),
+                ),
               ),
             ],
           ),

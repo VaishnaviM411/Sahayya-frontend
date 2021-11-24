@@ -7,6 +7,7 @@ import 'package:sahayya/NGO/components/giveOutCard.dart';
 import 'components/userGiveOutCard.dart';
 
 final storage = new FlutterSecureStorage();
+
 class SelfDonations extends StatefulWidget {
   @override
   _SelfDonationsState createState() => _SelfDonationsState();
@@ -15,28 +16,26 @@ class SelfDonations extends StatefulWidget {
 }
 
 class _SelfDonationsState extends State<SelfDonations> {
-
-  String? token='', username='', type='';
+  String? token = '', username = '', type = '';
   // var allInstances = <Map<dynamic, dynamic>>[];
   List<dynamic> allInstances = [];
   List<UserGiveOutCard> allInstancesCard = [];
   List<dynamic> allInstances2 = [];
   List<GiveOutCard> allInstancesCard2 = [];
 
-
   void getUserData() async {
-
     token = await storage.read(key: 'token');
     username = await storage.read(key: 'username');
     type = await storage.read(key: 'type');
 
     var response;
-    String theURL = 'https://asia-south1-sahayya-9c930.cloudfunctions.net/api/applications-applied-to-by-donor/'+username!;
-    response = await http.get(Uri.parse(theURL), headers: {
-      HttpHeaders.authorizationHeader: token!
-    });
+    String theURL =
+        'https://asia-south1-sahayya-9c930.cloudfunctions.net/api/applications-applied-to-by-donor/' +
+            username!;
+    response = await http.get(Uri.parse(theURL),
+        headers: {HttpHeaders.authorizationHeader: token!});
 
-    if(response.statusCode == 200){
+    if (response.statusCode == 200) {
       print(response.body);
       print(response.statusCode);
       Map<dynamic, dynamic> resp = jsonDecode(response.body);
@@ -48,7 +47,7 @@ class _SelfDonationsState extends State<SelfDonations> {
 
       List<UserGiveOutCard> theCards = [];
 
-      for(var i=0; i<allInstances.length; i++){
+      for (var i = 0; i < allInstances.length; i++) {
         theCards.add(UserGiveOutCard(instance: allInstances[i]));
       }
 
@@ -57,12 +56,13 @@ class _SelfDonationsState extends State<SelfDonations> {
       });
     }
 
-    theURL = 'https://asia-south1-sahayya-9c930.cloudfunctions.net/api/donation-give-outs/'+username!;
-    response = await http.get(Uri.parse(theURL), headers: {
-      HttpHeaders.authorizationHeader: token!
-    });
+    theURL =
+        'https://asia-south1-sahayya-9c930.cloudfunctions.net/api/donation-give-outs/' +
+            username!;
+    response = await http.get(Uri.parse(theURL),
+        headers: {HttpHeaders.authorizationHeader: token!});
 
-    if(response.statusCode == 200){
+    if (response.statusCode == 200) {
       Map<dynamic, dynamic> resp = jsonDecode(response.body);
 
       setState(() {
@@ -71,7 +71,7 @@ class _SelfDonationsState extends State<SelfDonations> {
 
       List<GiveOutCard> theCards2 = [];
 
-      for(var i=0; i<allInstances2.length; i++){
+      for (var i = 0; i < allInstances2.length; i++) {
         theCards2.add(GiveOutCard(instance: allInstances2[i]));
       }
 
@@ -88,7 +88,6 @@ class _SelfDonationsState extends State<SelfDonations> {
     Navigator.pushReplacementNamed(context, '/start');
     return;
   }
-
 
   @override
   void initState() {
@@ -108,19 +107,30 @@ class _SelfDonationsState extends State<SelfDonations> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 5),
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 15, horizontal: 5),
                   child: ElevatedButton(
                     style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all(Colors.white),
-                        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                            RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(18.0),
-                                side: BorderSide(color: Color(0xFFFFFFFF), width: 2.0)))),
-                    child: Text('Create Give-Out', style: TextStyle(
-                        color: Color(0xFF3E5A81),
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18
-                    ),),
+                        backgroundColor:
+                            MaterialStateProperty.all(Colors.white),
+                        shape:
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(18.0),
+                                    side: BorderSide(
+                                        color: Color(0xFFFFFFFF),
+                                        width: 2.0)))),
+                    child: RichText(
+                      text: TextSpan(children: [
+                        TextSpan(
+                          text: 'Create Give-Out',
+                          style: TextStyle(
+                              color: Color(0xFF3E5A81),
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18),
+                        )
+                      ]),
+                    ),
                     onPressed: () {
                       Navigator.pushNamed(context, '/create-give-out');
                     },
@@ -131,11 +141,17 @@ class _SelfDonationsState extends State<SelfDonations> {
             SizedBox(
               height: 10,
             ),
-            Text('Your Requests (${allInstancesCard.length}):', style: TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-                fontSize: 20
-            ),),
+            RichText(
+              text: TextSpan(children: [
+                TextSpan(
+                  text: 'Your Requests (${allInstancesCard.length}):',
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20),
+                )
+              ]),
+            ),
             SizedBox(
               height: 20,
             ),
@@ -145,11 +161,17 @@ class _SelfDonationsState extends State<SelfDonations> {
             SizedBox(
               height: 20,
             ),
-            Text('Your Give Outs (${allInstancesCard2.length}):', style: TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-                fontSize: 20
-            ),),
+            RichText(
+              text: TextSpan(children: [
+                TextSpan(
+                  text: 'Your Give Outs (${allInstancesCard2.length}):',
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20),
+                )
+              ]),
+            ),
             SizedBox(
               height: 20,
             ),
@@ -158,7 +180,6 @@ class _SelfDonationsState extends State<SelfDonations> {
             ),
           ],
         ),
-
       ),
     );
   }
