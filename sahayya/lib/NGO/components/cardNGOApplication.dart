@@ -146,6 +146,8 @@ class _CardNGOApplicationState extends State<CardNGOApplication> {
                 applications = resp3;
               });
 
+              print(applications);
+
               Map<dynamic, dynamic> data = widget.instance;
               data['available-material'] = data['requirements'];
 

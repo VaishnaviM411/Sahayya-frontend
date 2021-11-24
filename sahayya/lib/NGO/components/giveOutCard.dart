@@ -135,8 +135,6 @@ class _GiveOutCardState extends State<GiveOutCard> {
             userDetails = resp;
           });
 
-          print(widget.instance['id']);
-
           String theURL2 = 'https://asia-south1-sahayya-9c930.cloudfunctions.net/api/forum/' + widget.instance['id'].toString();
           final response2 = await http.get(Uri.parse(theURL2), headers: {
             HttpHeaders.authorizationHeader: TOKEN!
@@ -149,7 +147,7 @@ class _GiveOutCardState extends State<GiveOutCard> {
               forum = resp2;
             });
 
-            String theURL3 = 'https://asia-south1-sahayya-9c930.cloudfunctions.net/api/all-received-applications-for-donor/' + widget.instance['id'].toString();
+            String theURL3 = 'https://asia-south1-sahayya-9c930.cloudfunctions.net/api/all-received-applications-for-ngo/' + widget.instance['id'].toString();
             final response3 = await http.get(Uri.parse(theURL3), headers: {
               HttpHeaders.authorizationHeader: TOKEN!
             });
@@ -159,8 +157,13 @@ class _GiveOutCardState extends State<GiveOutCard> {
               setState(() {
                 applications = resp3;
               });
-              Navigator.pushNamed(context, '/giveOutDetails', arguments: {
-                "data": widget.instance,
+
+              Map<dynamic, dynamic> data = widget.instance;
+
+              data['requirements'] = data['available-material'];
+
+              Navigator.pushNamed(context, '/requestDetails', arguments: {
+                "data": data,
                 "userData": userDetails,
                 "forum": forum,
                 "applications": applications['data']

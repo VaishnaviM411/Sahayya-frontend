@@ -78,6 +78,19 @@ class _ApplicationPageNGORequestState extends State<ApplicationPageNGORequest> {
 
     print(theGiveOutDetailsData);
 
+    Widget theAuthorCard(){
+      if(theDonorWhoIsGivingData['type'] == 'NGO'){
+        return NGOData(data: theDonorWhoIsGivingData);
+      }
+      if(theDonorWhoIsGivingData['donorType'] == 'Individual'){
+        return IndividualData(data: theDonorWhoIsGivingData);
+      }
+      if(theDonorWhoIsGivingData['donorType'] == 'Company'){
+        return CompanyData(data: theDonorWhoIsGivingData);
+      }
+      return CompanyData(data: theDonorWhoIsGivingData);
+    }
+
 
 
 
@@ -198,7 +211,7 @@ class _ApplicationPageNGORequestState extends State<ApplicationPageNGORequest> {
               SizedBox(
                 height: 20,
               ),
-              NGOData(data: theDonorWhoIsGivingData),
+              theAuthorCard(),
               SizedBox(
                 height: 20,
               ),

@@ -77,7 +77,7 @@ class _RequestDetailsState extends State<RequestDetails> {
 
     setState(() {
       for(var i=0; i<applications.length; i++){
-        appsList.add(ApplicationInstance(data: applications[i]));
+        appsList.add(ApplicationInstance(data: applications[i], token: TOKEN,));
       }
     });
 
@@ -89,6 +89,19 @@ class _RequestDetailsState extends State<RequestDetails> {
         isCompany = true;
       }
     });
+
+    Widget theAuthorCard(){
+      if(userData['type'] == 'NGO'){
+        return NGOData(data: userData);
+      }
+      if(userData['donorType'] == 'Individual'){
+        return IndividualData(data: userData);
+      }
+      if(userData['donorType'] == 'Company'){
+        return CompanyData(data: userData);
+      }
+      return CompanyData(data: userData);
+    }
 
 
     return isLoading ? Container(
@@ -214,7 +227,7 @@ class _RequestDetailsState extends State<RequestDetails> {
               SizedBox(
                 height: 20,
               ),
-              NGOData(data: userData),
+              theAuthorCard(),
               SizedBox(
                 height: 20,
               ),
@@ -347,7 +360,8 @@ class _RequestDetailsState extends State<RequestDetails> {
 class ApplicationInstance extends StatefulWidget {
 
   Map<dynamic, dynamic> data = {};
-  ApplicationInstance({required this.data});
+  String? token;
+  ApplicationInstance({required this.data, required this.token});
 
   @override
   _ApplicationInstanceState createState() => _ApplicationInstanceState();
@@ -356,75 +370,137 @@ class ApplicationInstance extends StatefulWidget {
 class _ApplicationInstanceState extends State<ApplicationInstance> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-      width: double.infinity,
-      padding: EdgeInsets.all(5),
-      child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8),
-                child:RichText(
-                  text: TextSpan(children:[
-                    TextSpan(text:'${widget.data['title']}',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w700,
-                          fontSize: 20),
-                    ),],
-                  ),),
-              ),
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 5),
-                child: RichText(
-                  text: TextSpan(children:[
-                    TextSpan(text:'${widget.data['body']}',
-                      style: TextStyle(
-                           color: Colors.white,
-                          fontWeight: FontWeight.w500,
-                          fontSize: 16),
-                    ),],
-                  ),),
+    return GestureDetector(
+      child: Container(
+        margin: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+        width: double.infinity,
+        padding: EdgeInsets.all(5),
+        child: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 8),
+                  child:RichText(
+                    text: TextSpan(children:[
+                      TextSpan(text:'${widget.data['title']}',
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w700,
+                            fontSize: 20),
+                      ),],
+                    ),),
+                ),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 5),
+                  child: RichText(
+                    text: TextSpan(children:[
+                      TextSpan(text:'${widget.data['body']}',
+                        style: TextStyle(
+                             color: Colors.white,
+                            fontWeight: FontWeight.w500,
+                            fontSize: 16),
+                      ),],
+                    ),),
 
-              ),
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 5),
-                child: RichText(
-                  text: TextSpan(children:[
-                    TextSpan(text:'${widget.data['e']}',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w600,
-                          fontStyle:FontStyle.italic,
+                ),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 5),
+                  child: RichText(
+                    text: TextSpan(children:[
+                      TextSpan(text:'${widget.data['e']}',
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w600,
+                            fontStyle:FontStyle.italic,
 
-                          fontSize: 15),
-                    ),],
-                  ),), //akku wait kar naaa okkii sorry kr tera
-              ),
-            ],
-          ),
-        ],
+                            fontSize: 15),
+                      ),],
+                    ),), //akku wait kar naaa okkii sorry kr tera
+                ),
+              ],
+            ),
+          ],
+        ),
+        decoration: BoxDecoration(
+          color: Colors.transparent,
+          borderRadius: BorderRadius.all(Radius.circular(30)),
+          border: Border.all(
+            color: Colors.white,
+            width: 2,
+          ),),
       ),
-      decoration: BoxDecoration(
-        color: Colors.transparent,
-        borderRadius: BorderRadius.all(Radius.circular(30)),
-        border: Border.all(
-          color: Colors.white,
-          width: 2,
-        ),),
+      onTap: ()async{
+
+        print(widget.data);
+        Map<dynamic, dynamic> requestData = widget.data;
+        Map<dynamic, dynamic> theGiveOutDetailsData = {};
+        Map<dynamic, dynamic> theDonorWhoIsGivingData = {};
+
+        var response;
+        String theURL = 'https://asia-south1-sahayya-9c930.cloudfunctions.net/api/particular-give-out/'+widget.data['requestID'];
+        response = await http.get(Uri.parse(theURL), headers: {
+          HttpHeaders.authorizationHeader: widget.token!
+        });
+
+        if(response.statusCode == 200) {
+          Map<String, dynamic> resp = jsonDecode(response.body);
+          setState(() {
+            theGiveOutDetailsData = resp;
+          });
+        }
+        else{
+          final snackBar = SnackBar(
+            content: Text('Some error occurred. Try again later.'),
+          );
+          ScaffoldMessenger.of(context)
+              .showSnackBar(snackBar);
+          return;
+        }
+
+        String theDonorUsername = theGiveOutDetailsData['username'];
+
+        theURL = 'https://asia-south1-sahayya-9c930.cloudfunctions.net/api/profile/'+theDonorUsername;
+        response = await http.get(Uri.parse(theURL), headers: {
+          HttpHeaders.authorizationHeader: widget.token!
+        });
+
+        if(response.statusCode == 200) {
+          Map<String, dynamic> resp = jsonDecode(response.body);
+          setState(() {
+            theDonorWhoIsGivingData = resp;
+          });
+        }
+        else{
+          final snackBar = SnackBar(
+            content: Text('Some error occurred. Try again later.'),
+          );
+          ScaffoldMessenger.of(context)
+              .showSnackBar(snackBar);
+          return;
+        }
+
+        theGiveOutDetailsData['requirements'] = theGiveOutDetailsData['available-material'];
+
+        Navigator.pushNamed(context, '/applicationPageNGORequest', arguments: {
+          "requestData": requestData,
+          "theGiveOutDetailsData": theGiveOutDetailsData,
+          "theDonorWhoIsGivingData": theDonorWhoIsGivingData,
+          "id": widget.data['requestID']
+        });
+        return;
+      },
     );
   }
 }
