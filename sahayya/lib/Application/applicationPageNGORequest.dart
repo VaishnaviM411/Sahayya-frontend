@@ -8,6 +8,8 @@ import 'package:sahayya/NGO/components/companyData.dart';
 import 'package:sahayya/NGO/components/individualData.dart';
 import 'package:sahayya/NGO/components/ngoData.dart';
 
+import '../browserView.dart';
+
 final storage = new FlutterSecureStorage();
 
 class ApplicationPageNGORequest extends StatefulWidget {
@@ -423,7 +425,7 @@ class _ApplicationPageNGORequestState extends State<ApplicationPageNGORequest> {
                             if(theDonorWhoIsGivingData['type'] != 'NGO'){
                               theURL = "https://asia-south1-sahayya-9c930.cloudfunctions.net/api/transaction-completion-side-donor-giveout";
                             }
-                            
+
                             final response = await http.post(
                                 Uri.parse(
                                     theURL),
@@ -463,6 +465,33 @@ class _ApplicationPageNGORequestState extends State<ApplicationPageNGORequest> {
                     ),
                   ),
                   SizedBox(height: 20,)
+                ],
+              ) : SizedBox(height: 0,),
+              (requestData['status'] == 'Completed') ? Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        ElevatedButton(
+                          style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all(Colors.white),
+                              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(18.0),
+                                      side: BorderSide(color: Color(0xFFFFFFFF), width: 2.0)))
+                            // shape: MaterialStateProperty.all(CircleBorder()),
+                          ),
+                          child: Text('Invoice', style: TextStyle(color: Color(0xFF3E5A81),)),
+                          onPressed: () async {
+                            Navigator.push(context, MaterialPageRoute(builder: (context)=>BrowserView(url: requestData['link'])));
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: 20,),
                 ],
               ) : SizedBox(height: 0,)
             ],
@@ -512,11 +541,16 @@ class _ApplicationDataInstanceState extends State<ApplicationDataInstance> {
             children: [
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 30),
-                child: Text('${widget.data['title']}', style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w700,
-                    fontSize: 30
-                ),),
+                child:RichText(
+                  text: TextSpan(children: [
+                    TextSpan(text: '${widget.data['title']}',
+                      style: TextStyle(
+                          color:  Colors.white,
+                          fontWeight: FontWeight.w700,
+                          fontSize: 30
+                      ),)
+                  ]),
+                ),
               ),
             ],
           ),

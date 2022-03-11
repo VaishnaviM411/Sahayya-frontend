@@ -6,6 +6,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:http/http.dart' as http;
 import 'package:sahayya/NGO/components/companyData.dart';
 import 'package:sahayya/NGO/components/individualData.dart';
+import 'package:sahayya/browserView.dart';
 
 final storage = new FlutterSecureStorage();
 
@@ -409,10 +410,39 @@ class _ApplicationPageDonationGiveOutState extends State<ApplicationPageDonation
                       ],
                     ),
                   ),
-                  SizedBox(height: 20,)
+                  SizedBox(height: 20,),
+                ],
+              ) : SizedBox(height: 0,),
+              (requestData['status'] == 'Completed') ? Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        ElevatedButton(
+                          style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all(Colors.white),
+                              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(18.0),
+                                      side: BorderSide(color: Color(0xFFFFFFFF), width: 2.0)))
+                            // shape: MaterialStateProperty.all(CircleBorder()),
+                          ),
+                          child: Text('Invoice', style: TextStyle(color: Color(0xFF3E5A81),)),
+                          onPressed: () async {
+                            Navigator.push(context, MaterialPageRoute(builder: (context)=>BrowserView(url: requestData['link'])));
+                            // url = requestData['link']
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: 20,),
                 ],
               ) : SizedBox(height: 0,)
             ],
+
           ),
         ),
       ),
@@ -459,11 +489,14 @@ class _ApplicationDataInstanceState extends State<ApplicationDataInstance> {
             children: [
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 30),
-                child: Text('${widget.data['title']}', style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w700,
-                    fontSize: 30
-                ),),
+                child: RichText(
+                  text: TextSpan(children:[
+                    TextSpan(text:'${widget.data['title']}',
+                      style: TextStyle(color: Colors.white,
+                          fontWeight: FontWeight.w700,
+                          fontSize: 30),
+                    ),],
+                  ),),
               ),
             ],
           ),
